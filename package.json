@@ -1,0 +1,32 @@
+{
+  "name": "badyet",
+  "version": "1.0.0",
+  "description": "badyet is also know as budget. badyet is an app that tracks expenses and income.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrvncaragay/badyet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrvncaragay/badyet/issues"
+  },
+  "homepage": "https://github.com/mrvncaragay/badyet#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.3.1",
+    "dotenv": "^8.0.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "jquery": "^3.4.1",
+    "mysql2": "^1.6.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
+  }
+}
