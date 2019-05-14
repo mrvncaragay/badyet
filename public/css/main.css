@@ -1,0 +1,14 @@
+body {
+    font-family: 'Karla', sans-serif;
+    
+}
+
+.brand-title:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+.create-account {
+    margin-left: 10px;
+}
