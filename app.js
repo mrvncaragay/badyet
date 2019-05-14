@@ -19,5 +19,5 @@ app.use(indexRoute);
 
 app.use(errorPage);
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080; //port 8080 for google app engine
 app.listen(port);

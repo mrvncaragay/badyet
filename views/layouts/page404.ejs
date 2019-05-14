@@ -1,13 +1,21 @@
 <%- include('header.ejs', {title: 'Page not found!'}) %>
-    <link rel="stylesheet" href="/css/statuscode.css">
+    <link rel="stylesheet" href="/css/errorPage.css">
 </head>
 <body> 
     
-    <div class="container">
+    <div class="container main-error-page">
         <div class="row">
-            <div class="col-sm alert alert-danger page-not-found" role="alert">
-                <h1 class="text-center">Page not foundsss!</h1>
+            <div class="col-12 alert alert-light page-not-found" role="alert">
+                <h1 class="text-center"><strong>404</strong></h1>
             </div>
+            <div class="col-12 alert alert-light" role="alert">
+                <h6 class="text-center">The page you are looking for doesn't exist or has been moved.</h6>
+            </div>
+            <div class="col-12 alert alert-light text-center" role="alert">
+                <a class="btn btn-outline-success btn-lg" href="/" role="button">Back to home</a>
+            </div>
+            
         </div>
     </div>
+    
 <%- include('footer.ejs') %>    
