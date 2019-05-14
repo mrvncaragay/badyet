@@ -12,3 +12,38 @@ body {
 .create-account {
     margin-left: 10px;
 }
+
+.main-error-page {
+    margin-top: 35vh;
+    color: black;
+}
+
+.page-not-found {
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+/**************** User ***********************/ 
+
+.main-signin-form {
+    margin-top: 100px;
+}
+
+.signin-form-logo {
+    margin-bottom: 40px;
+}
+
+.signin-form {
+    padding: 25px;
+    border: 1px solid #b3b4b6;
+    border-radius: 5px;
+}
+
+.main-form-policy {
+    margin-top: 15px;
+}
+
+.form-policy {
+    font-size: 13px;
+    padding: 0px;
+}

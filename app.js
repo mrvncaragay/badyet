@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const indexRoute = require('./routes/index');
 const errorPage = require('./routes/errorPage');
+const userRoute = require('./routes/users')
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(express.static(path.join(__dirname, 'node_modules/jquery')));
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(indexRoute);
+
+app.use(userRoute);
 
 app.use(errorPage);
 
