@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const indexRoute = require('./routes/index');
+const errorPage = require('./routes/errorPage');
 
 const app = express();
 
@@ -14,11 +15,9 @@ app.use(express.static(path.join(__dirname, 'node_modules/bootstrap')));
 app.use(express.static(path.join(__dirname, 'node_modules/jquery')));
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/users', indexRoute);
+app.use(indexRoute);
 
-app.use('/', (req, res) => {
-    res.send('Page Not Found!');
-});
+app.use(errorPage);
 
 const port = process.env.PORT || 8080;
 app.listen(port);
