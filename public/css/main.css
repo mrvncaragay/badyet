@@ -3,6 +3,11 @@ body {
     
 }
 
+.main-logo > h2 {
+    color: #c20606;
+    font-weight: 600;
+}
+
 .brand-title:visited {
     text-decoration: inherit;
     color: inherit;
@@ -31,6 +36,7 @@ body {
 
 .signin-form-logo {
     margin-bottom: 40px;
+
 }
 
 .signin-form {
