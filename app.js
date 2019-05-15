@@ -4,7 +4,16 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const indexRoute = require('./routes/index');
 const errorPage = require('./routes/errorPage');
-const userRoute = require('./routes/users')
+const userRoute = require('./routes/users');
+
+const db = require('./database');
+db.execute('SELECT * from users')
+    .then(result => {
+        console.log(result);
+    })
+    .catch(err => {
+        console.log(err);
+    });
 
 const app = express();
 
