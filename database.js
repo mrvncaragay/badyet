@@ -13,6 +13,7 @@ const connection = mysql.createPool(databaseConfig);
 module.exports = connection.promise();
 
 //create a production connection
+
 // const databaseConfig = {
 //     user: process.env.SQL_USER,
 //     database: process.env.SQL_DATABASE,

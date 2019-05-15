@@ -3,17 +3,8 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const indexRoute = require('./routes/index');
-const errorPage = require('./routes/errorPage');
+const errorPageRoute = require('./routes/errorPage');
 const userRoute = require('./routes/users');
-
-const db = require('./database');
-db.execute('SELECT * from users')
-    .then(result => {
-        console.log(result);
-    })
-    .catch(err => {
-        console.log(err);
-    });
 
 const app = express();
 
@@ -26,10 +17,8 @@ app.use(express.static(path.join(__dirname, 'node_modules/jquery')));
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(indexRoute);
-
 app.use(userRoute);
-
-app.use(errorPage);
+app.use(errorPageRoute);
 
 const port = process.env.PORT || 8080; //port 8080 for google app engine
 app.listen(port);
