@@ -9,4 +9,6 @@ route.get('/app/sign-up', userController.getSignUpPage);
 
 route.post('/app/sign-up', userController.createNewUser);
 
+route.post('/app/sign-in', userController.signInPage);
+
 module.exports = route;

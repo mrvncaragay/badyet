@@ -7,7 +7,11 @@ module.exports = class User {
         this.password = password;
     }
 
-    add() {
+    save() {
         return db.execute('INSERT into users (username, email, password) VALUES (?, ?, ?)', [this.username, this.email, this.password]);
+    }
+
+    static isUserEmailExist(email) {
+        return db.execute('SELECT EXISTS(SELECT email FROM users WHERE email = ?) AS any', [email]);
     }
 }
