@@ -1,15 +1,7 @@
 const User = require('../models/user')
 const bcrypt = require('bcryptjs');
 
-exports.getSignUpPage = (req, res) => {
-    res.render('users/sign_up');
-};
-
-exports.getSignInPage = (req, res) => {
-    res.render('users/sign_in');
-};
-
-exports.createNewUser = (req, res) => {
+exports.registerNewUser = (req, res) => {
     const { username, email, password } = req.body;
 
     //check empty req.body
@@ -22,10 +14,31 @@ exports.createNewUser = (req, res) => {
         .catch(err => console.log(err));   
 };
 
-exports.signInPage = (req, res) => {
+exports.signInUser = (req, res) => {
+     //user's submitted data
     const { email, password } = req.body;
 
+    //Return to sign in if email OR password field is blank
+    if(!email || !password) return res.redirect('/app/sign-in'); 
+    
+    //Returns 1 if email exist and 0 if it doesnt.
     User.isUserEmailExist(email)
-        .then( ([obj])  => console.log(obj[0].any))
-        .catch(err => console.log('Doest not exist!'));
+        .then(([obj]) => {
+
+            //Return to sign in if email doesnt exist
+            if(!obj[0].any) return res.redirect('/app/sign-in'); 
+            
+            //Email exist find user
+            return User.findByEmail(email)
+                .then(([user]) => {
+
+                    //check user password is correct
+                    return bcrypt.compare(password, user[0].password)
+                                .then(success => {
+                                    success ? res.redirect('/app/badyet') : res.redirect('/app/sign-in');
+                                })                                
+                })
+                .catch(err => console.log(err)) //failed to execute query
+        })
+        .catch(err => console.log(err)); //failed to execute query
 };

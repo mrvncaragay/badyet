@@ -2,8 +2,9 @@ require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
+const appRoute = require('./routes/app')
 const indexRoute = require('./routes/index');
-const errorPageRoute = require('./routes/errorPage');
+const statusPageRoute = require('./routes/statusPage');
 const userRoute = require('./routes/users');
 
 const app = express();
@@ -17,8 +18,9 @@ app.use(express.static(path.join(__dirname, 'node_modules/jquery')));
 app.use(bodyParser.urlencoded({extended: false}));
 
 app.use(indexRoute);
+app.use(appRoute);
 app.use(userRoute);
-app.use(errorPageRoute);
+app.use(statusPageRoute);
 
 const port = process.env.PORT || 8080; //port 8080 for google app engine
 app.listen(port);

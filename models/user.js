@@ -14,4 +14,12 @@ module.exports = class User {
     static isUserEmailExist(email) {
         return db.execute('SELECT EXISTS(SELECT email FROM users WHERE email = ?) AS any', [email]);
     }
+
+    static findById(id) {
+        return db.execute('SELECT * FROM users WHERE users.id = ?', [id]);
+    }
+
+    static findByEmail(email) {
+        return db.execute('SELECT * FROM users WHERE users.email = ?', [email]);
+    }
 }

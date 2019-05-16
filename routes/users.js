@@ -3,12 +3,7 @@ const route = express.Router();
 
 const userController = require('../controllers/users');
 
-route.get('/app/sign-in', userController.getSignInPage);
-
-route.get('/app/sign-up', userController.getSignUpPage);
-
-route.post('/app/sign-up', userController.createNewUser);
-
-route.post('/app/sign-in', userController.signInPage);
+route.post('/app/sign-up', userController.registerNewUser);
+route.post('/app/sign-in', userController.signInUser);
 
 module.exports = route;
