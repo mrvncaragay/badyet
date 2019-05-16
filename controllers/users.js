@@ -3,15 +3,25 @@ const bcrypt = require('bcryptjs');
 
 exports.registerNewUser = (req, res) => {
     const { username, email, password } = req.body;
+  
+    //Return to registration if username OR email OR password field is blank
+    if(!username || !email || !password) return res.redirect('/app/sign-up');
 
-    //check empty req.body
-    bcrypt.hash(password, 12)
-        .then(hashedPassword => {
-            const user = new User(username, email, hashedPassword);
-            return user.save();
+    User.isUsernameAndEmailExist(username, email)
+        .then(([ans]) => {
+            //Redirect if email or username does exist
+            if(ans[0].any) return res.redirect('/app/sign-up');
+
+            //hash password and create user
+            return bcrypt.hash(password, 12)
+                .then(hashedPassword => {
+                    const user = new User(username, email, hashedPassword);
+                    user.save();
+                    res.redirect('/app/badyet');
+                })
+                .catch(err => console.log(err)); //failed to hash password
         })
-        .then(() => res.redirect('/app/sign-in')) 
-        .catch(err => console.log(err));   
+        .catch(err => console.log(err)) //failed to execute query   
 };
 
 exports.signInUser = (req, res) => {
@@ -23,10 +33,10 @@ exports.signInUser = (req, res) => {
     
     //Returns 1 if email exist and 0 if it doesnt.
     User.isUserEmailExist(email)
-        .then(([obj]) => {
+        .then(([ans]) => {
 
             //Return to sign in if email doesnt exist
-            if(!obj[0].any) return res.redirect('/app/sign-in'); 
+            if(!ans[0].any) return res.redirect('/app/sign-in'); 
             
             //Email exist find user
             return User.findByEmail(email)
