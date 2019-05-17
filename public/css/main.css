@@ -1,5 +1,6 @@
 body {
     font-family: 'Karla', sans-serif;
+    background-color: #fafafa;;
     
 }
 
@@ -30,6 +31,12 @@ body {
 
 /**************** User ***********************/ 
 
+.shadow-box {
+    background-color: white;
+    box-shadow: 0 0px 5px rgba(0,0,0,.1);
+    border: 1px solid rgba(0,0,0,.1);
+}
+
 .main-signin-form {
     margin-top: 100px;
 }
@@ -41,7 +48,6 @@ body {
 
 .signin-form {
     padding: 25px;
-    border: 1px solid #b3b4b6;
     border-radius: 5px;
 }
 
@@ -52,4 +58,41 @@ body {
 .form-policy {
     font-size: 13px;
     padding: 0px;
+}
+
+/******************** Sizebar ******************/
+.sidebar {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding-right: 0px;
+    position: fixed;
+    height: 100vh;
+    display: flex;
+}
+
+.nav-brand > h2 {
+    color: #c20606;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+/*sidebar color: #69757a;*/
+
+.nav-item-badyet > a {
+    color: #c20606;
+    font-size: 20px;
+}
+
+.nav-item-badyet {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.nav-item-info {
+    display: flex;
+    flex-direction: column;
 }
