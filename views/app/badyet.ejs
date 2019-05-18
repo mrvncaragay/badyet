@@ -1,25 +1,50 @@
 <%- include('../layouts/header.ejs', {title: 'Badyet - Track & Plan your Budget!'}) %>
 
+<div class="container-fluid">
+    <div class="row main-app-container">
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="flex-column col-md-2 sidebar shadow-box">
-                <div class="nav-link active nav-brand text-center" >
-                    <h2>Badyet</h2>
-                </div>
-
-                <div class="nav-link nav-item-badyet text-center" >
-                        <a class="nav-link" href="#"><strong>Badyet</strong></a>
-                </div>
-
-                <div class="nav-lin nav-item-info text-center">
-                        <h5>Username</h5>
-                        <a class="nav-link" href="#">Sign Out</a>
-                        <a href="/">Home Page</a>
-                </div>
-
-            </div>         
+        <div class="col-2 left-panel-container sticky-top">
+                left-panel-containe
+            <div class="row left-panel-brand">
+                <div class="col text-center"><h1><strong>Badyet</strong></h1></div>
+            </div>
+            <div class="row left-panel-control">
+                <div class="col">Control</div>
+            </div>
+            <div class="row left-panel-nametag">
+                <div class="col">nametag</div>
+            </div>
         </div>
-    </div>
 
+        <div class="col-6 main-panel-container">
+            
+            <div class="row main-date sticky-top"> 
+                <div class="col">
+                    main-date
+                    <div class="data-date">Header</div>
+                </div>
+            </div>
+
+            <div class="row main-data">
+                <div class="col">
+                    main-data
+
+                    <div class="data-item">Header</div>
+                    <div class="data-item">Data1</div>
+                    <div class="data-item">Data2</div>
+                    <div class="data-item">Data3</div>
+                    <div class="data-item">Data4</div>
+                    <div class="data-item">Data5</div>
+                    <div class="data-item">Data6</div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 right-panel-container sticky-top">
+           right-panel-container
+        </div>
+
+    </div>
+</div>
 <%- include('../layouts/footer.ejs') %>

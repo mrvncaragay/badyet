@@ -1,4 +1,4 @@
-<%- include('../layouts/header.ejs', {title: 'Badyet - Track & Plan your Budget!'}) %>
+<%- include('../layouts/header.ejs', { title: 'Badyet - Track & Plan your Budget!' }) %>
     <div class="container main-signin-form">
         <div class="row justify-content-center">
             <div class="col-5">
@@ -11,7 +11,7 @@
                     <div class="form-group text-center">
                         <label for="label"><h4>Sign In</h4></label>
                     </div>
-                    <form action="/app/sign-in" method="POST">
+                    <form action="/app/sign-in" method="POST" id="form-sign-in">
                         <div class="form-group">
                             <label for="userEmail"><strong>Email address</strong></label>
                             <input type="email" name="email" class="form-control" id="userEmail" aria-describedby="emailHelp" placeholder="Enter email">                        </div>
@@ -21,8 +21,8 @@
                             <input type="password" name="password" class="form-control" id="userPassword" placeholder="Password">
                         </div>
     
-                        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-
+                        <button type="submit" id="btn-sign-in" class="btn btn-primary btn-block">Sign In</button>
+                        
                         <div class="form-group text-center main-form-policy">
                             <small>
                                     <label for="label">Forgot your
@@ -41,5 +41,6 @@
             </div>
         </div>
     </div>
-  
+
+<%- include('../layouts/script.ejs', { signInJs: true  }) %>    
 <%- include('../layouts/footer.ejs') %>

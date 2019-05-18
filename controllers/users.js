@@ -10,8 +10,8 @@ exports.registerNewUser = (req, res) => {
     User.isUsernameAndEmailExist(username, email)
         .then(([ans]) => {
             //Redirect if email or username does exist
-            if(ans[0].any) return res.redirect('/app/sign-up');
-
+            if(!ans[0].any) return res.redirect('/app/sign-up');
+            
             //hash password and create user
             return bcrypt.hash(password, 12)
                 .then(hashedPassword => {
@@ -19,9 +19,9 @@ exports.registerNewUser = (req, res) => {
                     user.save();
                     res.redirect('/app/badyet');
                 })
-                .catch(err => console.log(err)); //failed to hash password
+                .catch(err => console.log('hash', err)); //failed to hash password
         })
-        .catch(err => console.log(err)) //failed to execute query   
+        .catch(err => console.log('isUsernameAndEmailExist', err)) //failed to execute query   
 };
 
 exports.signInUser = (req, res) => {
