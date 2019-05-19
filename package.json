@@ -24,6 +24,8 @@
     "dotenv": "^8.0.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-mysql-session": "^2.1.0",
+    "express-session": "^1.16.1",
     "jquery": "^3.4.1",
     "mysql2": "^1.6.5"
   },

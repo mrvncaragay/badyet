@@ -1,0 +1,67 @@
+<div class="container-fluid">
+    <div class="row main-app-container">
+
+        <div class="col-2 left-panel-container sticky-top">
+            <div class="row left-panel-brand">
+                    left-panel-containe
+                <div class="col text-center"><h1><strong>Badyet</strong></h1></div>
+            </div>
+
+            <div class="row left-panel-control  text-center">
+                <div class="col">Control
+                    <div class="upper-main-control">
+                        <a class="btn btn-outline-secondary" role="button" href="/app/badyet">Badyet</a>
+                    </div>
+
+                    <div class="lower-main-control">
+                        <a class="btn btn-outline-secondary" role="button" href="/app/settings">Settings</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row left-panel-nametag text-center">
+                <div class="col">nametag
+                    <div class="nametag-main">
+                        <form action="/app/sign-out" method="POST">
+                            <button type="submit" class="btn btn-outline-secondary" role="button" href="/">Sign Out</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% if(badyet) { %>
+            <div class="col-6 main-panel-container">
+                    <div class="row main-date sticky-top"> 
+                        <div class="col">
+                            main-date
+                            <div class="data-date">Header</div>
+                        </div>
+                    </div>
+
+                    <div class="row main-data">
+                        <div class="col">
+                            main-data
+
+                            <div class="data-item">Header</div>
+                            <div class="data-item">Data1</div>
+                            <div class="data-item">Data2</div>
+                            <div class="data-item">Data3</div>
+                            <div class="data-item">Data4</div>
+                            <div class="data-item">Data5</div>
+                            <div class="data-item">Data6</div>
+
+                        </div>
+                    </div>    
+            </div>
+
+            <div class="col-4 right-panel-container sticky-top">
+                right-panel-container
+            </div>
+
+        <% } else if(settings) { %>
+            <!-- Settings  -->
+        <% } %> 
+
+    </div>
+</div>

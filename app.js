@@ -1,26 +1,42 @@
 require('dotenv').config();
 const path = require('path');
 const express = require('express');
-const bodyParser = require('body-parser');
-const appRoute = require('./routes/app')
-const indexRoute = require('./routes/index');
-const statusPageRoute = require('./routes/statusPage');
-const userRoute = require('./routes/users');
+const bodyParser = require('body-parser'); //parse submitted body
+const db = require('./database');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session); //store session in the database
 
 const app = express();
+const mysqlStore = new MySQLStore({}, db);
 
+// View Engine
 app.set('view engine', 'ejs');
 app.set('views', 'views'); //locate all html templates inside views folder
 
+//Routes
+const indexRoutes = require('./routes/index');
+const authRoutes = require('./routes/auth');
+const appRoutes = require('./routes/app')
+const statusPageRoutes = require('./routes/statusPage');
+const userRoutes = require('./routes/users');
+
+//Supported Middleware
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap')));
 app.use(express.static(path.join(__dirname, 'node_modules/jquery')));
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: mysqlStore
+}));
 
-app.use(indexRoute);
-app.use(appRoute);
-app.use(userRoute);
-app.use(statusPageRoute);
+app.use(indexRoutes);
+app.use(authRoutes);
+app.use(appRoutes);
+app.use(userRoutes);
+app.use(statusPageRoutes);
 
 const port = process.env.PORT || 8080; //port 8080 for google app engine
 app.listen(port);

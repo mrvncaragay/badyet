@@ -23,12 +23,17 @@ This app is created using node, express, mysql, and vanila js. This app will be 
     - username, email, password(salt, hash)
     - Has prefilled group items
 - Budget Item
-    - Expense or Income (Transaction)
-        -Adding Item
-            -Amount
-            -Date
-            -Where did money come from? (text: optional)
-                -Drop Down Options (from budget items) to add the expense or income
+    -Adding Item
+        - Expense or Income (Transaction) 
+        - Amount
+        - Date
+        - Where did money come from? (text: optional)
+        - Choose which Budget item(s) 
+            -Drop Down Options (from budget items) to add the expense or income
 - Budget Container Group 
-    - Title
+    - Title <Food>
+    - planned (to budyet or save) editable
+    - received (for Paycheck)
+    - Remaining (Spent - planned)
+    - Spent (total: expense)
     - Budget Items                

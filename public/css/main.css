@@ -93,6 +93,14 @@ html body {
     border: 1px solid rgba(0,0,0,.2);
 }
 
+.upper-main-control {
+    height: 80%;
+}
+
+.lower-main-control {
+    height: auto;
+}
+
 
 
 /******************** MIDDLE *****************/

@@ -1,10 +1,10 @@
 const express = require('express');
 const route = express.Router();
+const isUserAuth = require('../middleware/is-auth');
 
 const appController = require('../controllers/app');
 
-route.get('/app/sign-in', appController.getSignInPage);
-route.get('/app/sign-up', appController.getSignUpPage);
-route.get('/app/badyet', appController.getBadyetPage);
+route.get('/app/badyet', isUserAuth, appController.getBadyetPage);
+route.get('/app/settings', isUserAuth, appController.getSettingsPage);
 
 module.exports = route;
