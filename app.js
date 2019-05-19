@@ -32,6 +32,13 @@ app.use(session({
     store: mysqlStore
 }));
 
+//Create a local variables for all the views
+app.use((req, res, next) => {
+    if(!req.session.currentUser) return next();
+    
+    res.locals.currentUserUsername = req.session.currentUser.username;
+    next();
+});
 app.use(indexRoutes);
 app.use(authRoutes);
 app.use(appRoutes);

@@ -58,12 +58,8 @@ exports.signInUser = (req, res) => {
                     return bcrypt.compare(password, user[0].password)
                                 .then(success => {
                                     if(success) {
-                                        
-                                        //Create a User object without password
-                                        req.session.currentUser = {
-                                            username: user[0].username,
-                                            email: user[0].email
-                                        };
+
+                                        req.session.currentUser = user[0]; 
                                         req.session.isCurrentUserSignedIn = true;
                                         res.redirect('/app/badyet') 
 
