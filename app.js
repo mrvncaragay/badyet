@@ -5,9 +5,16 @@ const bodyParser = require('body-parser'); //parse submitted body
 const db = require('./database');
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session); //store session in the database
+const csrf = require('csurf'); //csrf attack protection
+
 
 const app = express();
-const mysqlStore = new MySQLStore({}, db);
+const mysqlStore = new MySQLStore({
+    clearExpired: true,
+    checkExpirationInterval: 900000
+
+}, db);
+const csrfProtection = csrf();
 
 // View Engine
 app.set('view engine', 'ejs');
@@ -29,17 +36,25 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: mysqlStore
+    store: mysqlStore, 
+    cookie: {
+        maxAge: 900000
+    }
 }));
+app.use(csrfProtection); //Run session when login/create is clicked.
 
 //Create a local variables for all the views
 app.use((req, res, next) => {
+    //Store the csrf token to all views
+    res.locals.csrfToken = req.csrfToken();
+
+    //Only store username after user logged in
     if(!req.session.currentUser) return next();
-    
     res.locals.currentUserUsername = req.session.currentUser.username;
     next();
 });
-app.use(indexRoutes);
+
+app.use(indexRoutes); //Placed here before csrfProtection, so that it does not create csrfToken/Save it to db
 app.use(authRoutes);
 app.use(appRoutes);
 app.use(userRoutes);

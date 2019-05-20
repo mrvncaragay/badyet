@@ -2,9 +2,8 @@
     <div class="row main-app-container">
 
         <div class="col-2 left-panel-container sticky-top">
-            <div class="row left-panel-brand">
-                    left-panel-containe
-                <div class="col text-center"><h1><strong>Badyet</strong></h1></div>
+            <div class="row left-panel-brand text-center">
+                <a class="navbar-brand brand-title main-logo" href="/"><h2>Badyet</h2></a>
             </div>
 
             <div class="row left-panel-control  text-center">
@@ -23,6 +22,7 @@
                 <div class="col"><%= currentUserUsername %>
                     <div class="nametag-main">
                         <form action="/app/sign-out" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>"> 
                             <button type="submit" class="btn btn-outline-secondary" role="button" href="/">Sign Out</button>
                         </form>
                     </div>

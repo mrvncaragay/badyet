@@ -6,6 +6,7 @@ exports.getSignUpPage = (req, res) => {
 };
 
 exports.getSignInPage = (req, res) => {
+
     res.render('auth/sign_in');
 };
 
@@ -56,13 +57,14 @@ exports.signInUser = (req, res) => {
                     
                     //check user password is correct
                     return bcrypt.compare(password, user[0].password)
-                                .then(success => {
-                                    if(success) {
-
+                                .then(doMatch => {
+                                    if(doMatch) {
+                                        
                                         req.session.currentUser = user[0]; 
                                         req.session.isCurrentUserSignedIn = true;
-                                        res.redirect('/app/badyet') 
-
+                                        return req.session.save(() => {
+                                            res.redirect('/app/badyet') 
+                                        })
                                     } else {
 
                                     res.redirect('/app/sign-in');
