@@ -11,7 +11,7 @@ const csrf = require('csurf'); //csrf attack protection
 const app = express();
 const mysqlStore = new MySQLStore({
     clearExpired: true,
-    checkExpirationInterval: 900000
+    checkExpirationInterval: 120000
 
 }, db);
 const csrfProtection = csrf();
@@ -50,7 +50,9 @@ app.use((req, res, next) => {
 
     //Only store username after user logged in
     if(!req.session.currentUser) return next();
+    
     res.locals.currentUserUsername = req.session.currentUser.username;
+    res.locals.currentUserEmail = req.session.currentUser.email;
     next();
 });
 

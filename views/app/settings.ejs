@@ -1,5 +1,31 @@
 <%- include('../layouts/header.ejs', {title: 'Badyet - Track & Plan your Budget!'}) %>
 
-    <%- include('./sidepanel.ejs', {settings: true, badyet: false}) %>
+<div class="container-fluid">
+    <div class="row main-app-container">
+        <%- include('./sidepanel.ejs', {settings: true, badyet: false}) %>
+
+        <div class="col settings-panel-container">
+            <div class="jumbotron text-center settings-banner">
+                <h1 class="display-4">Settings</h1>
+            </div>
+
+            <div class="row  profile-container">
+                <div class="col-4 profile-main">
+                    
+                    <h3>Profile Info</h3>
+                    <h5><%= currentUserUsername %></h5>
+                    <h5><%= currentUserEmail %></h5>
+                    <a href="#" class="btn btn-info btn-sm" role="button">Change Password</a>
+                    or
+                    <a href="#" class="btn btn-danger btn-sm" role="button">Delete Account</a>
+                </div>
+            
+                <div class="col-8">
+                    <h1>right</h1>
+                </div>    
+            </div>
+        </div>    
+    </div>
+</div>
 
 <%- include('../layouts/footer.ejs') %>

@@ -1,14 +1,26 @@
-html body {
-    height: 100%;
-    font-family: 'Karla', sans-serif;
-    background-color: #fafafa;; 
+:root {
+    --background-color: #e9ecef;
+    /* --background-color: #fafafa; */
+    
+    --brand-font:  'Italianno', cursive;
+    --brand-color: #c20606;
+    --brand-weight: 600;
+    --brand-size: 50px;
+    --text-font:  'Karla', sans-serif;
 }
 
-.main-logo > h2 {
-    color: #c20606;
-    font-weight: 600;
-    font-size: 50px;
-    font-family: 'Italianno', cursive;
+
+html body {
+    height: 100%;
+    font-family: var(--text-font);
+    background-color: var(--background-color);
+}
+
+.main-logo > h2, .settings-banner {
+    color: var(--brand-color);
+    font-weight: var(--brand-weight);
+    font-size: var(--brand-size);
+    font-family: var(--brand-font);
 }
 
 .brand-title:visited {
@@ -66,14 +78,14 @@ html body {
 
 .main-app-container {
     height: 100vh;
-    overflow: auto;
+    overflow-y: scroll;
 }
 
 /******************** Left *****************/
 
 .left-panel-container {
     height: 100vh;
-    background-color: #fafafa;
+    background-color: white;
 }
 
 .left-panel-brand {
@@ -96,7 +108,8 @@ html body {
 }
 
 .upper-main-control {
-    height: 80%;
+    height: 60%;
+    margin: 50px;
 }
 
 .lower-main-control {
@@ -107,14 +120,16 @@ html body {
 
 /******************** MIDDLE *****************/
 .main-panel-container {
+    background-color: var(--background-color);
 
 }
 
 /* Data Mid */
 .main-data {
-    max-height: 2279px;
+    /* max-height: 2279px; */
     margin: 0px;
-    background-color: #fafafa;
+    background-color: var(--background-color);
+    padding-top: 25px;
 }
 
 .data-item{
@@ -123,26 +138,52 @@ html body {
     box-shadow: 0 0px 5px rgba(0,0,0,.2);
     border: 1px solid rgba(0,0,0,.2);
     margin: 10px 10px 20px 10px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 /* Date Nav */
 
 .main-date {
-    height: 100px;
-    background-color: #fafafa;
+    height: 105px;
+    background-color: var(--background-color);
     margin: 0px;
 }
 
 .data-date{
-    height: 65px;
+    height: 95px;
     background-color: #fafafa;;
     border-bottom: 1px solid #69757a;
-    margin: 10px 10px 20px 10px;
+    margin: 10px 10px 0px 10px;
+    background-color: var(--background-color);
   
 }
 
 /******************** RIGHT *****************/
 .right-panel-container {
     height: 100vh;
+}
+
+
+/************Settings *****************/
+
+.settings-panel-container {
+    padding: 0px;
+}
+.settings-banner, .display-4 {
+    background-color: white;
+    font-weight: 600;
+    font-size: 50px;
+}
+
+/***** Profile Container ****/
+.profile-container {
+    margin: 0px;
+}
+
+.profile-main {
+    height: 200px;
+    background-color: white;
+    box-shadow: 0 0px 5px rgba(0,0,0,.2);
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 10px;
 }
