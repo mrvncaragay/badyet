@@ -8,7 +8,8 @@ module.exports = class User {
     }
 
     save() {
-        return db.execute('INSERT into users (username, email, password) VALUES (?, ?, ?)', [this.username, this.email, this.password]);
+        //used query for multiple statements
+        return db.query('INSERT into users (username, email, password) VALUES (?, ?, ?); SELECT LAST_INSERT_ID();', [this.username, this.email, this.password]);
     }
 
     static isUserEmailExist(email) {

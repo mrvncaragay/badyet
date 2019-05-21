@@ -30,8 +30,14 @@ exports.registerNewUser = (req, res) => {
                     const user = new User(username, email, hashedPassword);
                     
                     return user.save()
-                        .then(() => res.redirect('/app/badyet'))
-                        .catch(() => res.redirect('/'));
+                        .then(([id]) => {
+                            console.log(id[0].insertId);
+                            res.redirect('/app/badyet')
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                            res.redirect('/');
+                        });
                 })
                 .catch(err => console.log(err)); //failed to hash password
         })
