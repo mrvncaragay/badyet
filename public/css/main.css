@@ -7,6 +7,7 @@
     --brand-weight: 600;
     --brand-size: 50px;
     --text-font:  'Karla', sans-serif;
+    --icon-size: 20px;
 }
 
 
@@ -112,11 +113,40 @@ html body {
     margin: 50px;
 }
 
-.lower-main-control {
-    height: auto;
+.upper-main-control > a {
+    font-size: var(--icon-size);
+    color: rgb(126, 125, 125);
+    letter-spacing: -1px;
+    font-weight: bold; 
+
 }
 
+.upper-main-control > a:hover {
+    color: var(--brand-color);
+}
 
+.lower-main-control > a {
+    height: auto;
+    font-size: var(--icon-size);
+    color: rgb(126, 125, 125);
+    letter-spacing: -1px;
+    font-weight: bold;
+}
+
+.lower-main-control > a:hover {
+    color: var(--brand-color);
+}
+
+.main-control-active > a {
+    color: var(--brand-color);
+}
+
+/*************** ICON SETTINGS  *******/
+
+.icon-settings {
+    margin-right: 5px;
+    margin-bottom: 3px;
+}
 
 /******************** MIDDLE *****************/
 .main-panel-container {

@@ -30,4 +30,8 @@ module.exports = class User {
     static isUsernameAndEmailExist(username, email) {
         return db.execute('SELECT EXISTS(SELECT * FROM users WHERE username = ? AND email = ?) AS any', [username, email]);
     }
+
+    static dbClose() {
+        db.end();
+    }
 }

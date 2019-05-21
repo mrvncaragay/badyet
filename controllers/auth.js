@@ -28,6 +28,7 @@ exports.registerNewUser = (req, res) => {
             return bcrypt.hash(password, 12)
                 .then(hashedPassword => {
                     const user = new User(username, email, hashedPassword);
+                    
                     return user.save()
                         .then(() => res.redirect('/app/badyet'))
                         .catch(() => res.redirect('/'));
