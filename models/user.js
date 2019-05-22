@@ -7,9 +7,24 @@ module.exports = class User {
         this.password = password;
     }
 
+    init(){
+        //create income
+        //create categories
+        //create items
+        //use mthod chanining
+    };
+
     save() {
         //used query for multiple statements
-        return db.query('INSERT into users (username, email, password) VALUES (?, ?, ?); SELECT LAST_INSERT_ID();', [this.username, this.email, this.password]);
+        return db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?); SELECT LAST_INSERT_ID();', [this.username, this.email, this.password]);
+    }
+
+    setId(id) {
+        this.id = id;
+    }
+
+    getCategories() {
+        return db.execute('SELECT * FROM categories WHERE users_id = ?', [this.id]);
     }
 
     static isUserEmailExist(email) {

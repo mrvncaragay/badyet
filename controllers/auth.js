@@ -6,7 +6,6 @@ exports.getSignUpPage = (req, res) => {
 };
 
 exports.getSignInPage = (req, res) => {
-
     res.render('auth/sign_in');
 };
 
@@ -31,7 +30,9 @@ exports.registerNewUser = (req, res) => {
                     
                     return user.save()
                         .then(([id]) => {
-                            console.log(id[0].insertId);
+                            
+                            user.setId(id[0].insertId);
+                            //user.createIncomeForCurrentMonth();
                             res.redirect('/app/badyet')
                         })
                         .catch((err) => {
@@ -43,6 +44,7 @@ exports.registerNewUser = (req, res) => {
         })
         .catch(err => console.log(err)) //failed to execute query   
 };
+
 
 exports.signInUser = (req, res) => {
      //user's submitted data
@@ -66,9 +68,18 @@ exports.signInUser = (req, res) => {
                     return bcrypt.compare(password, user[0].password)
                                 .then(doMatch => {
                                     if(doMatch) {
-                                        
+                               
                                         req.session.currentUser = user[0]; 
                                         req.session.isCurrentUserSignedIn = true;
+
+                                        // User.createIncomeForCurrentMonth(user[0].id)
+                                        //     .then(() => {
+                                        //         console.log('created income!');
+                                        //     })
+                                        //     .catch(err => {
+                                        //         console.log(err);
+                                        //     })
+
                                         return req.session.save(() => {
                                             res.redirect('/app/badyet') 
                                         })

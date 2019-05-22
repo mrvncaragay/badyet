@@ -11,7 +11,7 @@ const csrf = require('csurf'); //csrf attack protection
 const app = express();
 const mysqlStore = new MySQLStore({
     clearExpired: true,
-    checkExpirationInterval: 120000
+    checkExpirationInterval: 600000
 
 }, db);
 const csrfProtection = csrf();
