@@ -1,4 +1,6 @@
 
+const User = require('../models/user');
+
 exports.getBadyetPage = (req, res) => {
     res.render('app/badyet');
 };

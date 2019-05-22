@@ -7,7 +7,6 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session); //store session in the database
 const csrf = require('csurf'); //csrf attack protection
 
-
 const app = express();
 const mysqlStore = new MySQLStore({
     clearExpired: true,
@@ -41,6 +40,9 @@ app.use(session({
         maxAge: 900000
     }
 }));
+
+app.use(authRoutes);
+app.use(appRoutes);
 app.use(csrfProtection); //Run session when login/create is clicked.
 
 //Create a local variables for all the views
@@ -56,9 +58,10 @@ app.use((req, res, next) => {
     next();
 });
 
+
 app.use(indexRoutes); //Placed here before csrfProtection, so that it does not create csrfToken/Save it to db
-app.use(authRoutes);
-app.use(appRoutes);
+
+
 app.use(userRoutes);
 app.use(statusPageRoutes);
 

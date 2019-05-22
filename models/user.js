@@ -1,5 +1,7 @@
 const db = require('../database');
 
+const Income = require('./income');
+
 module.exports = class User {
     constructor(username, email, password) {
         this.username = username;
@@ -8,19 +10,24 @@ module.exports = class User {
     }
 
     init(){
-        //create income
+
+        User.findByEmail(this.email)
+            .then(([user]) => {
+                this.income = new Income(user[0].id)
+                this.income.save()
+                    .then(() => {
+                        this.income.init();
+                    })
+                    .catch(err => console.log(err));
+            }).catch(err => console.log(err));
+        
         //create categories
         //create items
         //use mthod chanining
     };
 
-    save() {
-        //used query for multiple statements
-        return db.query('INSERT INTO users (username, email, password) VALUES (?, ?, ?); SELECT LAST_INSERT_ID();', [this.username, this.email, this.password]);
-    }
-
-    setId(id) {
-        this.id = id;
+   save() {
+        return db.execute('INSERT INTO users (username, email, password) VALUES (?, ?, ?)', [this.username, this.email, this.password]);
     }
 
     getCategories() {
@@ -49,5 +56,9 @@ module.exports = class User {
 
     static dbClose() {
         db.end();
+    }
+
+    static deleteAllUsers() {
+        db.execute('DELETE FROM users');
     }
 }

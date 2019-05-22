@@ -12,10 +12,9 @@ exports.getSignInPage = (req, res) => {
 
 exports.registerNewUser = (req, res) => {
     const { username, email, password } = req.body;
-   
+    
     //Return to registration if username OR email OR password field is blank
     if(!username || !email || !password) return res.redirect('/app/sign-up');
-    
 
     User.isUsernameAndEmailExist(username, email)
         .then(([ans]) => {
@@ -29,15 +28,12 @@ exports.registerNewUser = (req, res) => {
                     const user = new User(username, email, hashedPassword);
                     
                     return user.save()
-                        .then(([id]) => {
-                            
-                            user.setId(id[0].insertId);
-                            //user.createIncomeForCurrentMonth();
-                            res.redirect('/app/badyet')
+                        .then(() => {
+                            user.init();
+                            res.redirect('/app/sign-in');
                         })
                         .catch((err) => {
                             console.log(err);
-                            res.redirect('/');
                         });
                 })
                 .catch(err => console.log(err)); //failed to hash password

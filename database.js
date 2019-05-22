@@ -6,7 +6,7 @@ const databaseConfig = {
     user: process.env.DB_USER,
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASS,
-    multipleStatements: true
+    multipleStatements: true            //for multiple statements use query.
 }
 
 const connection = mysql.createPool(databaseConfig);
