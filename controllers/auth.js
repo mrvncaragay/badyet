@@ -16,30 +16,50 @@ exports.registerNewUser = (req, res) => {
     //Return to registration if username OR email OR password field is blank
     if(!username || !email || !password) return res.redirect('/app/sign-up');
 
-    User.isUsernameAndEmailExist(username, email)
-        .then(([ans]) => {
-  
-            //Redirect if email or username does exist
-            if(ans[0].any) return res.redirect('/app/sign-up');
-            
-            //hash password and create user
-            return bcrypt.hash(password, 12)
-                .then(hashedPassword => {
-                    const user = new User(username, email, hashedPassword);
-                    
-                    return user.save()
-                        .then(() => {
-
-                            user.init();
-                            res.redirect('/app/sign-in');
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                })
-                .catch(err => console.log(err)); //failed to hash password
+    User.findOrBuild( { 
+        where: { username: username,  
+                 email: email },
+        defaults: { password: password }         
         })
-        .catch(err => console.log(err)) //failed to execute query   
+        .then(([user, created]) => {
+            // return to sign-up if username or email exists
+            if( !created ) return res.redirect('/app/sign-up');
+            
+            bcrypt.hash(password, 12)
+                .then(hashedPassword => {
+                    user.password = hashedPassword;
+                    user.save()
+                        .then(() => res.redirect('/'))
+                        .catch(err => console.log(err));
+                })
+                .catch(err => console.log(err)); //failed to hash password      
+        }) 
+        .catch(err => console.log(err));
+
+    // User.isUsernameAndEmailExist(username, email)
+    //     .then(([ans]) => {
+  
+    //         //Redirect if email or username does exist
+    //         if(ans[0].any) return res.redirect('/app/sign-up');
+            
+    //         //hash password and create user
+    //         return bcrypt.hash(password, 12)
+    //             .then(hashedPassword => {
+    //                 const user = new User(username, email, hashedPassword);
+                    
+    //                 return user.save()
+    //                     .then(() => {
+
+    //                         user.init();
+    //                         res.redirect('/app/sign-in');
+    //                     })
+    //                     .catch((err) => {
+    //                         console.log(err);
+    //                     });
+    //             })
+    //             .catch(err => console.log(err)); //failed to hash password
+    //     })
+    //     .catch(err => console.log(err)) //failed to execute query   
 };
 
 
@@ -48,38 +68,60 @@ exports.signInUser = (req, res) => {
     const { email, password } = req.body;
    
     //Return to sign in if email OR password field is blank
-    if(!email || !password) return res.redirect('/app/sign-in'); 
+    if(!email || !password) return res.redirect('/app/sign-in');
     
-    //Returns 1 if email exist and 0 if it doesnt.
-    User.isUserEmailExist(email)
-        .then(([ans]) => {
-
-            //Return to sign in if email doesnt exist
-            if(!ans[0].any) return res.redirect('/app/sign-in'); 
-            
-            //Email exist find user
-            return User.findByEmail(email)
-                .then(([user]) => {
-                    
-                    //check user password is correct
-                    return bcrypt.compare(password, user[0].password)
-                                .then(doMatch => {
-                                    if(doMatch) {
-                               
-                                        req.session.currentUser = user[0]; 
-                                        req.session.isCurrentUserSignedIn = true;
-
-                                        return req.session.save(() => {
-                                            res.redirect('/app/badyet') 
-                                        })
-                                    } else {
-
-                                    res.redirect('/app/sign-in');
-                                }});                                
-                })
-                .catch(err => console.log(err)) //failed to execute query
+    User.findOne({
+         where: { email: email }, 
+         attributes: ['email', 'password', 'username']
         })
-        .catch(err => console.log(err)); //failed to execute query
+        .then(user => {
+            if( !user && user.email === email) return res.redirect('/app/sign-in');
+
+            bcrypt.compare(password, user.password)
+                .then(doMatch => {
+                   
+                  if(!doMatch) res.redirect('/app/sign-in');
+
+                  req.session.currentUser = user;
+                  req.session.isCurrentUserSignedIn = true;
+                  return req.session.save(() => { 
+                      res.redirect('/');
+                  });
+                    
+                })
+                .catch(err => console.log(err));    
+        })
+        .catch(err => console.log(err));
+    // //Returns 1 if email exist and 0 if it doesnt.
+    // User.isUserEmailExist(email)
+    //     .then(([ans]) => {
+
+    //         //Return to sign in if email doesnt exist
+    //         if(!ans[0].any) return res.redirect('/app/sign-in'); 
+            
+    //         //Email exist find user
+    //         return User.findByEmail(email)
+    //             .then(([user]) => {
+                    
+    //                 //check user password is correct
+    //                 return bcrypt.compare(password, user[0].password)
+    //                             .then(doMatch => {
+    //                                 if(doMatch) {
+                               
+    //                                     req.session.currentUser = user[0]; 
+    //                                     req.session.isCurrentUserSignedIn = true;
+
+    //                                     return req.session.save(() => {
+    //                                         res.redirect('/app/badyet') 
+    //                                     })
+    //                                 } else {
+
+    //                                 res.redirect('/app/sign-in');
+    //                             }});                                
+    //             })
+    //             .catch(err => console.log(err)) //failed to execute query
+    //     })
+    //     .catch(err => console.log(err)); //failed to execute query
 };
 
 exports.signOutUser = (req, res) => {

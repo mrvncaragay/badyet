@@ -1,19 +1,33 @@
-const mysql = require('mysql2');
 
-//create a development connection
-const databaseConfig = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    database: process.env.DB_DATABASE,
-    password: process.env.DB_PASS,
-    multipleStatements: true            //for multiple statements use query.
-}
+//*** create a sequelize local connection ***//
+const Sequelize = require('sequelize');
 
-const connection = mysql.createPool(databaseConfig);
+const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASS, {
+    dialect: 'mysql',
+    host: 'localhost'
+});
 
-module.exports = connection.promise();
+module.exports = sequelize;
 
-//create a production connection
+
+//*** create a local connection ***//
+
+// const mysql = require('mysql2');
+
+// //create a development connection
+// const databaseConfig = {
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     database: process.env.DB_DATABASE,
+//     password: process.env.DB_PASS,
+//     multipleStatements: true            //for multiple statements use query.
+// }
+
+// const connection = mysql.createPool(databaseConfig);
+
+// module.exports = connection.promise();
+
+//*** create a production connection ***//
 
 // const databaseConfig = {
 //     user: process.env.SQL_USER,
