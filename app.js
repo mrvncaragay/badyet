@@ -41,8 +41,6 @@ app.use(session({
     }
 }));
 
-app.use(authRoutes);
-app.use(appRoutes);
 app.use(csrfProtection); //Run session when login/create is clicked.
 
 //Create a local variables for all the views
@@ -60,8 +58,8 @@ app.use((req, res, next) => {
 
 
 app.use(indexRoutes); //Placed here before csrfProtection, so that it does not create csrfToken/Save it to db
-
-
+app.use(authRoutes);
+app.use(appRoutes);
 app.use(userRoutes);
 app.use(statusPageRoutes);
 

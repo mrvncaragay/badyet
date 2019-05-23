@@ -17,10 +17,10 @@
 
     <div class="row left-panel-nametag text-center">
         <div class="col">
-            <h4><%#= currentUserUsername %></h4>
+            <h4><%= currentUserUsername %></h4>
             <div class="nametag-main">
                 <form action="/app/sign-out" method="POST">
-                    <input type="hidden" name="_csrf" value="<%#= csrfToken %>"> 
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>"> 
                     <button type="submit" class="btn btn-outline-secondary" role="button" href="/">Sign Out</button>
                 </form>
             </div>

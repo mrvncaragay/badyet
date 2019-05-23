@@ -21,9 +21,6 @@ module.exports = class User {
                     .catch(err => console.log(err));
             }).catch(err => console.log(err));
         
-        //create categories
-        //create items
-        //use mthod chanining
     };
 
    save() {
@@ -33,6 +30,8 @@ module.exports = class User {
     getCategories() {
         return db.execute('SELECT * FROM categories WHERE users_id = ?', [this.id]);
     }
+
+    
 
     static isUserEmailExist(email) {
         return db.execute('SELECT EXISTS(SELECT email FROM users WHERE email = ?) AS any', [email]);

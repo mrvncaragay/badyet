@@ -29,6 +29,7 @@ exports.registerNewUser = (req, res) => {
                     
                     return user.save()
                         .then(() => {
+
                             user.init();
                             res.redirect('/app/sign-in');
                         })
@@ -67,14 +68,6 @@ exports.signInUser = (req, res) => {
                                
                                         req.session.currentUser = user[0]; 
                                         req.session.isCurrentUserSignedIn = true;
-
-                                        // User.createIncomeForCurrentMonth(user[0].id)
-                                        //     .then(() => {
-                                        //         console.log('created income!');
-                                        //     })
-                                        //     .catch(err => {
-                                        //         console.log(err);
-                                        //     })
 
                                         return req.session.save(() => {
                                             res.redirect('/app/badyet') 

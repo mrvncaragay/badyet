@@ -14,7 +14,7 @@ module.exports = class Income {
         this.findIncomeByUserId()
             .then(([res]) => {
                 const incomeId = res[0].id;
-                this.category = new Category('Paycheck 1', incomeId, this.userId);
+                this.category = new Category(incomeId, this.userId);
                 this.category.save()
                     .then(() => {
                         this.category.init();
@@ -29,5 +29,9 @@ module.exports = class Income {
 
     findIncomeByUserId() {
         return db.execute('SELECT id FROM income WHERE user_id = ?', [this.userId]);
+    }
+
+    static getMonthIncome(num, user_id) {
+        return db.execute(`SELECT * FROM income WHERE month = ? AND user_id = ?`, [num, user_id]);
     }
 }   

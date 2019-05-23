@@ -179,6 +179,38 @@ html body {
     margin: 0px;
 }
 
+.income-header {
+  padding: 15px;
+}
+
+.income-header-icon {
+    color: green;
+    font-size: 20px;
+    position: relative;
+    top: 1px;
+}
+
+.income-header-income {
+    font-size: 20px;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #696969;
+}
+
+.income-header-month {
+    color: rgb(126, 125, 125);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+.income-header-month > small {
+    margin: 5px 6px 5px 5px;
+    color: rgb(126, 125, 125);
+    font-weight: 600;
+}
+
 .data-date{
     height: 95px;
     background-color: #fafafa;;
@@ -186,6 +218,11 @@ html body {
     margin: 10px 10px 0px 10px;
     background-color: var(--background-color);
   
+}
+
+.main-control-btn {
+    font-size: 20px;
+    color: var(--brand-color);
 }
 
 /******************** RIGHT *****************/
