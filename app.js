@@ -11,6 +11,9 @@ const MySequelizeStore = require('connect-session-sequelize')(session.Store); //
 //Model
 const User = require('./models/user');
 const Income = require('./models/income');
+const Category = require('./models/category');
+const Item = require('./models/item');
+const Transaction = require('./models/transaction');
 
 const app = express();
 const mysequelizestore = new MySequelizeStore({
@@ -42,7 +45,7 @@ app.use(session({
     saveUninitialized: false,
     store: mysequelizestore, 
     cookie: {
-        maxAge: 900000
+        maxAge: 18000000
     }
 }));
 
@@ -58,11 +61,11 @@ app.use((req, res, next) => {
 
     User.findByPk(req.session.isCurrentUserId)
         .then(user => {
-            req.currentUser = user;
-            res.locals.user = user; //set ups local variables that are passed into the views (only exists in the views)
+            req.currentUser = user; //sequalize object available through out controller
+            res.locals.currentUserAuthenticated = req.session.isCurrentUserSignedIn; //set ups local variables that are passed into the views (only exists in the views)
+            next();
         })
-        .catch(er => console.log(err));
-    next();
+        .catch(err => console.log(err));
 });
 
 
@@ -73,6 +76,16 @@ app.use(userRoutes);
 app.use(statusPageRoutes);
 
 User.hasMany(Income, { constraint: true, onDelete: 'CASCADE' });
+User.hasMany(Category, { constraint: true, onDelete: 'CASCADE' })
+User.hasMany(Item, { constraint: true, onDelete: 'CASCADE' })
+User.hasMany(Transaction, { constraint: true, onDelete: 'CASCADE' });
+Income.hasOne(Category, { constraint: true, onDelete: 'CASCADE' });
+Income.belongsTo(User, { constraint: true })
+Category.belongsTo(User, { constraint: true });
+Category.belongsTo(Income, { constraint: true });
+Item.belongsTo(Category, { constraint: true });
+Item.hasMany(Transaction, { constraint: true, onDelete: 'CASCADE' });
+Transaction.belongsTo(Item, { constraint: true })
 
 //Create DB
 sequelize

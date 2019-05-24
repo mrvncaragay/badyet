@@ -10,6 +10,24 @@
     --icon-size: 20px;
 }
 
+.no-focus {
+    color: var(--brand-color);
+    font-size: 20px;
+}
+
+.no-focus:focus {
+    outline: 0 !important;
+    box-shadow: none;
+}
+
+.no-focus:hover {
+    background-color: none;
+    color: var(--brand-color);
+}
+
+.edit-item:hover {
+    background-color: rgb(222, 222, 233);
+}
 
 html body {
     height: 100%;
@@ -219,7 +237,47 @@ html body {
     background-color: var(--background-color);
   
 }
+.data-date .btn-light{
+    background-color: var(--background-color);
+    border-style: none;
+    color: #696969;
+    font-size: 35px;
+    font-weight: bold;
+}
 
+button > span{
+    color: #838282;
+    font-size: 25px;
+    font-weight: lighter;
+}
+
+button.badyet-date:hover {
+    background-color: rgb(222, 222, 233);
+}
+
+
+button.badyet-date:active {
+    color: #696969 !important;
+}
+
+.amount-budgeted {
+    padding-left: 12px;
+}
+
+.amount-budgeted-amount {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.amount-budgeted-text {
+    font-size: 17px;
+    color: #838282;
+    letter-spacing: -1px;
+    font-weight: lighter;
+    
+}
+
+    
 .main-control-btn {
     font-size: 20px;
     color: var(--brand-color);

@@ -5,7 +5,11 @@ const Category = require('../models/category');
 const Item = require('../models/item');
 
 exports.getBadyetPage = (req, res) => { 
-    res.render('app/badyet');
+    req.currentUser.getIncomes()
+        .then(income => {
+            res.render('app/badyet', { income: income[0] });
+        })
+        .catch(err => console.log(err));
 };
 
 exports.getSettingsPage = (req, res) => {

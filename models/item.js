@@ -1,13 +1,51 @@
-const db = require('../database');
+const Sequelize = require('sequelize');
+const sequelize = require('../database');
 
-module.exports = class Item {
+const Item = sequelize.define('items', {
 
-    constructor(label, cate_id) {
-        this.label = label || '';
-        this.category_id = cate_id;
+    id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true
+    },
+
+    label: {
+        type: Sequelize.STRING(45),
+        defaultValue: 'Label'
+    },
+  
+    planned:  {
+        type: Sequelize.DECIMAL(4, 2),
+        defaultValue: 00
+    },
+
+    spend: { 
+        type: Sequelize.DECIMAL(4, 2),
+        defaultValue: 00
+    },
+
+    createdAt:  {
+        type: Sequelize.DATE,
+        allowNull: true
+    },
+
+    updatedAt: {
+        type: Sequelize.DATE,
+        allowNull: true
     }
+});
 
-    save() {
-        return db.execute('INSERT INTO items (label, categories_id) VALUES (?, ?)', [this.label, this.category_id]);
-    }
-}
+module.exports = Item;
+
+// module.exports = class Item {
+
+//     constructor(label, cate_id) {
+//         this.label = label || '';
+//         this.category_id = cate_id;
+//     }
+
+//     save() {
+//         return db.execute('INSERT INTO items (label, categories_id) VALUES (?, ?)', [this.label, this.category_id]);
+//     }
+// }
