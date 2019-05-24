@@ -5,14 +5,7 @@ const Category = require('../models/category');
 const Item = require('../models/item');
 
 exports.getBadyetPage = (req, res) => { 
-
-
-    Income.getMonthIncome(helper.getCurrentMonth(), req.session.currentUser.id)
-        .then(([income]) => { 
-            res.render('app/badyet', { budget: income[0], month: helper.getMonth(helper.getCurrentMonth()) });
-        })
-        .catch(err => console.log(err));
-
+    res.render('app/badyet');
 };
 
 exports.getSettingsPage = (req, res) => {

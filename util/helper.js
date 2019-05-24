@@ -1,52 +1,34 @@
 
-
-exports.getCurrentMonth = () => {
+exports.getmonthYear = () => {
     const date = new Date();
+    let monthYear;
 
-    return date.getMonth();
-}
-
-exports.getMonth = (num) => {
-    let month;
-
-     switch(num) {
+     switch(date.getMonth()) {
         case 12: 
-            return month = 'December';
-            break;
+            return monthYear = ['December', date.getFullYear()];
         case 11: 
-            month = 'November';
-            break;
+            return  monthYear = ['November', date.getFullYear()];
         case 10: 
-            month = 'October';
-            break;
+            return monthYear = ['October', date.getFullYear()];
         case 9: 
-            month = 'September';
-            break;
+            return monthYear = ['September', date.getFullYear()];
         case 8: 
-            month = 'Auguest';
-            break;
+            return monthYear = ['Auguest', date.getFullYear()];
         case 7: 
-            month = 'July';
-            break;
+            return monthYear = ['July', date.getFullYear()];
         case 6: 
-            month = 'June';
-            break;
+            return monthYear = ['June', date.getFullYear()];
         case 5: 
-            month = 'May';
-            break;
+            return monthYear = ['May', date.getFullYear()];
         case 4: 
-            month = 'April';
-            break;
+            return monthYear = ['April', date.getFullYear()];
         case 3: 
-            month = 'March';
-            break;
+            return monthYear = ['March', date.getFullYear()];
         case 2: 
-            month = 'Febraury';
-            break;
+            return monthYear = ['Febraury', date.getFullYear()];
         case 1: 
-            month = 'January';
-            break;
+            return monthYear = ['January', date.getFullYear()];
     }
 
-    return month;
+    return monthYear;
 }

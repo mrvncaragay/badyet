@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Income = require('../models/income');
 const bcrypt = require('bcryptjs');
 
 exports.getSignUpPage = (req, res) => {
@@ -29,7 +30,10 @@ exports.registerNewUser = (req, res) => {
                 .then(hashedPassword => {
                     user.password = hashedPassword;
                     user.save()
-                        .then(() => res.redirect('/'))
+                        .then((user) => {
+                            user.createIncome(); 
+                            res.redirect('/app/sign-in')
+                        })
                         .catch(err => console.log(err));
                 })
                 .catch(err => console.log(err)); //failed to hash password      
@@ -72,22 +76,19 @@ exports.signInUser = (req, res) => {
     
     User.findOne({
          where: { email: email }, 
-         attributes: ['email', 'password', 'username']
+         attributes: ['email', 'password', 'username', 'id']
         })
         .then(user => {
-            if( !user && user.email === email) return res.redirect('/app/sign-in');
+            if( !user ) return res.redirect('/app/sign-in');
 
             bcrypt.compare(password, user.password)
                 .then(doMatch => {
                    
                   if(!doMatch) res.redirect('/app/sign-in');
-
-                  req.session.currentUser = user;
+                  
+                  req.session.isCurrentUserId = user.id;
                   req.session.isCurrentUserSignedIn = true;
-                  return req.session.save(() => { 
-                      res.redirect('/');
-                  });
-                    
+                  req.session.save(() => res.redirect('/app/badyet'));    
                 })
                 .catch(err => console.log(err));    
         })
