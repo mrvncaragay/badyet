@@ -1,5 +1,7 @@
 (() => {
 
+    $('#income-header-main').modal('toggle');
+    
     // const date = new Date();
     // let month;
 

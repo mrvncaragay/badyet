@@ -24,11 +24,7 @@ const User = sequelize.define('users', {
     password: {
         type: Sequelize.STRING,
         allowNull: false,
-    },
-
-    // Timestamps
-    createdAt: Sequelize.DATE,
-    updatedAt: Sequelize.DATE,
+    }
 });
 
 module.exports = User;

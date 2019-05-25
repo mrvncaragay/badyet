@@ -23,16 +23,6 @@ const Item = sequelize.define('items', {
     spend: { 
         type: Sequelize.DECIMAL(4, 2),
         defaultValue: 00
-    },
-
-    createdAt:  {
-        type: Sequelize.DATE,
-        allowNull: true
-    },
-
-    updatedAt: {
-        type: Sequelize.DATE,
-        allowNull: true
     }
 });
 

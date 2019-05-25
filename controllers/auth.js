@@ -25,20 +25,36 @@ exports.registerNewUser = (req, res) => {
         .then(([user, created]) => {
             // return to sign-up if username or email exists
             if( !created ) return res.redirect('/app/sign-up');
-            
+        
+
             bcrypt.hash(password, 12)
                 .then(hashedPassword => {
+
                     user.password = hashedPassword;
+                    let incId;
+
                     user.save()
                         .then((user) => {
-                            user.createIncome(); 
-                            res.redirect('/app/sign-in')
+
+                            return user.createIncome();       
                         })
+                        .then(income => {
+
+                            incId = income.id;
+                            return user.createCategory({ title: 'Income', incomeId: income.id });                
+                        })
+                        .then(category => {
+
+                            return user.createItem({ incomeId: incId, label: 'Paycheck 1', categoryId: category.id });
+                        })
+                        .then(() => res.redirect('/app/sign-in') )
                         .catch(err => console.log(err));
                 })
                 .catch(err => console.log(err)); //failed to hash password      
         }) 
         .catch(err => console.log(err));
+
+        
 
     // User.isUsernameAndEmailExist(username, email)
     //     .then(([ans]) => {

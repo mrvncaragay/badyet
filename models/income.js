@@ -15,8 +15,7 @@ const Income = sequelize.define('income', {
     month: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: currentMonth,
-        unique: true
+        defaultValue: currentMonth
     },
     
     year: {

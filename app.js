@@ -75,17 +75,20 @@ app.use(appRoutes);
 app.use(userRoutes);
 app.use(statusPageRoutes);
 
-User.hasMany(Income, { constraint: true, onDelete: 'CASCADE' });
-User.hasMany(Category, { constraint: true, onDelete: 'CASCADE' })
-User.hasMany(Item, { constraint: true, onDelete: 'CASCADE' })
-User.hasMany(Transaction, { constraint: true, onDelete: 'CASCADE' });
-Income.hasOne(Category, { constraint: true, onDelete: 'CASCADE' });
-Income.belongsTo(User, { constraint: true })
+User.hasMany(Income, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' });
+User.hasMany(Category, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' })
+User.hasMany(Item, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' })
+User.hasMany(Transaction, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' });
+Income.hasOne(Category, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' });
+Income.belongsTo(User, { constraint: true });
+Income.hasMany(Item, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' })
 Category.belongsTo(User, { constraint: true });
 Category.belongsTo(Income, { constraint: true });
+Category.hasMany(Item, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' });
 Item.belongsTo(Category, { constraint: true });
 Item.hasMany(Transaction, { constraint: true, onDelete: 'CASCADE' });
 Transaction.belongsTo(Item, { constraint: true })
+Transaction.belongsTo(User, { constraint: true })
 
 //Create DB
 sequelize

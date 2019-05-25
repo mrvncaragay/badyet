@@ -198,7 +198,7 @@ html body {
 }
 
 .income-header {
-  padding: 15px;
+  padding: 15px 20px 5px 20px;
 }
 
 .income-header-icon {
@@ -276,11 +276,41 @@ button.badyet-date:active {
     font-weight: lighter;
     
 }
-
     
 .main-control-btn {
     font-size: 20px;
     color: var(--brand-color);
+}
+
+.income-header-pr-text {
+    color: #838282;
+    font-size: 18px;
+    font-weight: lighter;
+    padding: 7px 10px;
+}
+
+.card-body {
+    border-top: none;
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
+
+.income-header-income {
+    line-height: 2;
+}
+
+.btn-add-paycheck {
+    padding: 15px 20px 15px 20px;
+}
+
+.btn-add-paycheck a {
+    padding-left: 0;
+    font-weight: bold;
+}
+
+.btn-add-paycheck-adder {
+    font-size: 15px;
+    margin-bottom: 2px;
 }
 
 /******************** RIGHT *****************/
