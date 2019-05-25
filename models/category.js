@@ -3,17 +3,17 @@ const sequelize = require('../database');
 
 const Category = sequelize.define('categories', {
     
-    id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true
-    },
+        id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true
+        },
 
-    title: {
-        type: Sequelize.STRING,
-        defaultValue: 'UNTITLED',
-    }
+        title: {
+            type: Sequelize.STRING,
+            defaultValue: 'UNTITLED',
+        }
 });
 
 module.exports = Category;

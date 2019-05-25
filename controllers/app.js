@@ -1,5 +1,6 @@
 const helper = require('../util/helper');
 const Sequelize = require('sequelize');
+const Item = require('../models/item');
 const Op = Sequelize.Op;
 
 exports.getBadyetPage = (req, res) => { 
@@ -26,10 +27,10 @@ exports.getBadyetPage = (req, res) => {
         .then(items => {
 
             incomeItems = items;
-            return req.currentUser.getCategories({ where: { title: { [Op.notLike]: 'Income' } }}); //Get the rest of categories not based on income and income items
+            return req.currentUser.getCategories({ include: [ Item ], where: { title: { [Op.notLike]: 'Income' }}}); //Get the rest of categories not based on income and income items
         })
         .then((categoriesResult) => {
-
+            console.log(categoriesResult[0].items[1])
              categories = categoriesResult;
              return req.currentUser.getItems({ where: { categoryId: { [Op.not]: incomeCategoryId }}})
         })
