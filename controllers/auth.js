@@ -26,26 +26,30 @@ exports.registerNewUser = (req, res) => {
             // return to sign-up if username or email exists
             if( !created ) return res.redirect('/app/sign-up');
         
-
             bcrypt.hash(password, 12)
                 .then(hashedPassword => {
 
                     user.password = hashedPassword;
-                    let incId;
-
                     user.save()
                         .then((user) => {
-
                             return user.createIncome();       
                         })
                         .then(income => {
+                                   
+                            //Create a category food and a single item            
+                            user.createCategory({ title: 'Food', incomeId: income.id })
+                                .then(category => {
+                                    category.createItem({ label: 'Groceries', categoryId: category.id });
+                                }) 
+                                .catch(err => console.log(err));
 
-                            incId = income.id;
+                            //Create a category for Income
                             return user.createCategory({ title: 'Income', incomeId: income.id });                
                         })
                         .then(category => {
-
-                            return user.createItem({ incomeId: incId, label: 'Paycheck 1', categoryId: category.id });
+                            
+                            //Create a item for Income 
+                            return category.createItem({ label: 'Paycheck 1', categoryId: category.id });
                         })
                         .then(() => res.redirect('/app/sign-in') )
                         .catch(err => console.log(err));

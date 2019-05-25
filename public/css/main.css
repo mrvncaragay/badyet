@@ -295,6 +295,26 @@ button.badyet-date:active {
     padding-bottom: 10px;
 }
 
+.group-category {
+    padding-top: 0px;
+}
+
+.add-group-category {
+    padding: 10px 10px 10px 5px;
+    border-color: rgb(202, 202, 202);
+    background-color: var(--background-color);
+    box-shadow: none;
+    border: 2px dashed rgba(0,0,0,.2);
+}
+
+.add-group-category span {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    color: #696969;
+}
+
+
 .income-header-income {
     line-height: 2;
 }

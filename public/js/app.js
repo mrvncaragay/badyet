@@ -1,4 +1,3 @@
-//IIFE
 (() => {
 
     document.querySelector('#btn-sign-in').addEventListener('click', alertMe);

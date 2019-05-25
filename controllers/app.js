@@ -8,51 +8,29 @@ exports.getBadyetPage = (req, res) => {
     const currentMonth = helper.getmonthYear();
     const selectedMonth = req.body.month|| currentMonth[0];
     let incomeInfo;
-    let incomeItems;
-    let categories;
-    let incomeCategoryId;
+    let incomeItemsResult;
+
     //Different month will cause an error since other month is not on DB
+    //choose which attributes: ['id'] will be included to queried data
 
     req.currentUser.getIncomes({ where: { month: selectedMonth }}) //Get Current User current Month budget
         .then(income => {
             
             incomeInfo = income[0];
-            return incomeInfo.getCategory(); //Get income Category
+            return incomeInfo.getCategory({ include: [ Item ]}); //Get income Category
         })
-        .then(incomeCategory => {
+        .then(category => {
 
-            incomeCategoryId = incomeCategory.id;
-            return incomeInfo.getItems({ where: { categoryId: incomeCategory.id }}); //Get income items based on Category id
+            incomeItemsResult = category;
+            return req.currentUser.getCategories({ include: [ Item ], where: { title: { [Op.notLike]: 'Income' }}});
         })
-        .then(items => {
+        .then(categories => {
 
-            incomeItems = items;
-            return req.currentUser.getCategories({ include: [ Item ], where: { title: { [Op.notLike]: 'Income' }}}); //Get the rest of categories not based on income and income items
-        })
-        .then((categoriesResult) => {
-            console.log(categoriesResult[0].items[1])
-             categories = categoriesResult;
-             return req.currentUser.getItems({ where: { categoryId: { [Op.not]: incomeCategoryId }}})
-        })
-        .then((categoriesItemsResult) => {
-            res.render('app/badyet', { income: incomeInfo,  incomeItems: incomeItems, categories: categories, categoriesItems: categoriesItemsResult });
+            if( Object.entries(categories).length === 0 ) categories = false;
+
+            res.render('app/badyet', { income: incomeInfo, incomeItems: incomeItemsResult.items, categories: categories });
         })
         .catch(err => console.log(err));
-
-
-            // req.currentUser.getCategories({ where: { incomeId: income[0].id }, attributes: ['id'] })
-            //     .then(categories => {
-            //         let cat_ids = categories.map(c => c.id);
-                    
-
-            //         req.currentUser.getItems({ where: { categoryId: { [Op.in]: cat_ids }},  attributes: ['id', 'label', 'planned', 'spend', 'categoryId'] })
-            //             .then(items => {
-            //                   res.render('app/badyet', { income: income[0], categories: categories, items: items});
-            //             })
-            //             .catch(err => console.log(err));
-            //     })
-            //     .catch(err => console.log(err));
-
 };
 
 exports.getSettingsPage = (req, res) => {
