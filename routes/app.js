@@ -7,4 +7,6 @@ const appController = require('../controllers/app');
 route.get('/app/badyet', isUserAuth, appController.getBadyetPage);
 route.get('/app/settings', isUserAuth, appController.getSettingsPage);
 
+route.post('/app/category', isUserAuth, appController.postNewCategory);
+
 module.exports = route;

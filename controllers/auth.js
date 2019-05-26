@@ -11,7 +11,7 @@ exports.getSignInPage = (req, res) => {
 };
 
 
-exports.registerNewUser = (req, res) => {
+exports.postNewUser = (req, res) => {
     const { username, email, password } = req.body;
     
     //Return to registration if username OR email OR password field is blank

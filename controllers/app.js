@@ -34,5 +34,24 @@ exports.getBadyetPage = (req, res) => {
 };
 
 exports.getSettingsPage = (req, res) => {
+
     res.render('app/settings');
+};
+
+exports.postNewCategory = (req, res) => {
+
+     if( !req.body.incomeId ) res.render('/app/badyet');
+
+    req.currentUser.createCategory({
+
+         incomeId: req.body.incomeId
+     })
+     .then(category => {
+
+        res.status(200).json({ category });
+     })
+     .catch(err => {
+
+         res.status(500).json({ error: 'Adding category failed!' });
+     });
 };

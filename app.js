@@ -38,6 +38,7 @@ const userRoutes = require('./routes/users');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap')));
 app.use(express.static(path.join(__dirname, 'node_modules/jquery')));
+app.use(bodyParser.json()) // handle json data
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -63,6 +64,7 @@ app.use((req, res, next) => {
         .then(user => {
             req.currentUser = user; //sequalize object available through out controller
             res.locals.currentUserAuthenticated = req.session.isCurrentUserSignedIn; //set ups local variables that are passed into the views (only exists in the views)
+            res.locals.currentUserId = user.id;
             next();
         })
         .catch(err => console.log(err));
