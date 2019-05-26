@@ -8,5 +8,6 @@ route.get('/app/badyet', isUserAuth, appController.getBadyetPage);
 route.get('/app/settings', isUserAuth, appController.getSettingsPage);
 
 route.post('/app/category', isUserAuth, appController.postNewCategory);
+route.post('/app/item', isUserAuth, appController.postNewItem);
 
 module.exports = route;

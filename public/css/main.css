@@ -12,7 +12,9 @@
 
 .no-focus {
     color: var(--brand-color);
-    font-size: 20px;
+    cursor: pointer;  
+    /* margin-left: 5px; */
+    user-select: none;
 }
 
 .no-focus:focus {
@@ -319,17 +321,14 @@ button.badyet-date:active {
     line-height: 2;
 }
 
-.btn-add-paycheck {
-    padding: 15px 20px 15px 20px;
-}
-
-.btn-add-paycheck a {
-    padding-left: 0;
+.btn-add-items {
+    font-size: 15px;
+    padding: 15px 20px 15px 0px;
     font-weight: bold;
 }
 
 .btn-add-paycheck-adder {
-    font-size: 15px;
+    font-size: 11px;
     margin-bottom: 2px;
 }
 

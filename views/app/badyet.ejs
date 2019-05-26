@@ -36,10 +36,10 @@
                                 </div>
 
                                 <div class="collapse show" id="collapseExample">
-                                    <div class="card card-body btn-add-paycheck">
+                                    <div class="card card-body">
                                         <div class="row">
                                             <div class="col-6">
-                                                <a role="button" data-toggle="" class="btn no-focus btn-add-paycheck-text" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Item</a>  
+                                                <a role="button" data-toggle="" class="btn no-focus btn-add-items" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Item</a>  
                                             </div>
                                         </div>        
                                     </div>
@@ -54,9 +54,10 @@
                 
                 <div class="row main-data main-data-category">
                     <div class="col">                                
-                        <div class="data-item add-group-category"> 
-                            <input type="hidden" class="income_id" value="<%= income.id %>" name="incomeId">   
-                            <input type="hidden" class="user_id" value="<%= currentUserId %>" name="userId">
+                        <div class="data-item add-group-category">
+                            <input type="hidden" class="income_category_id" value="<%= income.category_id %>"> 
+                            <input type="hidden" class="income_id" value="<%= income.id %>">   
+                            <input type="hidden" class="user_id" value="<%= currentUserId %>">
                             <input type="hidden" class="csrf_token" name="_csrf" value="<%#= csrfToken %>">    
                             <button role="button" data-toggle="" id="add-category-button" class="btn no-focus" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i><span>ADD GROUP</span></button> 
                         </div>                                 

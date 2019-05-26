@@ -8,7 +8,8 @@
                         <span class="income-header-income">Income</span>
                         <span class="income-header-month"><small>for</small><%= income.month %></span>
                     </span>
-                    <a role="button" data-toggle="collapse" class="btn no-focus clicker" href="#collapseExample1"><i class="fas fa-caret-up"></i></a>
+                    <button type="button" data-toggle="collapse" class="btn no-focus"><i data-toggle="collapse" data-target="#collapseExample1" class="fas fa-caret-up clicker"></i></button>
+                    <!-- <i data-toggle="collapse" data-target="#collapseExample1" class="fas fa-caret-up"></i> -->
             </div>
             <div class="col-6">
                 <div class="row text-right income-header-pr-text">
@@ -18,31 +19,32 @@
             </div>
         </div>                    
     </div>
-
-    <% incomeItems.forEach(( item, index ) => { %>
-        <div class="collapse show" id="collapseExample1">
-            <div class="card card-body">
-                <div class="row">
-                    <div class="col-6">
-                        <span class="income-header-income"><%= item.label %></span>      
-                    </div>
-                    <div class="col-6">
-                        <div class="row text-right income-header-pr-text">
-                            <div class="col-6">$<%= item.planned %></div>
-                            <div class="col-6">$<%= item.spend %></div>
+    <div class="data-incomes-list">
+        <% incomeItems.forEach(( item, index ) => { %>
+            
+            <div class="collapse show" id="collapseExample1">
+                <div class="card card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <span class="income-header-income"><%= item.label %></span>      
                         </div>
-                    </div>
-                </div>          
+                        <div class="col-6">
+                            <div class="row text-right income-header-pr-text">
+                                <div class="col-6">$<%= item.planned %></div>
+                                <div class="col-6">$<%= item.spend %></div>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
             </div>
-        </div>
-    <% }) %>   
-
+        <% }) %>   
+    </div>
         
     <div class="collapse show" id="collapseExample1">
-        <div class="card card-body btn-add-paycheck">
+        <div class="card card-body">
             <div class="row">
                 <div class="col-6">
-                    <a role="button" data-toggle="" class="btn no-focus btn-add-paycheck-text" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Paycheck</a>  
+                    <a role="button" data-toggle="" class="btn no-focus btn-add-items" id="add-income-item-button" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Paycheck</a>  
                 </div>
                 <div class="col-6">
                     <div class="row text-right income-header-pr-text">

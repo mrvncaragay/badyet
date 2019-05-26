@@ -15,13 +15,14 @@ exports.getBadyetPage = (req, res) => {
 
     req.currentUser.getIncomes({ where: { month: selectedMonth }}) //Get Current User current Month budget
         .then(income => {
-            
+
             incomeInfo = income[0];
             return incomeInfo.getCategory({ include: [ Item ]}); //Get income Category
         })
         .then(category => {
 
             incomeItemsResult = category;
+            incomeInfo.category_id = category.id;
             return req.currentUser.getCategories({ include: [ Item ], where: { title: { [Op.notLike]: 'Income' }}});
         })
         .then(categories => {
@@ -40,7 +41,7 @@ exports.getSettingsPage = (req, res) => {
 
 exports.postNewCategory = (req, res) => {
 
-     if( !req.body.incomeId ) res.render('/app/badyet');
+    if( !req.body.incomeId ) res.render('/app/badyet');
 
     req.currentUser.createCategory({
 
@@ -53,5 +54,24 @@ exports.postNewCategory = (req, res) => {
      .catch(err => {
 
          res.status(500).json({ error: 'Adding category failed!' });
+     });
+};
+
+exports.postNewItem = (req, res) => {
+    //for different category adding item
+    //it will be different categoryId
+    //do closest hidden input
+
+    Item.create({
+        label:  req.body.label,
+        categoryId: req.body.categoryId
+    })
+    .then(item => {
+
+        res.status(200).json({ item });
+     })
+     .catch(err => {
+
+         res.status(500).json({ error: 'Adding item failed!' });
      });
 };

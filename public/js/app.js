@@ -10,6 +10,25 @@ const appController = (budget => {
         document.querySelector(domStrings.btnAddGroupCategory).addEventListener('click', addNewCategory);
 
         document.querySelector(domStrings.categoryList).addEventListener('click', rotateArrowIcon);
+
+        document.querySelector(domStrings.btnAddIncomeItem).addEventListener('click', addNewIncomeItem);
+    };
+
+    const addNewIncomeItem = () => {
+
+
+        axios.post('/app/item', {
+
+            label: 'Paycheck',
+            categoryId: keys.categoryId
+        })
+        .then(success => {
+
+            const { item }  = success.data 
+
+            budget.addIncomeItem(item);
+          })
+          .catch(err => console.log(err)); 
     };
 
     const addNewCategory = () => {
@@ -33,10 +52,7 @@ const appController = (budget => {
     const domStrings = budget.getDoomStrings();
         const el = e.target.parentNode.closest(domStrings.clickerIcon);
 
-        console.log(el);
-
-
-
+        if( el ) el.classList.toggle('fa-rotate-180');
     };
 
 
