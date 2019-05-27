@@ -12,15 +12,36 @@ const appController = (budget => {
         document.querySelector(domStrings.categoryList).addEventListener('click', rotateArrowIcon);
 
         document.querySelector(domStrings.btnAddIncomeItem).addEventListener('click', addNewIncomeItem);
+
+        document.querySelector(domStrings.categoriesList).addEventListener('click', addNewCategoryItem);
+    };
+
+    const addNewCategoryItem = (el) => {
+
+        if(el.target.classList.contains('add-category-item-button')) {
+
+            const categoryId = el.target.previousElementSibling.value;
+    
+            axios.post('/app/category-item', {
+
+                categoryId: categoryId
+            })
+            .then(success => {
+    
+                const { item }  = success.data 
+    
+                budget.addCategoryItem(item);
+              })
+              .catch(err => console.log(err)); 
+        }
     };
 
     const addNewIncomeItem = () => {
 
-
-        axios.post('/app/item', {
+        axios.post('/app/income-item', {
 
             label: 'Paycheck',
-            categoryId: keys.categoryId
+            categoryId: keys.incomeCategoryId
         })
         .then(success => {
 
@@ -42,6 +63,7 @@ const appController = (budget => {
             const { category }  = success.data 
 
             if( budget.checkTempCategory() ) budget.removeTempCategory();
+
             budget.addCategory(category);
           })
           .catch(err => console.log(err));       

@@ -57,13 +57,31 @@ exports.postNewCategory = (req, res) => {
      });
 };
 
-exports.postNewItem = (req, res) => {
+exports.postNewIncomeItem = (req, res) => {
     //for different category adding item
     //it will be different categoryId
     //do closest hidden input
 
     Item.create({
         label:  req.body.label,
+        categoryId: req.body.categoryId
+    })
+    .then(item => {
+
+        res.status(200).json({ item });
+     })
+     .catch(err => {
+
+         res.status(500).json({ error: 'Adding item failed!' });
+     });
+};
+
+exports.postNewCategoryItem = (req, res) => {
+    //for different category adding item
+    //it will be different categoryId
+    //do closest hidden input
+
+    Item.create({
         categoryId: req.body.categoryId
     })
     .then(item => {

@@ -6,13 +6,17 @@ export const budgetController = (() => {
         categoryList: '.category-list',
         btnAddGroupCategory: '#add-category-button',
         btnAddIncomeItem: '#add-income-item-button',
+        btnAddCategoryItem: '.add-category-item-button',
         incomeId: '.income_id',
         userId: '.user_id',
-        categoryId: '.income_category_id',
+        incomeCategoryId: '.income_category_id',
+        categoryId: '.category_id',
         csrfToken: '.csrf_token',
         removableCategory: '.removable-category',
         categoryList: '.category-list',
         incomeList: '.data-incomes-list',
+        categoriesList: '.categories-list',
+        categoriesItemsList: '.category-items-list-',
         clickerIcon: '.clicker'
     }
 
@@ -20,7 +24,7 @@ export const budgetController = (() => {
         incomeId: document.querySelector(DOMstrings.incomeId).value,
         userId: document.querySelector(DOMstrings.userId).value,
         csrfToken: document.querySelector(DOMstrings.csrfToken).value,
-        categoryId: document.querySelector(DOMstrings.categoryId).value
+        incomeCategoryId: document.querySelector(DOMstrings.incomeCategoryId).value
     }
 
     return {
@@ -37,12 +41,35 @@ export const budgetController = (() => {
 
         checkTempCategory: () => {
            
-            return  document.querySelector(DOMstrings.removableCategory) ? true : false;
+            return document.querySelector(DOMstrings.removableCategory) ? true : false;
         },
 
         removeTempCategory: () => {
 
             document.querySelector(DOMstrings.removableCategory).remove();                   
+        },
+
+        addCategoryItem: item => {
+
+            const itemEle = `<div class="collapse show" id="collapseExample-${item.categoryId}">
+                <div class="card card-body">
+                    <div class="row">
+                        <div class="col-6">
+                            <span class="income-header-income">${item.label}</span>      
+                        </div>
+                        <div class="col-6">
+                            <div class="row text-right income-header-pr-text">
+                                <div class="col-6">$0.0${item.planned}</div>
+                                <div class="col-6">$0.0${item.spend}</div>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+            </div>`
+
+            DOMstrings.categoriesItemsList += item.categoryId; //get/update the category list id before inserting into the view
+
+            document.querySelector(DOMstrings.categoriesItemsList).insertAdjacentHTML('beforeend', itemEle);
         },
 
         addIncomeItem: item => {
