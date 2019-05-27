@@ -9,40 +9,32 @@ const appController = (budget => {
 
         document.querySelector(domStrings.btnAddGroupCategory).addEventListener('click', addNewCategory, false);
 
-        //document.querySelector(domStrings.categoryList).addEventListener('click', rotateArrowIcon, false);
         document.querySelector(domStrings.categoryList).addEventListener('click', clickedOnMain, false);
-
-        // document.querySelector(domStrings.btnAddIncomeItem).addEventListener('click', addNewIncomeItem, false);
-
-        // document.querySelector(domStrings.categoriesList).addEventListener('click', addNewCategoryItem, false);
     };
 
     const clickedOnMain = (el) => {
 
         const targetEl = el.target.classList;
      
-        if( targetEl.contains(domStrings.btnAddCategoryItem) ) {
+        if( targetEl.contains(domStrings.btnAddCategoryItem.slice(1)) ) {
 
-            addNewCategoryItem();
+            addNewCategoryItem(el);
 
-        } else if ( targetEl.contains('add-income-item-button') ) {
+        } else if ( targetEl.contains(domStrings.btnAddIncomeItem.slice(1)) ) {
 
             addNewIncomeItem();
-            setUpEventListener();
 
-        } else if ( targetEl.contains(domStrings.clickerIcon)) {
+        } else if ( targetEl.contains(domStrings.clickerIcon.slice(1))) {
 
-            rotateArrowIcon();
+            rotateArrowIcon(el);
         }
 
     };
 
     const addNewCategoryItem = (el) => {
-
-        //if(el.target.classList.contains('add-category-item-button')) {
-
+  
             const categoryId = el.target.previousElementSibling.value;
-    
+        
             axios.post('/app/category-item', {
 
                 categoryId: categoryId
@@ -50,12 +42,9 @@ const appController = (budget => {
             .then(success => {
     
                 const { item }  = success.data 
-    
                 budget.addCategoryItem(item);
-                setUpEventListener();
               })
               .catch(err => console.log(err)); 
-        //}
     };
 
     const addNewIncomeItem = () => {
@@ -112,17 +101,6 @@ const appController = (budget => {
 })(budgetController);
 
 appController.init();
-
-
-
-
-
-
-
-
-
-
-
 
 
 

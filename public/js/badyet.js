@@ -27,6 +27,11 @@ export const budgetController = (() => {
         incomeCategoryId: document.querySelector(DOMstrings.incomeCategoryId).value
     }
 
+    const isClassExist = (eleClass) => {
+            
+        return document.querySelector(eleClass);
+    }
+
     return {
 
         getIncomeAndUserKeys: () => {
@@ -67,9 +72,10 @@ export const budgetController = (() => {
                 </div>
             </div>`
 
-            DOMstrings.categoriesItemsList += item.categoryId; //get/update the category list id before inserting into the view
+            let classStr = DOMstrings.categoriesItemsList;
 
-            document.querySelector(DOMstrings.categoriesItemsList).insertAdjacentHTML('beforeend', itemEle);
+            classStr += item.categoryId;
+            document.querySelector(classStr).insertAdjacentHTML('beforeend', itemEle);
         },
 
         addIncomeItem: item => {

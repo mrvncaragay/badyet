@@ -78,10 +78,8 @@ app.use(userRoutes);
 app.use(statusPageRoutes);
 
 User.hasMany(Income, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' });
-User.hasMany(Category, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' })
-Income.hasOne(Category, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' });
+Income.hasMany(Category, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' });
 Income.belongsTo(User, { constraint: true });
-Category.belongsTo(User, { constraint: true });
 Category.belongsTo(Income, { constraint: true });
 Category.hasMany(Item, { foreignKey: { allowNull: false }, constraint: true, onDelete: 'CASCADE' });
 Item.belongsTo(Category, { constraint: true });

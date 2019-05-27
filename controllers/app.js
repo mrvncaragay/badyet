@@ -1,6 +1,7 @@
 const helper = require('../util/helper');
 const Sequelize = require('sequelize');
 const Item = require('../models/item');
+const Category = require('../models/category');
 const Op = Sequelize.Op;
 
 exports.getBadyetPage = (req, res) => { 
@@ -8,28 +9,23 @@ exports.getBadyetPage = (req, res) => {
     const currentMonth = helper.getmonthYear();
     const selectedMonth = req.body.month|| currentMonth[0];
     let incomeInfo;
-    let incomeItemsResult;
 
     //Different month will cause an error since other month is not on DB
     //choose which attributes: ['id'] will be included to queried data
 
     req.currentUser.getIncomes({ where: { month: selectedMonth }}) //Get Current User current Month budget
-        .then(income => {
-
-            incomeInfo = income[0];
-            return incomeInfo.getCategory({ include: [ Item ]}); //Get income Category
-        })
-        .then(category => {
-
-            incomeItemsResult = category;
-            incomeInfo.category_id = category.id;
-            return req.currentUser.getCategories({ include: [ Item ], where: { title: { [Op.notLike]: 'Income' }}});
+        .then(([ income ]) => {
+    
+            incomeInfo = income;
+            return incomeInfo.getCategories({ include: [ Item ] }); //Get income Category
         })
         .then(categories => {
-
+            const incomeCategory = categories.shift(); //remove Income category
+            incomeInfo.category_id = incomeCategory.id;
+            
             if( Object.entries(categories).length === 0 ) categories = false;
+            res.render('app/badyet', { income: incomeInfo, incomeItems: incomeCategory.items, categories: categories });
 
-            res.render('app/badyet', { income: incomeInfo, incomeItems: incomeItemsResult.items, categories: categories });
         })
         .catch(err => console.log(err));
 };
@@ -43,7 +39,7 @@ exports.postNewCategory = (req, res) => {
 
     if( !req.body.incomeId ) res.render('/app/badyet');
 
-    req.currentUser.createCategory({
+    Category.create({
 
          incomeId: req.body.incomeId
      })

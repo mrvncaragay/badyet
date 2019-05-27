@@ -35,28 +35,42 @@ exports.postNewUser = (req, res) => {
                             return user.createIncome();       
                         })
                         .then(income => {
-                                   
-                            //Create a category food and a single item            
-                            user.createCategory({ title: 'Food', incomeId: income.id })
-                                .then(category => {
-                                    category.createItem({ label: 'Groceries', categoryId: category.id });
-                                }) 
-                                .catch(err => console.log(err));
-
-                            //Create a category for Income
-                            return user.createCategory({ title: 'Income', incomeId: income.id });                
+                             
+                            return income.createCategory({ title: 'Income' });
                         })
                         .then(category => {
-                            
-                            //Create a item for Income 
-                            return category.createItem({ label: 'Paycheck 1', categoryId: category.id });
+
+                            category.createItem({ label: 'Paycheck 1', categoryId: category.id });
                         })
-                        .then(() => res.redirect('/app/sign-in') )
+                        .then(() => {
+                            res.redirect('/app/sign-in');
+                        })
                         .catch(err => console.log(err));
                 })
                 .catch(err => console.log(err)); //failed to hash password      
         }) 
         .catch(err => console.log(err));
+
+
+        
+                        //     //Create a category food and a single item            
+                        //     user.createCategory({ title: 'Food', incomeId: income.id })
+                        //         .then(category => {
+
+                        //             category.createItem({ label: 'Groceries', categoryId: category.id });
+                        //         }) 
+                        //         .catch(err => console.log(err));
+
+                        //     //Create a category for Income
+                        //     return user.createCategory({ title: 'Income', incomeId: income.id });                
+                        // })
+                        // .then(category => {
+                            
+                        //     //Create an item for Income 
+                        //     return category.createItem({ label: 'Paycheck 1', categoryId: category.id });
+                        // })
+                        // .then(() => res.redirect('/app/sign-in') )
+                        // .catch(err => console.log(err));
 
         
 
