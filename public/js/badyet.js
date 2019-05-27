@@ -5,7 +5,7 @@ export const budgetController = (() => {
 
         categoryList: '.category-list',
         btnAddGroupCategory: '#add-category-button',
-        btnAddIncomeItem: '#add-income-item-button',
+        btnAddIncomeItem: '.add-income-item-button',
         btnAddCategoryItem: '.add-category-item-button',
         incomeId: '.income_id',
         userId: '.user_id',
@@ -51,7 +51,7 @@ export const budgetController = (() => {
 
         addCategoryItem: item => {
 
-            const itemEle = `<div class="collapse show" id="collapseExample-${item.categoryId}">
+            const itemEle = `<div class="collapse show" id="category-${item.categoryId}">
                 <div class="card card-body">
                     <div class="row">
                         <div class="col-6">
@@ -75,7 +75,7 @@ export const budgetController = (() => {
         addIncomeItem: item => {
 
                       
-            const itemEle = `<div class="collapse show" id="collapseExample1">
+            const itemEle = `<div class="collapse show" id="income-${getKeys.incomeId}">
                 <div class="card card-body">
                     <div class="row">
                         <div class="col-6">
@@ -103,7 +103,7 @@ export const budgetController = (() => {
                                         <span class="">
                                             <span class="income-header-income">${category.title}</span>
                                         </span>
-                                        <a role="button" data-toggle="collapse" class="btn no-focus" data-target="#category${category.id}"><i class="fas fa-caret-up"></i></a>
+                                        <a role="button" data-toggle="collapse" class="btn no-focus clicker" data-target="#category-${category.id}"><i class="fas fa-caret-up"></i></a>
                                 </div>
                                 <div class="col-6">
                                     <div class="row text-right income-header-pr-text">
@@ -114,11 +114,17 @@ export const budgetController = (() => {
                             </div>
                         </div>
 
-                        <div class="collapse show" id="#category${category.id}">
+                        
+                        <div class="category-items-list-${category.id}">
+                           
+                        </div> 
+
+                        <div class="collapse show" id="category-${category.id}">
                             <div class="card card-body btn-add-paycheck">
                                 <div class="row">
                                     <div class="col-6">
-                                        <a role="button" data-toggle="" class="btn no-focus btn-add-paycheck-text" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Item</a>  
+                                        <input type="hidden" class="category_id" value="${category.id}"> 
+                                        <a role="button" data-toggle="" class="btn no-focus btn-add-items add-category-item-button" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Item</a>  
                                     </div>
                                 </div>        
                             </div>
@@ -126,7 +132,7 @@ export const budgetController = (() => {
                     </div>`;
 
                     
-            document.querySelector(DOMstrings.categoryList).insertAdjacentHTML('beforeend', itemEle);
+            document.querySelector(DOMstrings.categoriesList).insertAdjacentHTML('beforeend', itemEle);
         }
     }
 

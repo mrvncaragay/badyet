@@ -7,18 +7,39 @@ const appController = (budget => {
 
     const setUpEventListener = () => {
 
-        document.querySelector(domStrings.btnAddGroupCategory).addEventListener('click', addNewCategory);
+        document.querySelector(domStrings.btnAddGroupCategory).addEventListener('click', addNewCategory, false);
 
-        document.querySelector(domStrings.categoryList).addEventListener('click', rotateArrowIcon);
+        //document.querySelector(domStrings.categoryList).addEventListener('click', rotateArrowIcon, false);
+        document.querySelector(domStrings.categoryList).addEventListener('click', clickedOnMain, false);
 
-        document.querySelector(domStrings.btnAddIncomeItem).addEventListener('click', addNewIncomeItem);
+        // document.querySelector(domStrings.btnAddIncomeItem).addEventListener('click', addNewIncomeItem, false);
 
-        document.querySelector(domStrings.categoriesList).addEventListener('click', addNewCategoryItem);
+        // document.querySelector(domStrings.categoriesList).addEventListener('click', addNewCategoryItem, false);
+    };
+
+    const clickedOnMain = (el) => {
+
+        const targetEl = el.target.classList;
+     
+        if( targetEl.contains(domStrings.btnAddCategoryItem) ) {
+
+            addNewCategoryItem();
+
+        } else if ( targetEl.contains('add-income-item-button') ) {
+
+            addNewIncomeItem();
+            setUpEventListener();
+
+        } else if ( targetEl.contains(domStrings.clickerIcon)) {
+
+            rotateArrowIcon();
+        }
+
     };
 
     const addNewCategoryItem = (el) => {
 
-        if(el.target.classList.contains('add-category-item-button')) {
+        //if(el.target.classList.contains('add-category-item-button')) {
 
             const categoryId = el.target.previousElementSibling.value;
     
@@ -31,9 +52,10 @@ const appController = (budget => {
                 const { item }  = success.data 
     
                 budget.addCategoryItem(item);
+                setUpEventListener();
               })
               .catch(err => console.log(err)); 
-        }
+        //}
     };
 
     const addNewIncomeItem = () => {
@@ -48,6 +70,7 @@ const appController = (budget => {
             const { item }  = success.data 
 
             budget.addIncomeItem(item);
+            
           })
           .catch(err => console.log(err)); 
     };
@@ -65,6 +88,7 @@ const appController = (budget => {
             if( budget.checkTempCategory() ) budget.removeTempCategory();
 
             budget.addCategory(category);
+            setUpEventListener();
           })
           .catch(err => console.log(err));       
     };

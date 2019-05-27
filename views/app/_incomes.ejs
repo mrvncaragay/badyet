@@ -8,7 +8,7 @@
                         <span class="income-header-income">Income</span>
                         <span class="income-header-month"><small>for</small><%= income.month %></span>
                     </span>
-                    <button type="button" data-toggle="collapse" class="btn no-focus"><i data-toggle="collapse" data-target="#collapseExample1" class="fas fa-caret-up clicker"></i></button>
+                    <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#income-<%= income.id %>" class="fas fa-caret-up clicker"></i></button>
                     <!-- <i data-toggle="collapse" data-target="#collapseExample1" class="fas fa-caret-up"></i> -->
             </div>
             <div class="col-6">
@@ -22,7 +22,7 @@
     <div class="data-incomes-list">
         <% incomeItems.forEach(( item, index ) => { %>
             
-            <div class="collapse show" id="collapseExample1">
+            <div class="collapse show" id="income-<%= income.id %>">
                 <div class="card card-body">
                     <div class="row">
                         <div class="col-6">
@@ -40,12 +40,12 @@
         <% }) %>   
     </div>
         
-    <div class="collapse show" id="collapseExample1">
+    <div class="collapse show" id="income-<%= income.id %>">
         <div class="card card-body">
             <div class="row">
                 <div class="col-6">
                     <input type="hidden" class="income_category_id" value="<%= income.category_id %>"> 
-                    <a role="button" data-toggle="" class="btn no-focus btn-add-items" id="add-income-item-button" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Paycheck</a>  
+                    <a role="button" data-toggle="" class="btn no-focus btn-add-items add-income-item-button" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Paycheck</a>  
                 </div>
                 <div class="col-6">
                     <div class="row text-right income-header-pr-text">

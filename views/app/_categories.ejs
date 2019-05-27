@@ -6,7 +6,8 @@
                             <span class="">
                                 <span class="income-header-income"><%= category.title %></span>
                             </span>
-                            <a role="button" data-toggle="collapse" class="btn no-focus clicker" href="#collapseExample-<%= category.id %>"><i class="fas fa-caret-up"></i></a>
+                            <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#category-<%= category.id %>" class="fas fa-caret-up clicker"></i></button>
+
                     </div>
                     <div class="col-6">
                         <div class="row text-right income-header-pr-text">
@@ -21,7 +22,7 @@
 
         <div class="category-items-list-<%= category.id %>">
             <% category.items.forEach(( item, index ) => { %>  
-                <div class="collapse show" id="collapseExample-<%= category.id %>">
+                <div class="collapse show" id="category-<%= category.id %>">
                     <div class="card card-body">
                         <div class="row">
                             <div class="col-6">
@@ -39,7 +40,7 @@
             <% }) %>
         </div>       
 
-            <div class="collapse show" id="collapseExample-<%= category.id %>">
+            <div class="collapse show" id="category-<%= category.id %>">
                 <div class="card card-body">
                     <div class="row">
                         <div class="col-6">
