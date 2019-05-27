@@ -22,15 +22,15 @@
     <div class="data-incomes-list">
         <% incomeItems.forEach(( item, index ) => { %>
             
-            <div class="collapse show" id="income-<%= income.id %>">
+            <div class="collapse show item-data" id="income-<%= income.id %>" data-itemId="<%= item.id %>">
                 <div class="card card-body">
                     <div class="row">
-                        <div class="col-6">
-                            <span class="income-header-income"><%= item.label %></span>      
+                        <div class="col-6 editableItem">
+                            <span class="income-header-income"><%= item.label %></span>
                         </div>
                         <div class="col-6">
                             <div class="row text-right income-header-pr-text">
-                                <div class="col-6">$<%= item.planned %></div>
+                                <div class="col-6 editableItem">$<%= item.planned %></div>
                                 <div class="col-6">$<%= item.spend %></div>
                             </div>
                         </div>

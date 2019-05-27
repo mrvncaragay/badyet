@@ -15,9 +15,11 @@ export const budgetController = (() => {
         removableCategory: '.removable-category',
         categoryList: '.category-list',
         incomeList: '.data-incomes-list',
-        categoriesList: '.categories-list',
+        categoriesList: '.categories-list', //can delete later
         categoriesItemsList: '.category-items-list-',
-        clickerIcon: '.clicker'
+        clickerIcon: '.clicker',
+        editable: '.editableItem',
+        itemData: '.item-data'
     }
 
     const getKeys = {
@@ -25,11 +27,6 @@ export const budgetController = (() => {
         userId: document.querySelector(DOMstrings.userId).value,
         csrfToken: document.querySelector(DOMstrings.csrfToken).value,
         incomeCategoryId: document.querySelector(DOMstrings.incomeCategoryId).value
-    }
-
-    const isClassExist = (eleClass) => {
-            
-        return document.querySelector(eleClass);
     }
 
     return {
@@ -54,17 +51,42 @@ export const budgetController = (() => {
             document.querySelector(DOMstrings.removableCategory).remove();                   
         },
 
+        editItemForm: item => {
+
+            const itemEle = `<div class="card editable-item-form">
+                <div class="row editable-form">
+                    <div class="col-6">
+                        <input class="form-control" type="text" name="label" placeholder="title" >   
+                    </div>
+                    <div class="col-6">
+                        <div class="row">
+                            <div class="col-6">
+                                <input class="form-control" type="text" name="planned" placeholder="planned">     
+                            </div>
+                            <div class="col-6">
+                                <input class="form-control" readonly type="text" name="planned" placeholder="0.00">     
+                            </div>
+                        </div>
+            
+                    </div>
+                </div>          
+            </div>`;
+
+
+
+        },
+
         addCategoryItem: item => {
 
-            const itemEle = `<div class="collapse show" id="category-${item.categoryId}">
+            const itemEle = `<div class="collapse show item-data" id="category-${item.categoryId}" data-itemId="${item.id}">
                 <div class="card card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 editableItem">
                             <span class="income-header-income">${item.label}</span>      
                         </div>
                         <div class="col-6">
                             <div class="row text-right income-header-pr-text">
-                                <div class="col-6">$0.0${item.planned}</div>
+                                <div class="col-6 editableItem">$0.0${item.planned}</div>
                                 <div class="col-6">$0.0${item.spend}</div>
                             </div>
                         </div>
@@ -81,15 +103,15 @@ export const budgetController = (() => {
         addIncomeItem: item => {
 
                       
-            const itemEle = `<div class="collapse show" id="income-${getKeys.incomeId}">
+            const itemEle = `<div class="collapse show item-data" id="income-${getKeys.incomeId}">
                 <div class="card card-body">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 editableItem">
                             <span class="income-header-income">${item.label}</span>      
                         </div>
                         <div class="col-6">
                             <div class="row text-right income-header-pr-text">
-                                <div class="col-6">$0.0${item.planned}</div>
+                                <div class="col-6 editableItem">$0.0${item.planned}</div>
                                 <div class="col-6">$0.0${item.spend}</div>
                             </div>
                         </div>
@@ -107,7 +129,7 @@ export const budgetController = (() => {
                             <div class="row">
                                 <div class="col-6">
                                         <span class="">
-                                            <span class="income-header-income">${category.title}</span>
+                                            <span class="income-header-income editableItem">${category.title}</span>
                                         </span>
                                         <a role="button" data-toggle="collapse" class="btn no-focus clicker" data-target="#category-${category.id}"><i class="fas fa-caret-up"></i></a>
                                 </div>
@@ -138,7 +160,7 @@ export const budgetController = (() => {
                     </div>`;
 
                     
-            document.querySelector(DOMstrings.categoriesList).insertAdjacentHTML('beforeend', itemEle);
+            document.querySelector(DOMstrings.categoryList).insertAdjacentHTML('beforeend', itemEle);
         }
     }
 

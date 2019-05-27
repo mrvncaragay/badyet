@@ -1,22 +1,27 @@
 <%- include('../layouts/header.ejs', {title: 'Badyet - Track & Plan your Budget!'}) %>
 <div class="container-fluid">
     <div class="row main-app-container">
-
-        <%- include('./sidepanel.ejs', {badyet: true}) %>
+        <div class="col-2 left-panel-container sticky-top">
+            <%- include('./sidepanel.ejs', {badyet: true}) %>
+        </div>
 
         <div class="col-6 main-panel-container">
+
+               
                 <div class="row main-date sticky-top"> 
                     <div class="col">
                       <%- include('_date.ejs', { income: income }) %>
                     </div>              
                 </div>
 
+                <%#- include('./_edit.ejs') %>
+
                 <div class="row main-data">
                     <div class="col category-list">
                         
                         <%- include('_incomes.ejs', { income: income }) %>
 
-                        <div class="categories-list">
+                        <!-- <div class="categories-list"> -->
                             <% if( !categories ) { %>                                     
                                 <!-- <div class="data-item removable-category">
                                     <div class="col-12 income-header">
@@ -55,7 +60,7 @@
                                     <%- include('_categories.ejs', { categories: categories }) %>
                                 
                             <% } %> 
-                        </div>
+                        <!-- </div> -->
                         
                     </div>
                 </div> 
@@ -72,8 +77,10 @@
                 </div>         
         </div>
 
+
         <div class="col-4 right-panel-container sticky-top">
             right-panel-container
+
         </div>
     </div>
 </div>

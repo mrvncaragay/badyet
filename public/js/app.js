@@ -27,6 +27,15 @@ const appController = (budget => {
         } else if ( targetEl.contains(domStrings.clickerIcon.slice(1))) {
 
             rotateArrowIcon(el);
+
+        } else if (  targetEl.contains(domStrings.editable.slice(1)) ) {
+
+            var rect = el.target.getBoundingClientRect();
+            console.log(el.target.closest(domStrings.itemData).dataset.itemid)
+            console.log(rect.top, rect.right, rect.bottom, rect.left);
+            console.log(el.offsetX);
+            console.log(el.offsetY);
+   
         }
 
     };
