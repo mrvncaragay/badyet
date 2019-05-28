@@ -1,18 +1,31 @@
 <div class="card editable-item-form">
-    <div class="row editable-form">
+    <div class="row editable-form form-inline"> 
+        
+        <i data-toggle="modal" data-target=".bd-example-modal-sm" class="fas fa-times"></i>
         <div class="col-6">
-            <input class="form-control" type="text" name="label" placeholder="title" >   
+            <input class="form-control form-control-lg autofocus" type="text" name="label" placeholder="title" >   
         </div>
         <div class="col-6">
             <div class="row">
                 <div class="col-6">
-                    <input class="form-control" type="text" name="planned" placeholder="planned">     
+                    <input class="form-control text-right" type="text" name="planned" placeholder="planned">     
                 </div>
                 <div class="col-6">
-                    <input class="form-control" readonly type="text" name="planned" placeholder="0.00">     
+                    <input class="form-control text-right" type="text" name="planned" placeholder="0.00">     
                 </div>
             </div>
-
         </div>
+
     </div>          
 </div>
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+        ...
+        </div>
+    </div>
+</div>
+
+
+

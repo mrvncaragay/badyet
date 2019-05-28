@@ -21,7 +21,9 @@ export const budgetController = (() => {
         editable: '.editableItem',
         itemData: '.item-data',
         mainPanelContainer: '.main-panel-container',
-        editableForm: '.editable-item-form'
+        editableForm: '.editable-item-form',
+        itemLabel: '.opened-item-label',
+        itemPlanned: '.opened-item-planned'
     }
 
     const getKeys = {
@@ -54,29 +56,34 @@ export const budgetController = (() => {
             document.querySelector(DOMstrings.removableCategory).remove();                   
         },
 
-        removeEditForms: () => {
-
-        },
-
-        editItemForm: posY => {
-
+        editItemForm: (posY, item) => {
             const itemEle = `<div class="card editable-item-form">
-                <div class="row editable-form">
+                <div class="row editable-form form-inline"> 
+                    
+                    <i data-toggle="modal" data-target=".item-data-${item.id}" class="fas fa-times"></i>
                     <div class="col-6">
-                        <input class="form-control" type="text" name="label" placeholder="title" >   
+                        <input class="form-control form-control-lg opened-item-label" type="text" value="${item.label}" >   
                     </div>
                     <div class="col-6">
                         <div class="row">
                             <div class="col-6">
-                                <input class="form-control" type="text" name="planned" placeholder="planned">     
+                                <input class="form-control text-right form-control-lg opened-item-planned" type="text" value="${item.planned}">     
                             </div>
                             <div class="col-6">
-                                <input class="form-control" readonly type="text" name="planned" placeholder="0.00">     
+                                <input class="form-control text-right form-control-lg" type="text" value="${item.spend}">     
                             </div>
                         </div>
-            
                     </div>
+            
                 </div>          
+            </div>
+            
+            <div class="modal fade item-data-${item.id}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                    ...
+                    </div>
+                </div>
             </div>`;
 
             

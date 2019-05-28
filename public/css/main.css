@@ -15,18 +15,56 @@
     cursor: text;
 }
 
+
 .editable-form {
+    padding: 20px;
     width: 100%;
     margin: auto;
 }
 
+.editable-form .fa-times {
+    font-size: 20px;
+    position: absolute;
+    margin-left: -11px;
+    width: 16px;
+    height: 16px;
+}
+
+.editable-form .fa-times:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.editable-form input{
+   border-style: none;
+
+}
+
+.editable-form input:hover{
+    background-color: rgb(222, 222, 233);  
+ }
+
+ .editable-form input:focus{
+    box-shadow: none;
+    border-style: solid;
+    background-color: white;
+}
+
+.editable-form input:nth-child(1){
+    width: 100%;
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #696969;   
+}
+
+
 .editable-item-form {
-    height: 80px;
-    width: 950px;
+    width: 970px;
     position: absolute;
     z-index: 999;
     box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.26);
-    left: 20px;  
+    left: 10px;  
 }
 
 .no-focus {

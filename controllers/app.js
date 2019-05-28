@@ -89,3 +89,12 @@ exports.postNewCategoryItem = (req, res) => {
          res.status(500).json({ error: 'Adding item failed!' });
      });
 };
+
+exports.getItem = (req, res) => {
+
+    Item.findByPk(req.params.itemId)
+        .then(item => {
+            res.status(200).json({ item });
+        })  
+        .catch(err => console.log(err));
+};

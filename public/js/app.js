@@ -4,73 +4,98 @@ const appController = (budget => {
 
     const domStrings = budget.getDoomStrings();
     const keys = budget.getIncomeAndUserKeys();
-
+    let item;
+    
     const setUpEventListener = () => {
 
-        document.querySelector(domStrings.btnAddGroupCategory).addEventListener('click', addNewCategory, false);
-
-        document.querySelector(domStrings.categoryList).addEventListener('click', clickedOnMain, false);
-
-
-
+        document.querySelector(domStrings.btnAddGroupCategory).addEventListener('click', addNewCategory, false); //add group button
+        document.querySelector(domStrings.categoryList).addEventListener('click', clickedOnMain, false); //category list container
+        document.querySelector('.right-panel-container').addEventListener('click', clickOnMainRightPanel, false); //category list container
+        document.querySelector('.left-panel-container').addEventListener('click', clickOnMainLeftPanel, false); //category list container
+        //need to fix main date panel to remove open editable form
     };
+
+    const clickOnMainLeftPanel = (el) => {
+        removeEditableForm();
+    }
+
+    const clickOnMainRightPanel = (el) => {
+        removeEditableForm();
+    }
 
     const clickedOnMain = (el) => {
 
         const targetEl = el.target.classList;
-     
-        if( targetEl.contains(domStrings.btnAddCategoryItem.slice(1))) {
 
-            removeEditableForm(); 
+        if( targetEl.contains(domStrings.btnAddCategoryItem.slice(1) )) {
+ 
             addNewCategoryItem(el);
 
-        } else if ( targetEl.contains(domStrings.btnAddIncomeItem.slice(1))) {
-
-            removeEditableForm(); 
+        } else if ( targetEl.contains(domStrings.btnAddIncomeItem.slice(1) )) {
+ 
             addNewIncomeItem();
 
-        } else if ( targetEl.contains(domStrings.clickerIcon.slice(1))) {
-
-            removeEditableForm(); 
+        } else if ( targetEl.contains(domStrings.clickerIcon.slice(1) )) {
+ 
             rotateArrowIcon(el);
 
-        } else if (  targetEl.contains(domStrings.editable.slice(1))) {
-
-            removeEditableForm(); 
-            insertEditableForm(el);
-        } 
-        
-        // } else if ( targetEl.contains(domStrings.editableForm.slice(1))) {
+        } else if (  targetEl.contains(domStrings.editable.slice(1) )) {
             
+            insertEditableForm(el);
 
-        // }   
+        } else {
 
-
-    };
+            removeEditableForm();
+        }
+    }
+    
 
     const removeEditableForm = () => {
-        
+
         const editForm = document.querySelector(domStrings.editableForm);
 
         if ( !editForm ) return;
 
+        //When we close the item check if the values have changed!
+        const label = document.querySelector(domStrings.itemLabel).value;
+        const planned = document.querySelector(domStrings.itemPlanned).value;
+        
+        console.log(label, planned);
+
         editForm.childNodes[0].parentNode.remove();
     }
 
+    const updateEditFormIfChangeOccurs = (item) => {
+        console.log('called again!')
+        //const itemId = el.target.closest(domStrings.itemData).dataset.itemid;
+
+    }   
+
     const insertEditableForm = el => {
+
+        //check if there is and edit form open if there is remove it.
+        removeEditableForm();
 
         const mainAppContainer = document.querySelector('.main-app-container');
         const rect = el.target.getBoundingClientRect();
-      
-        const posY = rect.top + mainAppContainer.scrollTop;
-        budget.editItemForm(posY - 25);
+        const posY = rect.top + mainAppContainer.scrollTop; //target element top + main container scroll top
 
-        document.querySelector(domStrings.editableForm).addEventListener('click', removeEditableForm, false);
+        const itemId = el.target.closest(domStrings.itemData).dataset.itemid;
+        axios.get(`/app/item/${itemId}`)
+        .then(success => {
+
+            item = success.data.item;
+            budget.editItemForm(posY - 25, item);
+            //Enable the edit form open state
+            //document.querySelector(domStrings.editableForm).addEventListener('click', updateEditFormIfChangeOccurs, false);
+        })
+        .catch(err => console.log(err));
     };
 
  
     const addNewCategoryItem = el => {
-  
+
+            removeEditableForm();
             const categoryId = el.target.previousElementSibling.value;
         
             axios.post('/app/category-item', {
@@ -87,6 +112,7 @@ const appController = (budget => {
 
     const addNewIncomeItem = () => {
 
+        removeEditableForm();
         axios.post('/app/income-item', {
 
             label: 'Paycheck',
@@ -104,6 +130,7 @@ const appController = (budget => {
 
     const addNewCategory = () => {
         
+        removeEditableForm();
         axios.post('/app/category', {
 
             incomeId: keys.incomeId
@@ -122,7 +149,7 @@ const appController = (budget => {
 
     const rotateArrowIcon = (e) => {
 
-    const domStrings = budget.getDoomStrings();
+        removeEditableForm();
         const el = e.target.parentNode.closest(domStrings.clickerIcon);
 
         if( el ) el.classList.toggle('fa-rotate-180');
