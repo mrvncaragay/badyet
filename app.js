@@ -58,7 +58,10 @@ app.use((req, res, next) => {
     //res.locals.csrfToken = req.csrfToken();
 
     //Only store username after user logged in
-    if(!req.session.isCurrentUserSignedIn) return next();
+    if(!req.session.isCurrentUserSignedIn) {
+        res.locals.currentUserAuthenticated = false;
+        return next();
+    }
 
     User.findByPk(req.session.isCurrentUserId)
         .then(user => {

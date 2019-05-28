@@ -15,10 +15,6 @@
     cursor: text;
 }
 
-/* border-radius: .4rem;
-position: absolute;
-box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.16) */
-
 .editable-form {
     width: 100%;
     margin: auto;
@@ -26,12 +22,11 @@ box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.16) */
 
 .editable-item-form {
     height: 80px;
-    width: 850px;
+    width: 950px;
     position: absolute;
     z-index: 999;
-    left: 15px;
-    top: 200px;
-    
+    box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.26);
+    left: 20px;  
 }
 
 .no-focus {

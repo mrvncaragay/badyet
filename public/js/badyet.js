@@ -19,7 +19,9 @@ export const budgetController = (() => {
         categoriesItemsList: '.category-items-list-',
         clickerIcon: '.clicker',
         editable: '.editableItem',
-        itemData: '.item-data'
+        itemData: '.item-data',
+        mainPanelContainer: '.main-panel-container',
+        editableForm: '.editable-item-form'
     }
 
     const getKeys = {
@@ -27,6 +29,7 @@ export const budgetController = (() => {
         userId: document.querySelector(DOMstrings.userId).value,
         csrfToken: document.querySelector(DOMstrings.csrfToken).value,
         incomeCategoryId: document.querySelector(DOMstrings.incomeCategoryId).value
+        //mainAppContainer: document.querySelector(DOMstrings.mainAppContainer).scrollTop
     }
 
     return {
@@ -51,7 +54,11 @@ export const budgetController = (() => {
             document.querySelector(DOMstrings.removableCategory).remove();                   
         },
 
-        editItemForm: item => {
+        removeEditForms: () => {
+
+        },
+
+        editItemForm: posY => {
 
             const itemEle = `<div class="card editable-item-form">
                 <div class="row editable-form">
@@ -72,8 +79,9 @@ export const budgetController = (() => {
                 </div>          
             </div>`;
 
-
-
+            
+            document.querySelector(DOMstrings.mainPanelContainer).insertAdjacentHTML('beforeend', itemEle);
+            document.querySelector(DOMstrings.editableForm).style.top = `${posY}px`;
         },
 
         addCategoryItem: item => {

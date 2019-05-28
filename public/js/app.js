@@ -10,37 +10,66 @@ const appController = (budget => {
         document.querySelector(domStrings.btnAddGroupCategory).addEventListener('click', addNewCategory, false);
 
         document.querySelector(domStrings.categoryList).addEventListener('click', clickedOnMain, false);
+
+
+
     };
 
     const clickedOnMain = (el) => {
 
         const targetEl = el.target.classList;
      
-        if( targetEl.contains(domStrings.btnAddCategoryItem.slice(1)) ) {
+        if( targetEl.contains(domStrings.btnAddCategoryItem.slice(1))) {
 
+            removeEditableForm(); 
             addNewCategoryItem(el);
 
-        } else if ( targetEl.contains(domStrings.btnAddIncomeItem.slice(1)) ) {
+        } else if ( targetEl.contains(domStrings.btnAddIncomeItem.slice(1))) {
 
+            removeEditableForm(); 
             addNewIncomeItem();
 
         } else if ( targetEl.contains(domStrings.clickerIcon.slice(1))) {
 
+            removeEditableForm(); 
             rotateArrowIcon(el);
 
-        } else if (  targetEl.contains(domStrings.editable.slice(1)) ) {
+        } else if (  targetEl.contains(domStrings.editable.slice(1))) {
 
-            var rect = el.target.getBoundingClientRect();
-            console.log(el.target.closest(domStrings.itemData).dataset.itemid)
-            console.log(rect.top, rect.right, rect.bottom, rect.left);
-            console.log(el.offsetX);
-            console.log(el.offsetY);
-   
-        }
+            removeEditableForm(); 
+            insertEditableForm(el);
+        } 
+        
+        // } else if ( targetEl.contains(domStrings.editableForm.slice(1))) {
+            
+
+        // }   
+
 
     };
 
-    const addNewCategoryItem = (el) => {
+    const removeEditableForm = () => {
+        
+        const editForm = document.querySelector(domStrings.editableForm);
+
+        if ( !editForm ) return;
+
+        editForm.childNodes[0].parentNode.remove();
+    }
+
+    const insertEditableForm = el => {
+
+        const mainAppContainer = document.querySelector('.main-app-container');
+        const rect = el.target.getBoundingClientRect();
+      
+        const posY = rect.top + mainAppContainer.scrollTop;
+        budget.editItemForm(posY - 25);
+
+        document.querySelector(domStrings.editableForm).addEventListener('click', removeEditableForm, false);
+    };
+
+ 
+    const addNewCategoryItem = el => {
   
             const categoryId = el.target.previousElementSibling.value;
         
