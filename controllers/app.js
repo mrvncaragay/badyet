@@ -53,48 +53,60 @@ exports.postNewCategory = (req, res) => {
      });
 };
 
-exports.postNewIncomeItem = (req, res) => {
-    //for different category adding item
-    //it will be different categoryId
-    //do closest hidden input
+exports.postNewItem = (req, res) => {
 
-    Item.create({
-        label:  req.body.label,
-        categoryId: req.body.categoryId
-    })
+    Item.create({ categoryId: req.body.categoryId })
     .then(item => {
-
         res.status(200).json({ item });
      })
      .catch(err => {
-
-         res.status(500).json({ error: 'Adding item failed!' });
+        res.status(500).json({ error: 'Adding item failed!' });
      });
 };
 
-exports.postNewCategoryItem = (req, res) => {
-    //for different category adding item
-    //it will be different categoryId
-    //do closest hidden input
+// exports.postNewCategoryItem = (req, res) => {
+//     //for different category adding item
+//     //it will be different categoryId
+//     //do closest hidden input
 
-    Item.create({
-        categoryId: req.body.categoryId
-    })
-    .then(item => {
+//     Item.create({
+//         categoryId: req.body.categoryId
+//     })
+//     .then(item => {
 
-        res.status(200).json({ item });
-     })
-     .catch(err => {
+//         res.status(200).json({ item });
+//      })
+//      .catch(err => {
 
-         res.status(500).json({ error: 'Adding item failed!' });
-     });
-};
+//          res.status(500).json({ error: 'Adding item failed!' });
+//      });
+// };
 
 exports.getItem = (req, res) => {
 
-    Item.findByPk(req.params.itemId)
+    Item.findByPk(req.params.id)
         .then(item => {
             res.status(200).json({ item });
         })  
         .catch(err => console.log(err));
 };
+
+// exports.updateItem  = (req, res) => {
+
+//     const itemObj = req.body;
+    
+//     Item.update({ 
+                
+//         id: itemObj.id,
+//         label: itemObj.label,
+//         planned: Number(itemObj.planned)
+//     },
+
+//     { 
+//         where: { id: itemObj.id }
+//     })
+//     .then(([success]) => {
+//         res.status(200).json({ success });
+//     })  
+//     .catch(err => console.log(err));
+// };

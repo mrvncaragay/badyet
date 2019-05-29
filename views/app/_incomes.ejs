@@ -22,16 +22,16 @@
     <div class="data-incomes-list">
         <% incomeItems.forEach(( item, index ) => { %>
             
-            <div class="collapse show item-data" id="income-<%= income.id %>" data-itemId="<%= item.id %>">
+            <div class="collapse show item-data" id="income-<%= income.id %>" data-itemid="<%=item.id %>">
                 <div class="card card-body">
                     <div class="row">
                         <div class="col-6 editableItem">
-                            <span class="income-header-income"><%= item.label %></span>
+                            <span class="income-header-income item-label"><%= item.label %></span>
                         </div>
                         <div class="col-6">
                             <div class="row text-right income-header-pr-text">
-                                <div class="col-6 editableItem">$<%= item.planned %></div>
-                                <div class="col-6">$<%= item.spend %></div>
+                                <span class="col-6 editableItem item-planned">$<%= item.planned %></span>
+                                <span class="col-6">$<%= item.spend %></span>
                             </div>
                         </div>
                     </div>          
@@ -44,7 +44,7 @@
         <div class="card card-body">
             <div class="row">
                 <div class="col-6">
-                    <input type="hidden" class="income_category_id" value="<%= income.category_id %>"> 
+                    <input type="hidden" class="income-category-id" value="<%= income.category_id %>"> 
                     <a role="button" data-toggle="" class="btn no-focus btn-add-items add-income-item-button" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Paycheck</a>  
                 </div>
                 <div class="col-6">

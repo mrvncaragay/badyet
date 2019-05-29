@@ -6,10 +6,9 @@ const appController = require('../controllers/app');
 
 route.get('/app/badyet', isUserAuth, appController.getBadyetPage);
 route.get('/app/settings', isUserAuth, appController.getSettingsPage);
-route.get('/app/item/:itemId', isUserAuth, appController.getItem);
-
-route.post('/app/category', isUserAuth, appController.postNewCategory);
-route.post('/app/income-item', isUserAuth, appController.postNewIncomeItem);
-route.post('/app/category-item', isUserAuth, appController.postNewCategoryItem)
+route.get('/app/item/:id', isUserAuth, appController.getItem);
+//route.put('/app/item', isUserAuth, appController.updateItem);
+//route.post('/app/category', isUserAuth, appController.postNewCategory);
+route.post('/app/item/new', isUserAuth, appController.postNewItem);
 
 module.exports = route;

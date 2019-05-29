@@ -36,4 +36,7 @@ This app is created using node, express, mysql, and vanila js. This app will be 
     - received (for Paycheck)
     - Remaining (Spent - planned)
     - Spent (total: expense)
-    - Budget Items                
+    - Budget Items 
+
+-To Fix
+    -Planned(4,2) need to increase               

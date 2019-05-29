@@ -1,59 +1,19 @@
 
 export const budgetController = (() => {
 
-    const DOMstrings = {
-
-        categoryList: '.category-list',
-        btnAddGroupCategory: '#add-category-button',
-        btnAddIncomeItem: '.add-income-item-button',
-        btnAddCategoryItem: '.add-category-item-button',
-        incomeId: '.income_id',
-        userId: '.user_id',
-        incomeCategoryId: '.income_category_id',
-        categoryId: '.category_id',
-        csrfToken: '.csrf_token',
-        removableCategory: '.removable-category',
-        categoryList: '.category-list',
-        incomeList: '.data-incomes-list',
-        categoriesList: '.categories-list', //can delete later
-        categoriesItemsList: '.category-items-list-',
-        clickerIcon: '.clicker',
-        editable: '.editableItem',
-        itemData: '.item-data',
-        mainPanelContainer: '.main-panel-container',
-        editableForm: '.editable-item-form',
-        itemLabel: '.opened-item-label',
-        itemPlanned: '.opened-item-planned'
-    }
-
-    const getKeys = {
-        incomeId: document.querySelector(DOMstrings.incomeId).value,
-        userId: document.querySelector(DOMstrings.userId).value,
-        csrfToken: document.querySelector(DOMstrings.csrfToken).value,
-        incomeCategoryId: document.querySelector(DOMstrings.incomeCategoryId).value
-        //mainAppContainer: document.querySelector(DOMstrings.mainAppContainer).scrollTop
-    }
+  
 
     return {
 
-        getIncomeAndUserKeys: () => {
-            
-            return getKeys;
-        },
-        
-        getDoomStrings: () => {
-            
-            return DOMstrings;
-        },
 
         checkTempCategory: () => {
            
-            return document.querySelector(DOMstrings.removableCategory) ? true : false;
+            return document.querySelector(DOM.removableCategory) ? true : false;
         },
 
         removeTempCategory: () => {
 
-            document.querySelector(DOMstrings.removableCategory).remove();                   
+            document.querySelector(DOM.removableCategory).remove();                   
         },
 
         editItemForm: (posY, item) => {
@@ -87,55 +47,10 @@ export const budgetController = (() => {
             </div>`;
 
             
-            document.querySelector(DOMstrings.mainPanelContainer).insertAdjacentHTML('beforeend', itemEle);
-            document.querySelector(DOMstrings.editableForm).style.top = `${posY}px`;
+            document.querySelector(DOM.mainPanelContainer).insertAdjacentHTML('beforeend', itemEle);
+            document.querySelector(DOM.editableForm).style.top = `${posY}px`;
         },
 
-        addCategoryItem: item => {
-
-            const itemEle = `<div class="collapse show item-data" id="category-${item.categoryId}" data-itemId="${item.id}">
-                <div class="card card-body">
-                    <div class="row">
-                        <div class="col-6 editableItem">
-                            <span class="income-header-income">${item.label}</span>      
-                        </div>
-                        <div class="col-6">
-                            <div class="row text-right income-header-pr-text">
-                                <div class="col-6 editableItem">$0.0${item.planned}</div>
-                                <div class="col-6">$0.0${item.spend}</div>
-                            </div>
-                        </div>
-                    </div>          
-                </div>
-            </div>`
-
-            let classStr = DOMstrings.categoriesItemsList;
-
-            classStr += item.categoryId;
-            document.querySelector(classStr).insertAdjacentHTML('beforeend', itemEle);
-        },
-
-        addIncomeItem: item => {
-
-                      
-            const itemEle = `<div class="collapse show item-data" id="income-${getKeys.incomeId}">
-                <div class="card card-body">
-                    <div class="row">
-                        <div class="col-6 editableItem">
-                            <span class="income-header-income">${item.label}</span>      
-                        </div>
-                        <div class="col-6">
-                            <div class="row text-right income-header-pr-text">
-                                <div class="col-6 editableItem">$0.0${item.planned}</div>
-                                <div class="col-6">$0.0${item.spend}</div>
-                            </div>
-                        </div>
-                    </div>          
-                </div>
-            </div>`;
-
-            document.querySelector(DOMstrings.incomeList).insertAdjacentHTML('beforeend', itemEle);
-        },
 
         addCategory: category => {
             
@@ -175,7 +90,7 @@ export const budgetController = (() => {
                     </div>`;
 
                     
-            document.querySelector(DOMstrings.categoryList).insertAdjacentHTML('beforeend', itemEle);
+            document.querySelector(DOM.categoryList).insertAdjacentHTML('beforeend', itemEle);
         }
     }
 
