@@ -8,10 +8,12 @@ const appController = ((uiController, mainController) => {
         user: {}, 
         income: {}, //YES
         category: {} //YES
+      
     };
 
     const DOM = UIController.getDOM();
     STATE.income.categoryId = uiController.getIncomeAndUserKeys().incomeCategoryId;
+    STATE.income.id = uiController.getIncomeAndUserKeys().incomeId;
 
     //const middleDOM = {};
     //let currentItemSelected;
@@ -22,21 +24,31 @@ const appController = ((uiController, mainController) => {
         document.querySelector(DOM.mainPanelContainer).addEventListener('click', clickOnMainPanel, false); //category list container
         document.querySelector(DOM.rightPanelContainer).addEventListener('click', clickOnMainRightPanel, false); //category list container
         document.querySelector(DOM.leftPanelContainer).addEventListener('click', clickOnMainLeftPanel, false); //category list container
-        //need to fix main date panel to remove open editable form
+        document.querySelector(DOM.mainAppContainer).addEventListener('scroll', closeOpenedForm, false)
     };
 
+    const closeOpenedForm = () => {
+        //mainController.updateItem()
+        mainController.itemChange();
+        //uiController.removeEditForm();
+    }
+
     const clickOnMainLeftPanel = e => {
-        uiController.removeEditForm();
+        //mainController.updateItem()
+        mainController.itemChange();
+        //uiController.removeEditForm();
     }
 
     const clickOnMainRightPanel = e => {
-        uiController.removeEditForm();
+        //mainController.updateItem()
+        mainController.itemChange();
+        //uiController.removeEditForm();
     }
 
     const clickOnMainPanel = e => {
         
         const targetClassList = e.target.classList;
-        
+      
         if( targetClassList.contains(DOM.btnAddIncomeItem.slice(1))) {
 
             mainController.addItem(STATE.income.categoryId, 'income');
@@ -49,11 +61,12 @@ const appController = ((uiController, mainController) => {
         } else if (  targetClassList.contains(DOM.editable.slice(1) )) {
             
             STATE.item.id = e.target.closest(DOM.itemData).dataset.itemid;
+            //mainController.setTargetElement(e.target.parentNode);
             mainController.getItem(STATE.item.id, e);
-
-        } else if ( targetClassList.contains(DOM.editableForm.slice(1) )) {
+         
+        } else if ( targetClassList.contains(DOM.btnAddCategory.slice(1) )) {
  
-            console.log('inside editable')
+            mainController.addGroup(STATE.income.id);
 
         } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
  
@@ -61,11 +74,9 @@ const appController = ((uiController, mainController) => {
 
         } else {
             uiController.removeEditForm();
+
         }
     }
-
-
-
 
     return {
         init: () => {

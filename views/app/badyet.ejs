@@ -1,6 +1,6 @@
 <%- include('../layouts/header.ejs', {title: 'Badyet - Track & Plan your Budget!'}) %>
 <div class="container-fluid">
-    <div class="row main-app-container">
+    <div class="row main-app-container solveraa">
         <div class="col-2 left-panel-container sticky-top">
             <%- include('./sidepanel.ejs', {badyet: true}) %>
         </div>
@@ -71,7 +71,7 @@
                             <input type="hidden" class="income_id" value="<%= income.id %>"> 
                             <input type="hidden" class="user_id" value="<%= currentUserId %>">
                             <input type="hidden" class="csrf_token" name="_csrf" value="<%#= csrfToken %>">    
-                            <button role="button" data-toggle="" id="add-category-button" class="btn no-focus" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i><span>ADD GROUP</span></button> 
+                            <button role="button" data-toggle="" class="btn no-focus add-category-button" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i>ADD GROUP</button> 
                         </div>                                 
                     </div>
                 </div>         

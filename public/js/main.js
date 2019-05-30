@@ -1,15 +1,15 @@
 
-    const removeEditableForm = () => {
+    // const removeEditableForm = () => {
 
-        middleDOM.editForm = document.querySelector(domStrings.editableForm);
+    //     middleDOM.editForm = document.querySelector(domStrings.editableForm);
 
-        if ( !middleDOM.editForm ) return;
+    //     if ( !middleDOM.editForm ) return;
 
-        //update the item if the input values changed. before we remove the edit form
-        updateItem(currentItemSelected);
+    //     //update the item if the input values changed. before we remove the edit form
+    //     updateItem(currentItemSelected);
         
-        //middleDOM.editForm.childNodes[0].parentNode.remove();
-    }
+    //     //middleDOM.editForm.childNodes[0].parentNode.remove();
+    // }
 
     const updateItem = (item) => {
         const label = document.querySelector(domStrings.itemLabel).value;
@@ -70,7 +70,7 @@
             if( budget.checkTempCategory() ) budget.removeTempCategory();
 
             budget.addCategory(category);
-            setUpEventListener();
+            
           })
           .catch(err => console.log(err));       
     };

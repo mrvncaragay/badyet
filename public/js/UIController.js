@@ -7,7 +7,7 @@ export const UIController = (() => {
         rightPanelContainer: '.right-panel-container',
         leftPanelContainer: '.left-panel-container',
         categoryList: '.category-list',
-        btnAddGroupCategory: '#add-category-button',
+        btnAddCategory: '.add-category-button', //YES
         btnAddIncomeItem: '.add-income-item-button',
         btnAddCategoryItem: '.add-category-item-button',
         incomeId: '.income_id',
@@ -16,7 +16,6 @@ export const UIController = (() => {
         categoryId: '.category_id',
         csrfToken: '.csrf_token',
         removableCategory: '.removable-category',
-        categoryList: '.category-list',
         incomeList: '.data-incomes-list', //YES
         categoriesList: '.categories-list', //can delete later
         categoriesItemsList: '.category-items-list-', //YES
@@ -34,6 +33,16 @@ export const UIController = (() => {
         csrfToken: document.querySelector(DOM.csrfToken).value,
         incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
         //mainAppContainer: document.querySelector(DOM.mainAppContainer).scrollTop
+    }
+
+    
+    const updateItem = () => {
+            
+        // const label = document.querySelector(DOM.itemLabel).value;
+        // const planned = document.querySelector(DOM.itemPlanned).value;
+
+        // console.log(label, planned)
+        //if( item.label === label && item.planned === planned ) return;
     }
 
     return {
@@ -75,6 +84,47 @@ export const UIController = (() => {
                 document.querySelector(classStr).insertAdjacentHTML('beforeend', itemEle);
             }
         },
+        //<a role="button" data-toggle="collapse" class="btn no-focus clicker" data-target="#category-${category.id}"><i class="fas fa-caret-up"></i></a>
+
+        addCategory: (category) => {
+            const itemEle = `<div class="data-item">
+                <div class="col-12 income-header">
+                    <div class="row">
+                        <div class="col-6">
+                                <span class="">
+                                    <span class="income-header-income editableItem">${category.title}</span>
+                                </span>
+                                <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#category-${category.id}>" class="fas fa-caret-up clicker"></i></button>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="row text-right income-header-pr-text">
+                                <div class="col-6">Planned</div>
+                                <div class="col-6">Remaining</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                                
+                <div class="category-items-list-${category.id}">
+                
+                </div> 
+
+                <div class="collapse show" id="category-${category.id}">
+                    <div class="card card-body btn-add-paycheck">
+                        <div class="row">
+                            <div class="col-6">
+                                <input type="hidden" class="category_id" value="${category.id}"> 
+                                <a role="button" data-toggle="" class="btn no-focus btn-add-items add-category-item-button" href="#"><i class="fas fa-plus btn-add-paycheck-adder"></i> Add Item</a>  
+                            </div>
+                        </div>        
+                    </div>
+                    </div>
+                </div>`;
+             
+                document.querySelector(DOM.categoryList).insertAdjacentHTML('beforeend', itemEle);
+        },
 
         editForm: (item, e) => {
            
@@ -106,12 +156,13 @@ export const UIController = (() => {
                     </div>
                 </div>          
             </div>`;
-            
-            const mainAppContainer = document.querySelector(DOM.mainAppContainer);
-            const rect = e.target.getBoundingClientRect();
-            const posY = rect.top + mainAppContainer.scrollTop - 25; //target element top + main container scroll top
 
-            document.querySelector(DOM.mainPanelContainer).insertAdjacentHTML('beforeend', itemEle);
+            
+            const mainPanel= document.querySelector(DOM.mainPanelContainer);
+            const rect = e.target.getBoundingClientRect();
+            const posY = rect.top + mainPanel.scrollTop - 25; //target element top + main container scroll top
+
+            document.querySelector(DOM.mainAppContainer).insertAdjacentHTML('beforeend', itemEle);
             document.querySelector(DOM.editableForm).style.top = `${posY}px`;
         },
 
@@ -119,8 +170,8 @@ export const UIController = (() => {
             const editForm = document.querySelector(DOM.editableForm);
 
             if ( !editForm ) return;
-
             editForm.childNodes[0].parentNode.remove();
         }
+
     }
 })(); 

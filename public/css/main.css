@@ -60,11 +60,12 @@
 
 
 .editable-item-form {
-    width: 970px;
+    width: 945px;
     position: absolute;
     z-index: 999;
     box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.26);
-    left: 10px;  
+    left: 10px;
+    left: 350px;  
 }
 
 .no-focus {
@@ -366,13 +367,12 @@ button.badyet-date:active {
     border: 2px dashed rgba(0,0,0,.2);
 }
 
-.add-group-category span {
+.add-group-category button {
     font-size: 20px;
     font-weight: bold;
     margin-left: 10px;
     color: #696969;
 }
-
 
 .income-header-income {
     line-height: 2;
@@ -385,8 +385,9 @@ button.badyet-date:active {
 }
 
 .btn-add-paycheck-adder {
-    font-size: 11px;
+    font-size: 15px;
     margin-bottom: 2px;
+    margin-right: 2px;
 }
 
 /******************** RIGHT *****************/
