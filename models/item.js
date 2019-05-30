@@ -16,13 +16,13 @@ const Item = sequelize.define('items', {
     },
   
     planned:  {
-        type: Sequelize.DOUBLE(100, 2),
-        defaultValue: 00
+        type: Sequelize.DOUBLE(255,2),
+        defaultValue: '00.00'
     },
 
     spend: { 
-        type: Sequelize.DOUBLE(100, 2),
-        defaultValue: 00
+        type: Sequelize.DOUBLE(255,2),
+        defaultValue: '00.00'
     }
 });
 

@@ -23,8 +23,6 @@ export const MainController = ((uiController) => {
             targetElement = e.target.parentNode.parentNode.parentNode;
      
             uiController.editForm(data.item, e); //create a clicked item edit form
-            
-
         } catch (err) { console.log(err) }
     }
 

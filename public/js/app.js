@@ -74,7 +74,9 @@ const appController = ((uiController, mainController) => {
            
         } else {
             mainController.itemChange();
-            uiController.removeEditForm();
+            const editForm = document.querySelector(DOM.editableForm);
+            if(!editForm) return; //return if there is no edit form
+            if(!editForm.contains(e.target)) uiController.removeEditForm(); //if there is but it doesnt containt its elem then return
          }
     }
 

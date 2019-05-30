@@ -69,9 +69,8 @@ export const UIController = (() => {
                    
             } else {
 
-                let classStr = DOM.categoriesItemsList;
-                classStr += item.categoryId;
-                document.querySelector(classStr).insertAdjacentHTML('beforeend', itemEle);
+                let classStr = DOM.categoriesItemsList;         
+                document.querySelector(classStr += item.categoryId).insertAdjacentHTML('beforeend', itemEle);
             }
         },
 
@@ -120,17 +119,17 @@ export const UIController = (() => {
             const itemEle = `<div class="card editable-item-form">
                 <div class="row editable-form form-inline"> 
                     
-                    <i data-toggle="modal" data-target=".item-data-${item.id}" class="fas fa-times"></i>
+                    <i data-toggle="modal" data-target=".item-data-${item.id}" class="fas fa-trash"></i>
                     <div class="col-6">
-                        <input class="form-control form-control-lg opened-item-label" type="text" value="${item.label}" >   
+                        <input class="form-control opened-item-label" type="text" value="${item.label}" >   
                     </div>
                     <div class="col-6">
                         <div class="row">
                             <div class="col-6">
-                                <input class="form-control text-right form-control-lg opened-item-planned" type="text" value="${item.planned}">     
+                                <input class="form-control text-right opened-item-planned" type="text" value="${item.planned}">     
                             </div>
                             <div class="col-6">
-                                <input class="form-control text-right form-control-lg" type="text" value="${item.spend}">     
+                                <input class="form-control text-right no-events" type="text" value="${item.spend}">     
                             </div>
                         </div>
                     </div>
@@ -146,15 +145,12 @@ export const UIController = (() => {
                 </div>          
             </div>`;
 
-            
-            const mainPanel= document.querySelector(DOM.mainPanelContainer);
+            const mainApp = document.querySelector(DOM.mainAppContainer);
             const rect = e.target.getBoundingClientRect();
-            const posY = rect.top; //target element top + main container scroll top
-
-            document.querySelector(DOM.mainAppContainer).insertAdjacentHTML('beforeend', itemEle);
+            const posY = rect.top + mainApp.scrollTop - 15;
+     
+            document.querySelector(DOM.mainPanelContainer).insertAdjacentHTML('beforeend', itemEle);
             document.querySelector(DOM.editableForm).style.top = `${posY}px`;
-            document.querySelector(DOM.editableForm).style.left = `${rect.left}px`;
-
         },
 
         removeEditForm: () => {
