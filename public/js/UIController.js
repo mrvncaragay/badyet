@@ -19,7 +19,7 @@ export const UIController = (() => {
         incomeList: '.data-incomes-list', //YES
         categoriesList: '.categories-list', //can delete later
         categoriesItemsList: '.category-items-list-', //YES
-        clickerIcon: '.clicker',
+        clickerIcon: '.clicker', //YES
         editable: '.editableItem', //YES
         itemData: '.item-data',
         editableForm: '.editable-item-form', //YES
@@ -32,18 +32,8 @@ export const UIController = (() => {
         userId: document.querySelector(DOM.userId).value,
         csrfToken: document.querySelector(DOM.csrfToken).value,
         incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
-        //mainAppContainer: document.querySelector(DOM.mainAppContainer).scrollTop
     }
 
-    
-    const updateItem = () => {
-            
-        // const label = document.querySelector(DOM.itemLabel).value;
-        // const planned = document.querySelector(DOM.itemPlanned).value;
-
-        // console.log(label, planned)
-        //if( item.label === label && item.planned === planned ) return;
-    }
 
     return {
         
@@ -84,7 +74,6 @@ export const UIController = (() => {
                 document.querySelector(classStr).insertAdjacentHTML('beforeend', itemEle);
             }
         },
-        //<a role="button" data-toggle="collapse" class="btn no-focus clicker" data-target="#category-${category.id}"><i class="fas fa-caret-up"></i></a>
 
         addCategory: (category) => {
             const itemEle = `<div class="data-item">
@@ -160,10 +149,12 @@ export const UIController = (() => {
             
             const mainPanel= document.querySelector(DOM.mainPanelContainer);
             const rect = e.target.getBoundingClientRect();
-            const posY = rect.top + mainPanel.scrollTop - 25; //target element top + main container scroll top
+            const posY = rect.top; //target element top + main container scroll top
 
             document.querySelector(DOM.mainAppContainer).insertAdjacentHTML('beforeend', itemEle);
             document.querySelector(DOM.editableForm).style.top = `${posY}px`;
+            document.querySelector(DOM.editableForm).style.left = `${rect.left}px`;
+
         },
 
         removeEditForm: () => {

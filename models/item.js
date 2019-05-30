@@ -16,12 +16,12 @@ const Item = sequelize.define('items', {
     },
   
     planned:  {
-        type: Sequelize.DECIMAL(4, 2),
+        type: Sequelize.DOUBLE(100, 2),
         defaultValue: 00
     },
 
     spend: { 
-        type: Sequelize.DECIMAL(4, 2),
+        type: Sequelize.DOUBLE(100, 2),
         defaultValue: 00
     }
 });

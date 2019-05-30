@@ -15,34 +15,27 @@ const appController = ((uiController, mainController) => {
     STATE.income.categoryId = uiController.getIncomeAndUserKeys().incomeCategoryId;
     STATE.income.id = uiController.getIncomeAndUserKeys().incomeId;
 
-    //const middleDOM = {};
-    //let currentItemSelected;
-
     const setUpEventListener = () => {
 
-        //document.querySelector(DOM.btnAddGroupCategory).addEventListener('click', addNewCategory, false); //add group button
         document.querySelector(DOM.mainPanelContainer).addEventListener('click', clickOnMainPanel, false); //category list container
         document.querySelector(DOM.rightPanelContainer).addEventListener('click', clickOnMainRightPanel, false); //category list container
         document.querySelector(DOM.leftPanelContainer).addEventListener('click', clickOnMainLeftPanel, false); //category list container
-        document.querySelector(DOM.mainAppContainer).addEventListener('scroll', closeOpenedForm, false)
+        document.querySelector(DOM.mainAppContainer).addEventListener('scroll', closeOpenedForm, false);
     };
 
     const closeOpenedForm = () => {
-        //mainController.updateItem()
         mainController.itemChange();
-        //uiController.removeEditForm();
+        uiController.removeEditForm();
     }
 
     const clickOnMainLeftPanel = e => {
-        //mainController.updateItem()
         mainController.itemChange();
-        //uiController.removeEditForm();
+        uiController.removeEditForm();
     }
 
     const clickOnMainRightPanel = e => {
-        //mainController.updateItem()
         mainController.itemChange();
-        //uiController.removeEditForm();
+        uiController.removeEditForm();
     }
 
     const clickOnMainPanel = e => {
@@ -51,31 +44,38 @@ const appController = ((uiController, mainController) => {
       
         if( targetClassList.contains(DOM.btnAddIncomeItem.slice(1))) {
 
+            mainController.itemChange();
             mainController.addItem(STATE.income.categoryId, 'income');
+            uiController.removeEditForm();
         
         } else if ( targetClassList.contains(DOM.btnAddCategoryItem.slice(1) )) {
 
+            mainController.itemChange();
             STATE.category.id = e.target.previousElementSibling.value;
             mainController.addItem(STATE.category.id, 'category');
+            uiController.removeEditForm();
 
         } else if (  targetClassList.contains(DOM.editable.slice(1) )) {
             
             STATE.item.id = e.target.closest(DOM.itemData).dataset.itemid;
-            //mainController.setTargetElement(e.target.parentNode);
             mainController.getItem(STATE.item.id, e);
+            mainController.itemChange();
+            uiController.removeEditForm();
          
         } else if ( targetClassList.contains(DOM.btnAddCategory.slice(1) )) {
- 
+            
+            mainController.itemChange();
             mainController.addGroup(STATE.income.id);
-
-        } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
- 
-            //rotateArrowIcon(el);
-
-        } else {
             uiController.removeEditForm();
+            
+        } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
 
-        }
+            targetClassList.toggle('fa-rotate-180')
+           
+        } else {
+            mainController.itemChange();
+            uiController.removeEditForm();
+         }
     }
 
     return {
@@ -87,23 +87,3 @@ const appController = ((uiController, mainController) => {
 })(UIController, MainController);
 
 appController.init();
-
-
-
-
-// (() => {
-
-//     document.querySelector('#btn-sign-in').addEventListener('click', alertMe);
-
-//     function alertMe() {
-//         document.querySelector('#btn-sign-in').remove();
-
-//         const newButton = `<button class="btn btn-primary btn-block" type="button" disabled>
-//             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-//             Signing in...
-//         </button>`;
-
-//         document.querySelector('.main-form-policy').insertAdjacentHTML('beforebegin', newButton);
-//         document.querySelector('#form-sign-in').submit();
-//     };
-// })();
