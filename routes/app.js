@@ -10,5 +10,6 @@ route.get('/app/item/:id', isUserAuth, appController.getItem);
 route.put('/app/item', isUserAuth, appController.updateItem);
 route.post('/app/category/new', isUserAuth, appController.postNewCategory);
 route.post('/app/item/new', isUserAuth, appController.postNewItem);
+route.delete('/app/item/:id', isUserAuth, appController.deleteItem);
 
 module.exports = route;

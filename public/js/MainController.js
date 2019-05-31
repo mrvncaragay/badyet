@@ -59,11 +59,20 @@ export const MainController = ((uiController) => {
         targetElement.querySelector('.item-planned').textContent = `$${planned}`; 
     }
 
+    const deleteItem = async (node, id) => {
+        try {
+
+            await axios.delete(`/app/item/${id}`);
+            uiController.deleteItem(node);
+        } catch (err) { console.log(err) }
+    }
+
     return {
         
         addItem: addItem,
         getItem: getItem,
         addGroup: addGroup,
-        itemChange: itemChange
+        itemChange: itemChange,
+        deleteItem: deleteItem
     }
 })(UIController);

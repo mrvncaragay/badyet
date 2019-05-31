@@ -21,10 +21,11 @@ export const UIController = (() => {
         categoriesItemsList: '.category-items-list-', //YES
         clickerIcon: '.clicker', //YES
         editable: '.editableItem', //YES
-        itemData: '.item-data',
+        itemData: '.item-data', //YES
         editableForm: '.editable-item-form', //YES
         itemLabel: '.opened-item-label',
-        itemPlanned: '.opened-item-planned'
+        itemPlanned: '.opened-item-planned',
+        itemModal: '.close-item-modal'
     }
 
     const getKeys = {
@@ -32,6 +33,12 @@ export const UIController = (() => {
         userId: document.querySelector(DOM.userId).value,
         csrfToken: document.querySelector(DOM.csrfToken).value,
         incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
+    }
+
+    const removeEditForm = () => {
+        const editForm = document.querySelector(DOM.editableForm);
+        if ( !editForm ) return;
+        editForm.childNodes[0].parentNode.remove();
     }
 
 
@@ -47,7 +54,7 @@ export const UIController = (() => {
 
         addItem: (item, type) => { 
              
-            const itemEle = `<div class="collapse show item-data" id="${'type-' + getKeys.incomeId}" data-itemid="${item.id}">
+            const itemEle = `<div class="collapse show item-data" id="${type}-${type === 'income' ? getKeys.incomeId : item.categoryId}" data-itemid="${item.id}">
                 <div class="card card-body">
                     <div class="row">
                         <div class="col-6 editableItem">
@@ -137,12 +144,24 @@ export const UIController = (() => {
 
                 
                 <div class="modal fade item-data-${item.id}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-sm">
-                        <div class="modal-content">
-                        ...
-                        </div>
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger">
+                            <h2 class="modal-title text-white text-right">Delete ${item.label}</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span class="text-white" aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body text-center">
+                            <p>Are you sure you want to delete ${item.label}</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-danger close-item-modal">Yes, Delete</button>
+                            <button type="button" class="btn btn-white" data-dismiss="modal">No, Cancel</button>
+                          </div>
                     </div>
-                </div>          
+                </div>
+                </div>        
             </div>`;
 
             const mainApp = document.querySelector(DOM.mainAppContainer);
@@ -153,12 +172,32 @@ export const UIController = (() => {
             document.querySelector(DOM.editableForm).style.top = `${posY}px`;
         },
 
-        removeEditForm: () => {
-            const editForm = document.querySelector(DOM.editableForm);
+        deleteItem: (node) => {
 
-            if ( !editForm ) return;
-            editForm.childNodes[0].parentNode.remove();
-        }
+            //remov the button
+            document.querySelector('.close-item-modal').remove();
+            const itemEle = `<button type="button" class="btn btn-danger"><div class="spinner-border spinner-border-sm text-white" role="status">
+                    <span class="sr-only">Loading..</span>
+                </div> Deleting...</button>`;
+            
+                //replace new button with itemEle
+            document.querySelector('.modal-footer').insertAdjacentHTML('afterbegin', itemEle);
 
+            //delay removing modal and opened edit form
+            setTimeout(() => {
+                $(".modal").modal('hide')
+                    setTimeout(() => {
+                        $(".modal").remove();
+                        $('.modal-backdrop').remove();
+                        removeEditForm();
+                        node.remove();
+                    }, 400)           
+            }, 600);
+
+
+            
+        },
+
+        removeEditForm: removeEditForm
     }
 })(); 

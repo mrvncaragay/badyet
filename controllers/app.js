@@ -80,3 +80,12 @@ exports.updateItem  = (req, res) => {
     })  
     .catch(err => console.log(err));
 };
+
+exports.deleteItem = (req, res) => {
+    
+    Item.destroy({ where: { id: req.params.id }})
+        .then(items => {
+            res.status(200).json({ items });
+        })
+        .catch(err => console.log(err))
+};

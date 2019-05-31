@@ -6,7 +6,7 @@ const sequelize = require('./database');
 const session = require('express-session');
 // const MySequelizeStore = require('express-mysql-session')(session); //store session in the database
 const MySequelizeStore = require('connect-session-sequelize')(session.Store); //store session in the database
-// const csrf = require('csurf'); //csrf attack protection
+//const csrf = require('csurf'); //csrf attack protection
 
 //Model
 const User = require('./models/user');

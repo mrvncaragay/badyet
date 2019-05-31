@@ -58,6 +58,7 @@ const appController = ((uiController, mainController) => {
         } else if (  targetClassList.contains(DOM.editable.slice(1) )) {
             
             STATE.item.id = e.target.closest(DOM.itemData).dataset.itemid;
+            STATE.item.node = e.target.closest(DOM.itemData);
             mainController.getItem(STATE.item.id, e);
             mainController.itemChange();
             uiController.removeEditForm();
@@ -72,11 +73,16 @@ const appController = ((uiController, mainController) => {
 
             targetClassList.toggle('fa-rotate-180')
            
+        } else if(e.target.classList.contains(DOM.itemModal.slice(1))) {
+
+            mainController.deleteItem(STATE.item.node, STATE.item.id);
+
         } else {
             mainController.itemChange();
             const editForm = document.querySelector(DOM.editableForm);
             if(!editForm) return; //return if there is no edit form
-            if(!editForm.contains(e.target)) uiController.removeEditForm(); //if there is but it doesnt containt its elem then return
+            if(!editForm.contains(e.target)) uiController.removeEditForm(); //if there is but it doesnt containt its elem then return    
+
          }
     }
 
