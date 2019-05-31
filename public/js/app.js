@@ -5,7 +5,6 @@ const appController = ((uiController, mainController) => {
 
     const STATE = {
         item: {}, //YES
-        user: {}, 
         income: {}, //YES
         category: {} //YES
       
@@ -25,17 +24,23 @@ const appController = ((uiController, mainController) => {
 
     const closeOpenedForm = () => {
         mainController.itemChange();
+        mainController.categoryChange();
         uiController.removeEditForm();
+        uiController.removeCategoryForm();
     }
 
     const clickOnMainLeftPanel = e => {
         mainController.itemChange();
+        mainController.categoryChange();
         uiController.removeEditForm();
+        uiController.removeCategoryForm();
     }
 
     const clickOnMainRightPanel = e => {
         mainController.itemChange();
+        mainController.categoryChange();
         uiController.removeEditForm();
+        uiController.removeCategoryForm();
     }
 
     const clickOnMainPanel = e => {
@@ -45,44 +50,72 @@ const appController = ((uiController, mainController) => {
         if( targetClassList.contains(DOM.btnAddIncomeItem.slice(1))) {
 
             mainController.itemChange();
+            mainController.categoryChange();
             mainController.addItem(STATE.income.categoryId, 'income');
+            uiController.removeCategoryForm();
             uiController.removeEditForm();
         
         } else if ( targetClassList.contains(DOM.btnAddCategoryItem.slice(1) )) {
 
             mainController.itemChange();
+            mainController.categoryChange();
             STATE.category.id = e.target.previousElementSibling.value;
             mainController.addItem(STATE.category.id, 'category');
+            uiController.removeCategoryForm();
             uiController.removeEditForm();
 
-        } else if (  targetClassList.contains(DOM.editable.slice(1) )) {
+        } else if (  targetClassList.contains(DOM.editableItem.slice(1) )) {
             
             STATE.item.id = e.target.closest(DOM.itemData).dataset.itemid;
             STATE.item.node = e.target.closest(DOM.itemData);
             mainController.getItem(STATE.item.id, e);
             mainController.itemChange();
+            mainController.categoryChange();
+            uiController.removeCategoryForm();
             uiController.removeEditForm();
          
+        } else if ( targetClassList.contains(DOM.editableCategory.slice(1) )) {
+
+            STATE.category.id = e.target.dataset.categoryid;
+            STATE.category.node = e.target.closest(DOM.dataItem);
+            mainController.getCategory(STATE.category.id, e);
+            mainController.categoryChange();
+            uiController.removeCategoryForm();
+            uiController.removeEditForm();
+
         } else if ( targetClassList.contains(DOM.btnAddCategory.slice(1) )) {
             
             mainController.itemChange();
+            mainController.categoryChange();
             mainController.addGroup(STATE.income.id);
             uiController.removeEditForm();
+            uiController.removeCategoryForm();
             
         } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
 
-            targetClassList.toggle('fa-rotate-180')
+            mainController.itemChange();
+            mainController.categoryChange();
+
+            targetClassList.toggle('fa-rotate-180');
+
+            uiController.removeEditForm();
+            uiController.removeCategoryForm();
            
         } else if(e.target.classList.contains(DOM.itemModal.slice(1))) {
 
             mainController.deleteItem(STATE.item.node, STATE.item.id);
 
-        } else {
-            mainController.itemChange();
-            const editForm = document.querySelector(DOM.editableForm);
-            if(!editForm) return; //return if there is no edit form
-            if(!editForm.contains(e.target)) uiController.removeEditForm(); //if there is but it doesnt containt its elem then return    
+        } else if(e.target.classList.contains(DOM.categoryModal.slice(1))) {
+            
+            mainController.deleteCategory(STATE.category.node, STATE.category.id);
 
+        } else {
+
+            mainController.itemChange();
+            mainController.categoryChange();
+            mainController.clickSelfItem(e);
+            mainController.clickSelfCategory(e);
+    
          }
     }
 

@@ -14,7 +14,7 @@
     pointer-events: none;
 }
 
-.editableItem:hover {
+.editableItem:hover, .editableCategory:hover {
     background-color: rgb(222, 222, 233);
     cursor: text;
 }
@@ -63,6 +63,12 @@
 
 
 .editable-item-form {
+    width: auto;
+    position: absolute;
+    box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.26);
+}
+
+.editable-category-form {
     width: auto;
     position: absolute;
     box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.26);

@@ -3,10 +3,8 @@
             <div class="col-12 income-header">
                 <div class="row">
                     <div class="col-6">
-                            <span class="">
-                                <span class="income-header-income editableItem"><%= category.title %></span>
-                            </span>
-                            <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#category-<%= category.id %>" class="fas fa-caret-up clicker"></i></button>
+                        <span class="income-header-income editableCategory category-title" data-categoryid="<%= category.id %>"><%= category.title %></span>
+                        <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#category-<%= category.id %>" class="fas fa-caret-up clicker"></i></button>
 
                     </div>
                     <div class="col-6">

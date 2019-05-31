@@ -66,6 +66,15 @@ exports.getItem = (req, res) => {
         .catch(err => console.log(err));
 };
 
+exports.getCategory = (req, res) => {
+
+    Category.findByPk(req.params.id)
+        .then((category) => {
+            res.status(200).json({category})
+        })
+        .catch(err => console.log(err));
+};
+
 exports.updateItem  = (req, res) => {
 
     const itemObj = req.body;
@@ -81,11 +90,34 @@ exports.updateItem  = (req, res) => {
     .catch(err => console.log(err));
 };
 
+exports.updateCategory  = (req, res) => {
+
+    const itemObj = req.body;
+    Category.update({ 
+        id: itemObj.id,
+        title: itemObj.title
+    }, 
+    {  where: { id: itemObj.id } })
+    .then(([success]) => {
+        res.status(200).json({ success });
+    })  
+    .catch(err => console.log(err));
+};
+
 exports.deleteItem = (req, res) => {
     
     Item.destroy({ where: { id: req.params.id }})
         .then(items => {
             res.status(200).json({ items });
+        })
+        .catch(err => console.log(err))
+};
+
+exports.deleteCategory = (req, res) => {
+    
+    Category.destroy({ where: { id: req.params.id }})
+        .then(categories => {
+            res.status(200).json({ categories });
         })
         .catch(err => console.log(err))
 };

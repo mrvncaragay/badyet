@@ -3,6 +3,7 @@ import { UIController } from './UIController.js'
 export const MainController = ((uiController) => {
 
     let item;
+    let category;
     let targetElement;
 
     const addItem = async (categoryId, type) => {
@@ -22,7 +23,19 @@ export const MainController = ((uiController) => {
             item = data.item;
             targetElement = e.target.parentNode.parentNode.parentNode;
      
-            uiController.editForm(data.item, e); //create a clicked item edit form
+            uiController.editItem(data.item, e); //create a clicked item edit form
+        } catch (err) { console.log(err) }
+    }
+
+    const getCategory = async (categoryId, e) => {
+        try {
+
+            const { data } = await axios.get(`/app/category/${categoryId}`);
+            category = data.category;
+            targetElement = e.target.parentNode;
+
+            uiController.editCategory(category, e);
+            
         } catch (err) { console.log(err) }
     }
 
@@ -46,6 +59,16 @@ export const MainController = ((uiController) => {
         } catch (err) {console.log(err)}              
     }
 
+    const updateCategory = async (title, id) => {
+        try {
+            await axios.put('/app/category', {
+                id: id,
+                title: title
+            });
+
+        } catch (err) {console.log(err)} 
+    }
+
     const itemChange = () => {
         if(!document.querySelector('.editable-item-form')) return;
  
@@ -59,20 +82,60 @@ export const MainController = ((uiController) => {
         targetElement.querySelector('.item-planned').textContent = `$${planned}`; 
     }
 
+    const categoryChange = () => {
+        if(!document.querySelector('.editable-category-form')) return;
+ 
+        const title = document.querySelector('.opened-category-title').value;
+        
+        if( category.title === title ) return;
+
+        updateCategory(title, category.id)
+        targetElement.querySelector('.category-title').textContent = `${title}`;
+    }
+
     const deleteItem = async (node, id) => {
         try {
 
             await axios.delete(`/app/item/${id}`);
             uiController.deleteItem(node);
+            
         } catch (err) { console.log(err) }
+    }
+
+    const deleteCategory = async (node, id) => {
+        try {
+
+            await axios.delete(`/app/category/${id}`);
+            uiController.deleteCategory(node);
+
+        } catch (err) { console.log(err) }
+    }
+
+    const clickSelfItem  = (e) => {
+        const editForm = document.querySelector('.editable-item-form');
+
+        if(!editForm) return; //return if there is no edit form
+        if(!editForm.contains(e.target)) uiController.removeEditForm(); //did user clicked inside item edit form? if not remove form 
+    }
+
+    const clickSelfCategory  = (e) => {
+        const editCategory = document.querySelector('.editable-category-form');
+
+        if(!editCategory) return; //return if there is no edit form
+        if(!editCategory.contains(e.target)) uiController.removeCategoryForm(); //did user clicked inside item edit form? if not remove form 
     }
 
     return {
         
         addItem: addItem,
-        getItem: getItem,
         addGroup: addGroup,
+        getItem: getItem,
+        getCategory: getCategory,
         itemChange: itemChange,
-        deleteItem: deleteItem
+        categoryChange: categoryChange,
+        deleteItem: deleteItem,
+        deleteCategory: deleteCategory,
+        clickSelfItem: clickSelfItem,
+        clickSelfCategory: clickSelfCategory
     }
 })(UIController);
