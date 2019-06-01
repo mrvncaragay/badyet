@@ -3,44 +3,32 @@ import { MainController } from './MainController.js';
 
 const appController = ((uiController, mainController) => {
 
-    const STATE = {
-        item: {}, //YES
-        income: {}, //YES
-        category: {} //YES
-      
-    };
+    const income = {  //current month budget
+        id: uiController.getIncomeAndUserKeys().incomeId,
+        categoryId: uiController.getIncomeAndUserKeys().incomeCategoryId
+    }
 
+    const itemSelected = {}
+    const categorySelected = {}
     const DOM = UIController.getDOM();
-    STATE.income.categoryId = uiController.getIncomeAndUserKeys().incomeCategoryId;
-    STATE.income.id = uiController.getIncomeAndUserKeys().incomeId;
+
+    const forms = [  mainController.itemChange, mainController.categoryChange, uiController.removeEditForm, uiController.removeCategoryForm ];
 
     const setUpEventListener = () => {
 
         document.querySelector(DOM.mainPanelContainer).addEventListener('click', clickOnMainPanel, false); //category list container
         document.querySelector(DOM.rightPanelContainer).addEventListener('click', clickOnMainRightPanel, false); //category list container
         document.querySelector(DOM.leftPanelContainer).addEventListener('click', clickOnMainLeftPanel, false); //category list container
-        document.querySelector(DOM.mainAppContainer).addEventListener('scroll', closeOpenedForm, false);
     };
 
-    const closeOpenedForm = () => {
-        mainController.itemChange();
-        mainController.categoryChange();
-        uiController.removeEditForm();
-        uiController.removeCategoryForm();
-    }
-
     const clickOnMainLeftPanel = e => {
-        mainController.itemChange();
-        mainController.categoryChange();
-        uiController.removeEditForm();
-        uiController.removeCategoryForm();
+
+        mainController.clearUpdate(forms);
     }
 
     const clickOnMainRightPanel = e => {
-        mainController.itemChange();
-        mainController.categoryChange();
-        uiController.removeEditForm();
-        uiController.removeCategoryForm();
+
+        mainController.clearUpdate(forms);
     }
 
     const clickOnMainPanel = e => {
@@ -49,73 +37,52 @@ const appController = ((uiController, mainController) => {
       
         if( targetClassList.contains(DOM.btnAddIncomeItem.slice(1))) {
 
-            mainController.itemChange();
-            mainController.categoryChange();
-            mainController.addItem(STATE.income.categoryId, 'income');
-            uiController.removeCategoryForm();
-            uiController.removeEditForm();
+            mainController.clearUpdate(forms);
+            mainController.addItem(income.categoryId, 'income');
         
         } else if ( targetClassList.contains(DOM.btnAddCategoryItem.slice(1) )) {
-
-            mainController.itemChange();
-            mainController.categoryChange();
-            STATE.category.id = e.target.previousElementSibling.value;
-            mainController.addItem(STATE.category.id, 'category');
-            uiController.removeCategoryForm();
-            uiController.removeEditForm();
+            
+            const catId = e.target.previousElementSibling.value;;
+            mainController.clearUpdate(forms);
+            mainController.addItem(catId, 'category');
 
         } else if (  targetClassList.contains(DOM.editableItem.slice(1) )) {
             
-            STATE.item.id = e.target.closest(DOM.itemData).dataset.itemid;
-            STATE.item.node = e.target.closest(DOM.itemData);
-            mainController.getItem(STATE.item.id, e);
-            mainController.itemChange();
-            mainController.categoryChange();
-            uiController.removeCategoryForm();
-            uiController.removeEditForm();
+            itemSelected.id = e.target.closest(DOM.itemData).dataset.itemid;
+            itemSelected.node = e.target.closest(DOM.itemData);
+            mainController.getItem(itemSelected.id, e);
+            mainController.clearUpdate(forms);
          
         } else if ( targetClassList.contains(DOM.editableCategory.slice(1) )) {
 
-            STATE.category.id = e.target.dataset.categoryid;
-            STATE.category.node = e.target.closest(DOM.dataItem);
-            mainController.getCategory(STATE.category.id, e);
-            mainController.categoryChange();
-            uiController.removeCategoryForm();
-            uiController.removeEditForm();
+            categorySelected.id = e.target.dataset.categoryid;
+            categorySelected.node = e.target.closest(DOM.dataItem);
+            mainController.getCategory(categorySelected.id, e);
+            mainController.clearUpdate(forms);
 
         } else if ( targetClassList.contains(DOM.btnAddCategory.slice(1) )) {
             
-            mainController.itemChange();
-            mainController.categoryChange();
-            mainController.addGroup(STATE.income.id);
-            uiController.removeEditForm();
-            uiController.removeCategoryForm();
+            mainController.addGroup(income.id);
+            mainController.clearUpdate(forms);
             
         } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
 
-            mainController.itemChange();
-            mainController.categoryChange();
-
             targetClassList.toggle('fa-rotate-180');
-
-            uiController.removeEditForm();
-            uiController.removeCategoryForm();
+            mainController.clearUpdate(forms);
            
         } else if(e.target.classList.contains(DOM.itemModal.slice(1))) {
 
-            mainController.deleteItem(STATE.item.node, STATE.item.id);
+            mainController.deleteItem(itemSelected.node, itemSelected.id);
 
         } else if(e.target.classList.contains(DOM.categoryModal.slice(1))) {
             
-            mainController.deleteCategory(STATE.category.node, STATE.category.id);
+            mainController.deleteCategory(categorySelected.id , categorySelected.node);
 
         } else {
 
-            mainController.itemChange();
-            mainController.categoryChange();
+            mainController.clearUpdate(forms, 2);
             mainController.clickSelfItem(e);
-            mainController.clickSelfCategory(e);
-    
+            mainController.clickSelfCategory(e);   
          }
     }
 

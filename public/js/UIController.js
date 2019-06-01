@@ -35,9 +35,9 @@ export const UIController = (() => {
 
     const getKeys = {
         incomeId: document.querySelector(DOM.incomeId).value, //YES
-        userId: document.querySelector(DOM.userId).value,
+        userId: document.querySelector(DOM.userId).value, 
         csrfToken: document.querySelector(DOM.csrfToken).value,
-        incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
+        incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value //YES
     }
 
     //separate this category
@@ -77,8 +77,8 @@ export const UIController = (() => {
                         </div>
                         <div class="col-6">
                             <div class="row text-right income-header-pr-text">
-                                <span class="col-6 editableItem item-planned">$0.0${item.planned}</span>
-                                <span class="col-6">$0.0${item.spend}</span>
+                                <span class="col-6 editableItem item-planned">$${item.planned}</span>
+                                <span class="col-6">$${item.spend}</span>
                             </div>
                         </div>
                     </div>          

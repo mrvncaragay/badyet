@@ -9,8 +9,6 @@ export const MainController = ((uiController) => {
     const addItem = async (categoryId, type) => {
         try {    
             const { data }  = await axios.post('/app/item/new', { categoryId: categoryId });
-            itemChange();
-            item = data.item;
             uiController.addItem(data.item, type);
         } 
         catch { err => console.log(err) }
@@ -19,11 +17,11 @@ export const MainController = ((uiController) => {
     const getItem = async (itemId, e) => {
         try {
             const { data } = await axios.get(`/app/item/${itemId}`);
-    
+
             item = data.item;
             targetElement = e.target.parentNode.parentNode.parentNode;
-     
             uiController.editItem(data.item, e); //create a clicked item edit form
+
         } catch (err) { console.log(err) }
     }
 
@@ -40,8 +38,9 @@ export const MainController = ((uiController) => {
     }
 
     const addGroup = async (incomeId) => {
+
         try {
-            itemChange();
+
             const { data } = await axios.post('/app/category/new', { incomeId: incomeId });
             uiController.addCategory(data.category);
 
@@ -49,7 +48,9 @@ export const MainController = ((uiController) => {
     }
     
     const updateItem = async (label, planned, id) => {
+
         try {
+
             await axios.put('/app/item', {
                 id: id,
                 label: label,
@@ -102,7 +103,7 @@ export const MainController = ((uiController) => {
         } catch (err) { console.log(err) }
     }
 
-    const deleteCategory = async (node, id) => {
+    const deleteCategory = async (id, node) => {
         try {
 
             await axios.delete(`/app/category/${id}`);
@@ -125,6 +126,14 @@ export const MainController = ((uiController) => {
         if(!editCategory.contains(e.target)) uiController.removeCategoryForm(); //did user clicked inside item edit form? if not remove form 
     }
 
+    const clearUpdateForm = (arr, upTo) => {
+        
+        const end = upTo || arr.length;
+        for(let i = 0; i < end; i++) {
+            arr[i]();
+        }
+    }
+
     return {
         
         addItem: addItem,
@@ -136,6 +145,8 @@ export const MainController = ((uiController) => {
         deleteItem: deleteItem,
         deleteCategory: deleteCategory,
         clickSelfItem: clickSelfItem,
-        clickSelfCategory: clickSelfCategory
+        clickSelfCategory: clickSelfCategory,
+        clearUpdate: clearUpdateForm
+        
     }
 })(UIController);
