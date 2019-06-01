@@ -4,21 +4,24 @@ import { MainController } from './MainController.js';
 const appController = ((uiController, mainController) => {
 
     const income = {  //current month budget
-        id: uiController.getIncomeAndUserKeys().incomeId,
-        categoryId: uiController.getIncomeAndUserKeys().incomeCategoryId
+        id: mainController.selectedMonthIncome.incomeId,
+        categoryId: mainController.selectedMonthIncome.incomeCategoryId
     }
 
     const itemSelected = {}
     const categorySelected = {}
-    const DOM = UIController.getDOM();
+    const DOM = uiController.getDOM();
 
-    const forms = [  mainController.itemChange, mainController.categoryChange, uiController.removeEditForm, uiController.removeCategoryForm ];
+    const forms = [  mainController.itemChange, mainController.categoryChange, mainController.removeItemForm, mainController.removeCategoryForm ];
 
     const setUpEventListener = () => {
 
         document.querySelector(DOM.mainPanelContainer).addEventListener('click', clickOnMainPanel, false); //category list container
         document.querySelector(DOM.rightPanelContainer).addEventListener('click', clickOnMainRightPanel, false); //category list container
         document.querySelector(DOM.leftPanelContainer).addEventListener('click', clickOnMainLeftPanel, false); //category list container
+        document.addEventListener('keypress', (e) => {
+            if ( e.key === 13 || e.which === 13 ) mainController.clearUpdate(forms);
+        }); //keypress enter
     };
 
     const clickOnMainLeftPanel = e => {

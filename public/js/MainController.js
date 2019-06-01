@@ -5,6 +5,7 @@ export const MainController = ((uiController) => {
     let item;
     let category;
     let targetElement;
+    const DOM = uiController.getDOM();
 
     const addItem = async (categoryId, type) => {
         try {    
@@ -71,10 +72,10 @@ export const MainController = ((uiController) => {
     }
 
     const itemChange = () => {
-        if(!document.querySelector('.editable-item-form')) return;
+        if(!document.querySelector(DOM.editableItemForm)) return;
  
-        const label = document.querySelector('.opened-item-label').value;
-        const planned = document.querySelector('.opened-item-planned').value;
+        const label = document.querySelector(DOM.itemLabel).value;
+        const planned = document.querySelector(DOM.itemPlanned).value;
 
         if( item.label === label && item.planned === planned ) return;
 
@@ -84,14 +85,14 @@ export const MainController = ((uiController) => {
     }
 
     const categoryChange = () => {
-        if(!document.querySelector('.editable-category-form')) return;
+        if(!document.querySelector(DOM.editableCategoryForm)) return;
  
-        const title = document.querySelector('.opened-category-title').value;
+        const title = document.querySelector(DOM.categoryTitle).value;
         
         if( category.title === title ) return;
 
         updateCategory(title, category.id)
-        targetElement.querySelector('.category-title').textContent = `${title}`;
+        targetElement.querySelector(DOM.selectedCateTitle).textContent = `${title}`;
     }
 
     const deleteItem = async (node, id) => {
@@ -146,7 +147,10 @@ export const MainController = ((uiController) => {
         deleteCategory: deleteCategory,
         clickSelfItem: clickSelfItem,
         clickSelfCategory: clickSelfCategory,
-        clearUpdate: clearUpdateForm
-        
+        clearUpdate: clearUpdateForm,
+        selectedMonthIncome: uiController.getIncomeAndUserKeys(),
+        removeItemForm: uiController.removeEditForm,
+        removeCategoryForm: uiController.removeCategoryForm
+
     }
 })(UIController);

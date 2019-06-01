@@ -2,42 +2,39 @@ export const UIController = (() => {
 
     const DOM = {
 
-        mainAppContainer: '.main-app-container', //YES
-        mainPanelContainer: '.main-panel-container', //YES
+        mainAppContainer: '.main-app-container',
+        mainPanelContainer: '.main-panel-container',
         rightPanelContainer: '.right-panel-container',
         leftPanelContainer: '.left-panel-container',
         categoryList: '.category-list',
-        btnAddCategory: '.add-category-button', //YES
+        btnAddCategory: '.add-category-button',
         btnAddIncomeItem: '.add-income-item-button',
         btnAddCategoryItem: '.add-category-item-button',
-        incomeId: '.income_id',
         userId: '.user_id',
-        incomeCategoryId: '.income-category-id', //YES
+        incomeCategoryId: '.income-category-id',
         categoryId: '.category_id',
         csrfToken: '.csrf_token',
         removableCategory: '.removable-category',
-        incomeList: '.data-incomes-list', //YES
-        categoriesList: '.categories-list', //can delete later
-        categoriesItemsList: '.category-items-list-', //YES
-        clickerIcon: '.clicker', //YES
-        editableItem: '.editableItem', //YES
-        editableCategory: '.editableCategory', //YES
-        itemData: '.item-data', //YES
-        dataItem: '.data-item', //YES
-        editableItemForm: '.editable-item-form', //YES
-        editableCategoryForm: '.editable-category-form', //YES
+        incomeList: '.data-incomes-list',
+        categoriesItemsList: '.category-items-list-',
+        clickerIcon: '.clicker',
+        editableItem: '.editableItem',
+        editableCategory: '.editableCategory',
+        itemData: '.item-data',
+        dataItem: '.data-item',
+        editableItemForm: '.editable-item-form',
+        editableCategoryForm: '.editable-category-form',
         itemLabel: '.opened-item-label',
         itemPlanned: '.opened-item-planned',
-        categoryTitle: '.opened-category-label',
+        categoryTitle: '.opened-category-title',
+        selectedCateTitle: '.category-title',
         itemModal: '.close-item-modal',
         categoryModal: '.close-category-modal'
     }
 
     const getKeys = {
-        incomeId: document.querySelector(DOM.incomeId).value, //YES
-        userId: document.querySelector(DOM.userId).value, 
         csrfToken: document.querySelector(DOM.csrfToken).value,
-        incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value //YES
+        incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
     }
 
     //separate this category

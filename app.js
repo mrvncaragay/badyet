@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser'); //parse submitted body
 const sequelize = require('./database');
 const session = require('express-session');
+
 // const MySequelizeStore = require('express-mysql-session')(session); //store session in the database
 const MySequelizeStore = require('connect-session-sequelize')(session.Store); //store session in the database
 //const csrf = require('csurf'); //csrf attack protection
@@ -38,6 +39,7 @@ const userRoutes = require('./routes/users');
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap')));
 app.use(express.static(path.join(__dirname, 'node_modules/jquery')));
+app.use(express.static(path.join(__dirname, 'node_modules/popper.js')));
 app.use(bodyParser.json()) // handle json data
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(session({
