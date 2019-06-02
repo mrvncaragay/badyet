@@ -419,3 +419,31 @@ button.badyet-date:active {
     border: 1px solid rgba(0,0,0,.2);
     border-radius: 10px;
 }
+
+.no-income-header {
+    margin-top: 20%;
+    background: inherit;
+    border-style: none;
+    border: none;
+    box-shadow: none;
+}
+
+.no-income-header > h4 {
+    color: #696969;
+    margin-bottom: 30px;
+}
+
+.loading-header {
+    color: #696969;
+    margin-top: 20%;
+    background: inherit;
+    border-style: none;
+    border: none;
+    box-shadow: none;
+}
+
+.loading-header > h5 {
+    font-weight: bold;
+    color: #696969;
+    margin-bottom: 30px;
+}

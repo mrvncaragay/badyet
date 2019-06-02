@@ -1,8 +1,6 @@
 const helper = require('../util/helper');
-const Sequelize = require('sequelize');
 const Item = require('../models/item');
 const Category = require('../models/category');
-const Op = Sequelize.Op;
 
 exports.getBadyetPage = (req, res) => { 
 
@@ -22,7 +20,7 @@ exports.getBadyetPage = (req, res) => {
         .then(categories => {
             const incomeCategory = categories.shift(); //remove Income category
             incomeInfo.category_id = incomeCategory.id;
-            
+
             if( Object.entries(categories).length === 0 ) categories = false;
             res.render('app/badyet', { income: incomeInfo, incomeItems: incomeCategory.items, categories: categories });
 
@@ -121,3 +119,28 @@ exports.deleteCategory = (req, res) => {
         })
         .catch(err => console.log(err))
 };
+
+exports.getIncome = (req, res) => {
+
+    req.currentUser.getIncomes({ where: { 
+        month: req.params.month,
+        year: req.params.year
+
+    }, include: [ { model: Category, include: [ Item ] } ] })
+    .then(income => {
+
+        console.log(Boolean(income[0]))
+
+        // let incomeInfo = income[0];
+        // let incomeItems = income[0].categories.shift().items;
+        // let categories = income[0].categories;
+        //let incomeInfo = income[0];
+        //res.render('app/badyet', { income: incomeInfo, incomeItems: incomeItems, categories: categories });
+        // console.log(income.data.income[0].month);    
+        // console.log(income.data.income[0]);
+        // console.log(income.data.income[0].categories); //pop the first item its the month
+
+        //res.status(200).json({ income });
+    })
+    .catch(err => console.log(err));
+}

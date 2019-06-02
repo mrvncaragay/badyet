@@ -16,6 +16,7 @@ const appController = ((uiController, mainController) => {
 
     const setUpEventListener = () => {
 
+        document.querySelector(DOM.dateClicker).addEventListener('click', clickOnDatePanel, false); //category list container
         document.querySelector(DOM.mainPanelContainer).addEventListener('click', clickOnMainPanel, false); //category list container
         document.querySelector(DOM.rightPanelContainer).addEventListener('click', clickOnMainRightPanel, false); //category list container
         document.querySelector(DOM.leftPanelContainer).addEventListener('click', clickOnMainLeftPanel, false); //category list container
@@ -23,6 +24,12 @@ const appController = ((uiController, mainController) => {
             if ( e.key === 13 || e.which === 13 ) mainController.clearUpdate(forms);
         }); //keypress enter
     };
+
+    const clickOnDatePanel = e => {
+        //console.log(mainController.date)
+
+       //mainController.date.el.textContent = 'dsa';
+    }
 
     const clickOnMainLeftPanel = e => {
 

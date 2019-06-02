@@ -30,8 +30,8 @@
     "express-session": "^1.16.1",
     "jquery": "^3.4.1",
     "jquery-datepicker": "^1.12.3",
+    "js-datepicker": "^4.0.10",
     "mysql2": "^1.6.5",
-    "popper.js": "^1.15.0",
     "sequelize": "^5.8.6"
   },
   "devDependencies": {

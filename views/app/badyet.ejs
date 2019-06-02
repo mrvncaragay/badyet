@@ -6,7 +6,7 @@
         </div>   
 
         <div class="col-6 main-panel-container">
-            
+                
                 <div class="row main-date sticky-top"> 
                     <div class="col">
                       <%- include('_date.ejs', { income: income }) %>
@@ -15,24 +15,19 @@
 
                 <div class="row main-data">
                     <div class="col category-list">
-                    
+       
                         <%- include('_incomes.ejs', { income: income }) %>
 
                         <% if( categories ) { %>                                     
                             <%- include('_categories.ejs', { categories: categories }) %>                            
-                        <% } %> 
-                
-                    </div>
-                </div> 
-                
-                <div class="row main-data main-data-category">
-                    <div class="col">                                
+                        <% } %>
+                        
                         <div class="data-item add-group-category">
                             <input type="hidden" class="csrf_token" name="_csrf" value="<%#= csrfToken %>">    
                             <button role="button" data-toggle="" class="btn no-focus add-category-button" href="#"><i class="fas fa-plus"></i>ADD GROUP</button> 
-                        </div>                                 
+                        </div>          
                     </div>
-                </div>         
+                </div> 
         </div>
 
 

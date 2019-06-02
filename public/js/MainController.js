@@ -135,6 +135,61 @@ export const MainController = ((uiController) => {
         }
     }
 
+    const checkSelectedMonth = (month, year) => {
+
+
+        axios.get(`/app/income/${month}/${year}`, {})
+        .then(income => {
+
+            // console.log(income.data.income[0].month);
+            // console.log(income.data.income[0]);
+            // console.log(income.data.income[0].categories); //pop the first item its the month
+          
+       
+            if( !income.data.income.length ) {
+
+                uiController.noIncome(month, year);
+
+            }  else {
+                uiController.showLoading();
+
+                //  setTimeout(() => {
+                //     uiController.showIncomeData(income.data.income[0], income.data.income[0].categories.shift());
+                // }, 3000)           
+            }
+   
+
+        })
+        .catch(err => console.log(err));
+    }
+
+    const initMonthPicker = () => {
+        
+        return datepicker('#date-picker', {
+            //disableYearOverlay: true,
+            disableMobile: false,
+            disabler: date => date.getMonth(),
+            
+            onMonthChange: instance => {
+
+                checkSelectedMonth(instance.currentMonthName, instance.currentYear);
+            },
+
+            onHide: instance => {
+                //month = instance.currentMonthName
+                // console.log(, instance.currentYear)
+
+            }
+        });
+        
+        
+        //picker.setMin(new Date(2019, 0, 1))
+        //picker.setMax(new Date(2020, 0, 1))
+
+
+        //picker.remove();
+    }
+
     return {
         
         addItem: addItem,
@@ -150,7 +205,8 @@ export const MainController = ((uiController) => {
         clearUpdate: clearUpdateForm,
         selectedMonthIncome: uiController.getIncomeAndUserKeys(),
         removeItemForm: uiController.removeEditForm,
-        removeCategoryForm: uiController.removeCategoryForm
+        removeCategoryForm: uiController.removeCategoryForm,
+        date: initMonthPicker()
 
     }
 })(UIController);

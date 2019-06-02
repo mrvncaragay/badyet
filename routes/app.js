@@ -1,7 +1,6 @@
 const express = require('express');
 const route = express.Router();
 const isUserAuth = require('../middleware/is-auth');
-
 const appController = require('../controllers/app');
 
 route.get('/app/badyet', isUserAuth, appController.getBadyetPage);
@@ -14,5 +13,6 @@ route.post('/app/category/new', isUserAuth, appController.postNewCategory);
 route.post('/app/item/new', isUserAuth, appController.postNewItem);
 route.delete('/app/item/:id', isUserAuth, appController.deleteItem);
 route.delete('/app/category/:id', isUserAuth, appController.deleteCategory);
+route.get('/app/income/:month/:year', isUserAuth, appController.getIncome);
 
 module.exports = route;

@@ -13,6 +13,7 @@ export const UIController = (() => {
         userId: '.user_id',
         incomeCategoryId: '.income-category-id',
         categoryId: '.category_id',
+        incomeId: '.income_id',
         csrfToken: '.csrf_token',
         removableCategory: '.removable-category',
         incomeList: '.data-incomes-list',
@@ -29,10 +30,13 @@ export const UIController = (() => {
         categoryTitle: '.opened-category-title',
         selectedCateTitle: '.category-title',
         itemModal: '.close-item-modal',
-        categoryModal: '.close-category-modal'
+        categoryModal: '.close-category-modal',
+        dateClicker: '#date-picker',
+        addCateClass: '.add-group-category'
     }
 
     const getKeys = {
+        incomeId: document.querySelector(DOM.incomeId).value,
         csrfToken: document.querySelector(DOM.csrfToken).value,
         incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
     }
@@ -53,6 +57,71 @@ export const UIController = (() => {
         editCategoryForm.childNodes[0].parentNode.remove();
     }
 
+    const incomeEle = (income) => {
+
+        const itemEle = `<div class="col category-list">
+                <div class="data-item">
+                    <div class="col-12 income-header">
+                        <div class="row">
+                            <div class="col-6">
+                                    <span class="">
+                                        <span class="income-header-icon"><i class="fas fa-money-bill-alt"></i></span>
+                                        <span class="income-header-income">Income</span>
+                                        <span class="income-header-month"><small>for</small>${income.month}</span>
+                                    </span>
+                                    <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#income-${income.id}" class="fas fa-caret-up fa-lg clicker"></i></button>
+                            </div>
+                            <div class="col-6">
+                                <div class="row text-right income-header-pr-text">
+                                    <div class="col-6">Planned</div>
+                                    <div class="col-6">Received</div>
+                                </div>
+                            </div>
+                        </div>                    
+                    </div>`;
+            //         <div class="data-incomes-list">
+            //             <% incomeItems.forEach(( item, index ) => { %>
+                            
+            //                 <div class="collapse show item-data" id="income-<%= income.id %>" data-itemid="<%=item.id %>">
+            //                     <div class="card card-body">
+            //                         <div class="row">
+            //                             <div class="col-6 editableItem">
+            //                                 <span class="income-header-income item-label"><%= item.label %></span>
+            //                             </div>
+            //                             <div class="col-6">
+            //                                 <div class="row text-right income-header-pr-text">
+            //                                     <span class="col-6 editableItem item-planned">$<%= item.planned %></span>
+            //                                     <span class="col-6">$<%= item.spend %></span>
+            //                                 </div>
+            //                             </div>
+            //                         </div>          
+            //                     </div>
+            //                 </div>
+            //             <% }) %>   
+            //         </div>
+                        
+            //         <div class="collapse show" id="income-<%= income.id %>">
+            //             <div class="card card-body">
+            //                 <div class="row">
+            //                     <div class="col-6">
+            //                         <input type="hidden" class="income_id" value="<%= income.id %>"> 
+            //                         <input type="hidden" class="income-category-id" value="<%= income.category_id %>"> 
+            //                         <a role="button" data-toggle="" class="btn no-focus btn-add-items add-income-item-button" href="#"><i class="fas fa-plus "></i> Add Paycheck</a>  
+            //                     </div>
+            //                     <div class="col-6">
+            //                         <div class="row text-right income-header-pr-text">
+            //                             <div class="col-6">$0.00</div>
+            //                             <div class="col-6">$0.00</div>
+            //                         </div>
+            //                     </div>
+            //                 </div>        
+            //             </div>
+            //         </div>
+            //     </div>
+            // </div>`;
+            
+            return itemEle;
+    }
 
     return {
         
@@ -127,8 +196,8 @@ export const UIController = (() => {
                     </div>
                     </div>
                 </div>`;
-             
-                document.querySelector(DOM.categoryList).insertAdjacentHTML('beforeend', itemEle);
+    
+                document.querySelector(DOM.addCateClass).insertAdjacentHTML('beforebegin', itemEle);
         },
 
         editItem: (item, e) => {
@@ -271,6 +340,48 @@ export const UIController = (() => {
                          node.remove();
                      }, 500)           
              }, 800);
+        },
+
+        noIncome: (month, year) => {
+
+            const itemEle = `<div class="col category-list">
+                    <div class="data-item text-center no-income-header">
+                        <h4 class="font-weight-bold">Hi There, looks like you need a budget for ${month} ${year}</h4>
+                        <button type="submit" class="btn btn-info" role="button" href="/">Start Planning for ${month}</button>
+                    </div>  
+                </div>`;
+            
+            const dateBtnEle = `<button type="button" id="date-picker" class="btn btn-light badyet-date no-focus">${month}
+                <span class="no-events">${year} <i class="fas fa-caret-up no-focus no-events "></i></span>
+            </button>`;
+
+            document.querySelector('.badyet-date').remove();
+            document.querySelector('.category-list').remove();
+            document.querySelector('.data-date').insertAdjacentHTML('afterbegin', dateBtnEle); 
+            document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
+        },
+
+        showLoading: () => {
+
+            const itemEle = `<div class="col category-list">
+                <div class="data-item text-center loading-header">
+                    <div class="spinner-border" style="width: 4rem; height: 4rem;" role="status"><span class="sr-only">Loading...</span></div>
+                    <h5>Loading...</h5>
+                </div>
+            </div>`;
+
+            document.querySelector('.category-list').remove();
+            document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
+        },
+
+        showIncomeData: (income, categories) => {
+
+            const itemEle = `${incomeEle(income)}`
+
+
+            document.querySelector('.category-list').remove();
+            document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
+
         },
 
         removeEditForm: removeEditForm,
