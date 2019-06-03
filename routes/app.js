@@ -14,5 +14,6 @@ route.post('/app/item/new', isUserAuth, appController.postNewItem);
 route.delete('/app/item/:id', isUserAuth, appController.deleteItem);
 route.delete('/app/category/:id', isUserAuth, appController.deleteCategory);
 route.get('/app/income/:month/:year', isUserAuth, appController.getIncome);
+route.get('/app/income/', isUserAuth, appController.getIncomes);
 
 module.exports = route;

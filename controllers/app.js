@@ -129,8 +129,6 @@ exports.getIncome = (req, res) => {
     }, include: [ { model: Category, include: [ Item ] } ] })
     .then(income => {
 
-        console.log(Boolean(income[0]))
-
         // let incomeInfo = income[0];
         // let incomeItems = income[0].categories.shift().items;
         // let categories = income[0].categories;
@@ -140,7 +138,19 @@ exports.getIncome = (req, res) => {
         // console.log(income.data.income[0]);
         // console.log(income.data.income[0].categories); //pop the first item its the month
 
-        //res.status(200).json({ income });
+        res.status(200).json({ income });
+    })
+    .catch(err => console.log(err));
+}
+
+exports.getIncomes = (req, res) => {
+
+    req.currentUser.getIncomes({
+        attributes: ['month', 'year']
+    })
+    .then(incomes => { 
+
+        res.status(200).json({ incomes });
     })
     .catch(err => console.log(err));
 }

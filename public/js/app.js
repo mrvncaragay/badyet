@@ -12,11 +12,11 @@ const appController = ((uiController, mainController) => {
     const categorySelected = {}
     const DOM = uiController.getDOM();
 
-    const forms = [  mainController.itemChange, mainController.categoryChange, mainController.removeItemForm, mainController.removeCategoryForm ];
+    const forms = [  mainController.itemChange, mainController.categoryChange, mainController.removeItemForm, mainController.removeCategoryForm, uiController.removeDate ];
 
     const setUpEventListener = () => {
 
-        document.querySelector(DOM.dateClicker).addEventListener('click', clickOnDatePanel, false); //category list container
+        document.querySelector('.main-date').addEventListener('click', clickOnDatePanel, false); //category list container
         document.querySelector(DOM.mainPanelContainer).addEventListener('click', clickOnMainPanel, false); //category list container
         document.querySelector(DOM.rightPanelContainer).addEventListener('click', clickOnMainRightPanel, false); //category list container
         document.querySelector(DOM.leftPanelContainer).addEventListener('click', clickOnMainLeftPanel, false); //category list container
@@ -26,9 +26,39 @@ const appController = ((uiController, mainController) => {
     };
 
     const clickOnDatePanel = e => {
-        //console.log(mainController.date)
 
-       //mainController.date.el.textContent = 'dsa';
+        const targetClassList = e.target.classList;
+
+   
+        if ( targetClassList.contains(DOM.btnDate.slice(1))) {
+
+
+
+            uiController.removeDate()
+            mainController.showDatePicker();
+
+        } else if (targetClassList.contains('prevDate')) {
+            
+            uiController.removeDate()
+            mainController.showDatePicker('prev');
+
+
+        } else if (targetClassList.contains('nextDate')) {
+ 
+            uiController.removeDate()
+            mainController.showDatePicker('next');
+
+
+        } else if (targetClassList.contains('date-settings')) {
+
+            uiController.removeDate()
+            mainController.showPickedDate(e.target.children[0].dataset.month, e.target.children[1].innerHTML);
+
+        }else {
+            
+            mainController.clickSelfDate(e);
+        }
+        
     }
 
     const clickOnMainLeftPanel = e => {

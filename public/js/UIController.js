@@ -32,7 +32,8 @@ export const UIController = (() => {
         itemModal: '.close-item-modal',
         categoryModal: '.close-category-modal',
         dateClicker: '#date-picker',
-        addCateClass: '.add-group-category'
+        addCateClass: '.add-group-category',
+        btnDate: `.badyet-date`
     }
 
     const getKeys = {
@@ -41,7 +42,6 @@ export const UIController = (() => {
         incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
     }
 
-    //separate this category
     const removeEditForm = () => {
         const editItemForm = document.querySelector(DOM.editableItemForm);
 
@@ -55,6 +55,14 @@ export const UIController = (() => {
         
         if ( !editCategoryForm ) return;
         editCategoryForm.childNodes[0].parentNode.remove();
+    }
+
+    const removeDate = () => {
+        const dateBox = document.querySelector('.date-picker');
+        if( dateBox ) {
+            dateBox.remove();
+            return;
+        }
     }
 
     const incomeEle = (income) => {
@@ -384,8 +392,35 @@ export const UIController = (() => {
 
         },
 
+        showDatePicker: (dates) => {
+    
+            const dateEle = `<div class="row date-picker">
+                <div class="col">
+                <div class="row" style="height: 100%; padding: 10px;">
+            
+                        <div class="col date-settings prevDate"><i class="fas fa-arrow-left"></i></div>
+
+                        ${ dates.map(element => {
+                            
+                        return `<div class="col date-settings text-center">
+                                <div class="" data-month="${element.month.long}">${element.month.short}</div>
+                                <small>${element.year}</small>
+                            </div>`;
+                            
+                        }).join('') }
+                    
+                        <div class="col date-settings nextDate"><i class="fas fa-arrow-right"></i></div>
+                </div>
+                </div>
+            </div>`;
+
+            document.querySelector('#date-picker').insertAdjacentHTML('afterend', dateEle);
+        },
+
         removeEditForm: removeEditForm,
 
-        removeCategoryForm: removeCategoryForm
+        removeCategoryForm: removeCategoryForm,
+
+        removeDate: removeDate
     }
 })(); 

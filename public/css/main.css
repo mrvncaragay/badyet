@@ -447,3 +447,42 @@ button.badyet-date:active {
     color: #696969;
     margin-bottom: 30px;
 }
+
+.date-settings {
+    padding: 10px 10px 10px 10px;
+    border: 1px dashed rgba(0,0,0,.2);
+    border-radius: 10px;
+    margin: 15px 5px 15px 5px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.date-settings small {
+    pointer-events: none; 
+}
+
+.date-settings div {
+    pointer-events: none; 
+}
+
+
+.date-picker {   
+    position: absolute; 
+    border-radius: 5px; 
+    width: 100%; 
+    background-color: white; 
+    box-shadow: 0 0.4rem 0.6rem 0 rgba(31,36,38,.26); 
+    border: 1px solid rgba(0,0,0,.2);
+}
+
+
+.prevDate, .nextDate {
+    text-align: center;
+    margin: auto;
+    border: none;
+    cursor: pointer;
+}
+
+.fa-arrow-left, .fa-arrow-right {
+    pointer-events: none;
+}

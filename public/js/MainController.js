@@ -6,6 +6,28 @@ export const MainController = ((uiController) => {
     let category;
     let targetElement;
     const DOM = uiController.getDOM();
+    let nowDate = new Date();
+    let incomes;
+
+    const initUserIncomes = async () => {
+        try {
+            
+            const inc = await getIncomes();
+            incomes = inc.data.incomes; 
+
+        } catch (err) { console.log(err) }
+        
+    }
+
+    const getIncomes = async () => {
+        try {
+
+           return await axios.get('/app/income', {})
+            
+        } catch (err) {console.log(err) }
+            
+        
+    }
 
     const addItem = async (categoryId, type) => {
         try {    
@@ -127,6 +149,13 @@ export const MainController = ((uiController) => {
         if(!editCategory.contains(e.target)) uiController.removeCategoryForm(); //did user clicked inside item edit form? if not remove form 
     }
 
+    const clickSelfDate  = (e) => {
+        const date = document.querySelector('.date-picker');
+
+        if(!date) return; //return if there is no edit form
+        if(!date.contains(e.target)) uiController.removeDate(); //did user clicked inside item edit form? if not remove form 
+    }
+
     const clearUpdateForm = (arr, upTo) => {
         
         const end = upTo || arr.length;
@@ -135,32 +164,29 @@ export const MainController = ((uiController) => {
         }
     }
 
-    const checkSelectedMonth = (month, year) => {
+    const showDatePicker = async (move) => {
+ 
+        if(move) {
+            move === 'next' ?  nowDate.setMonth(nowDate.getMonth() + 6) :  nowDate.setMonth(nowDate.getMonth() - 6);
+        }
 
+        const getMonths = dateBuilder(9, nowDate, (date, i) => {
 
-        axios.get(`/app/income/${month}/${year}`, {})
-        .then(income => {
+            if( i === 1 ) { 
 
-            // console.log(income.data.income[0].month);
-            // console.log(income.data.income[0]);
-            // console.log(income.data.income[0].categories); //pop the first item its the month
-          
-       
-            if( !income.data.income.length ) {
-
-                uiController.noIncome(month, year);
-
-            }  else {
-                uiController.showLoading();
-
-                //  setTimeout(() => {
-                //     uiController.showIncomeData(income.data.income[0], income.data.income[0].categories.shift());
-                // }, 3000)           
+                date.setMonth(date.getMonth() - 4)  //set the starting month
+                return date.getMonth();
             }
-   
+            
+            date.setMonth(date.getMonth() + 1);   
 
-        })
-        .catch(err => console.log(err));
+            return date.getMonth()
+        });
+
+
+        
+        nowDate.setMonth(nowDate.getMonth() - 4); //9 - 4 = 5 set the month back to mid year month
+        uiController.showDatePicker(getMonths);
     }
 
     const initMonthPicker = () => {
@@ -180,14 +206,59 @@ export const MainController = ((uiController) => {
                 // console.log(, instance.currentYear)
 
             }
-        });
-        
-        
+        });       
         //picker.setMin(new Date(2019, 0, 1))
         //picker.setMax(new Date(2020, 0, 1))
-
-
         //picker.remove();
+    }
+
+    const dateBuilder = (n, date, callback) => {
+
+        if ( n > 12 || n < 0 ) throw 'n must be < 11 and >= 0';
+    
+        let monthArr = [{short: 'Jan', long: 'January'}, {short: 'Feb', long: 'February'}, {short: 'Mar', long: 'March'}, {short: 'Apr', long: 'April'}, {short: 'May', long: 'May'}, 
+                        {short: 'Jun', long: 'June'}, {short: 'Jul', long: 'July'}, {short: 'Aug', long: 'August'}, {short: 'Sep', long: 'September'}, {short: 'Oct', long: 'October'},
+                        {short: 'Nov', long: 'November'}, {short: 'Dec', long: 'December'}];
+        let arr = [];
+        
+        for( let i = 1 ; i <=  n; i++ ) {
+
+            //incomes this is an income array that user has. think if a way to include this on the month picker
+
+            arr.push({ month: monthArr[callback(date, i)], year: date.getFullYear() });
+        }
+    
+        return arr;          
+    }
+
+    const showPickedDate = (month, year) => {
+
+        
+        axios.get(`/app/income/${month}/${year}`, {})
+
+        .then(income => {
+
+            console.log(income)
+            window.Income = income;
+            // console.log(income.data.income[0].month);
+            // console.log(income.data.income[0]);
+            // console.log(income.data.income[0].categories); //pop the first item its the month
+          
+       
+            if( !income.data.income.length ) {
+
+                uiController.noIncome(month, year);
+
+            }  else {
+                uiController.showLoading();
+
+                 setTimeout(() => {
+                    //uiController.showIncomeData(income.data.income[0], income.data.income[0].categories.shift());
+                }, 3000)           
+            }
+
+        })
+        .catch(err => console.log(err));
     }
 
     return {
@@ -202,11 +273,14 @@ export const MainController = ((uiController) => {
         deleteCategory: deleteCategory,
         clickSelfItem: clickSelfItem,
         clickSelfCategory: clickSelfCategory,
+        clickSelfDate: clickSelfDate,
         clearUpdate: clearUpdateForm,
         selectedMonthIncome: uiController.getIncomeAndUserKeys(),
         removeItemForm: uiController.removeEditForm,
         removeCategoryForm: uiController.removeCategoryForm,
-        date: initMonthPicker()
+        showDatePicker: showDatePicker,
+        showPickedDate: showPickedDate,
+        initUserIncomes: initUserIncomes()
 
     }
 })(UIController);
