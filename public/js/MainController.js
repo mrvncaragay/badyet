@@ -1,19 +1,23 @@
 import { UIController } from './UIController.js'
 
 export const MainController = ((uiController) => {
-
+    
+    let incomeId = uiController.getIncomeAndUserKeys().incomeId
     let item;
     let category;
     let targetElement;
     const DOM = uiController.getDOM();
     let nowDate = new Date();
-    let incomes;
+    let monthsData;
+    let currentUserIncomes;
+
+ 
 
     const initUserIncomes = async () => {
         try {
             
             const inc = await getIncomes();
-            incomes = inc.data.incomes; 
+            currentUserIncomes = inc.data.incomes; 
 
         } catch (err) { console.log(err) }
         
@@ -60,7 +64,7 @@ export const MainController = ((uiController) => {
         } catch (err) { console.log(err) }
     }
 
-    const addGroup = async (incomeId) => {
+    const addGroup = async () => {
 
         try {
 
@@ -170,24 +174,46 @@ export const MainController = ((uiController) => {
             move === 'next' ?  nowDate.setMonth(nowDate.getMonth() + 6) :  nowDate.setMonth(nowDate.getMonth() - 6);
         }
 
-        const getMonths = dateBuilder(9, nowDate, (date, i) => {
+        monthsData = dateBuilder(9, nowDate, (i) => {
 
             if( i === 1 ) { 
 
-                date.setMonth(date.getMonth() - 4)  //set the starting month
-                return date.getMonth();
+                nowDate.setMonth(nowDate.getMonth() - 4)  //set the starting month
+                return nowDate.getMonth();
             }
             
-            date.setMonth(date.getMonth() + 1);   
+            nowDate.setMonth(nowDate.getMonth() + 1);   
 
-            return date.getMonth()
+            return nowDate.getMonth()
         });
-
-
-        
+      
+        markUserDates(monthsData); //update array dates with user owned income date
         nowDate.setMonth(nowDate.getMonth() - 4); //9 - 4 = 5 set the month back to mid year month
-        uiController.showDatePicker(getMonths);
+        uiController.showDatePicker(monthsData); //show date picker to screen
+        uiController.updateSelectedMonth(); //add default selected to current income
     }
+
+    const markUserDates = (arr, monthSelected) => {
+       
+        arr.forEach(date => {
+            
+            if( !monthSelected ) {
+                currentUserIncomes.forEach(udate => {
+                    if ( date.month.long === udate.month && date.year === udate.year ) {
+                        
+                        date.active = true;               
+                        return;
+                    }                   
+                });
+            }
+                
+            if( monthSelected === date.month.long ) {
+                date.selected = true;
+                return;
+            } 
+        });
+    };
+
 
     const initMonthPicker = () => {
         
@@ -223,42 +249,39 @@ export const MainController = ((uiController) => {
         
         for( let i = 1 ; i <=  n; i++ ) {
 
-            //incomes this is an income array that user has. think if a way to include this on the month picker
-
-            arr.push({ month: monthArr[callback(date, i)], year: date.getFullYear() });
+            arr.push({ month: monthArr[callback(i)], year: date.getFullYear() });
         }
     
         return arr;          
     }
 
     const showPickedDate = (month, year) => {
-
-        
+              
         axios.get(`/app/income/${month}/${year}`, {})
+            .then(income => {
 
-        .then(income => {
+                // console.log(income.data.income[0].month);
+                // console.log(income.data.income[0]);
+                // console.log(income.data.income[0].categories); //pop the first item its the month
+            
+        
+                if( !income.data.income.length ) {
+                    
+                    uiController.noIncome(month, year);
 
-            console.log(income)
-            window.Income = income;
-            // console.log(income.data.income[0].month);
-            // console.log(income.data.income[0]);
-            // console.log(income.data.income[0].categories); //pop the first item its the month
-          
-       
-            if( !income.data.income.length ) {
+                }  else {   
 
-                uiController.noIncome(month, year);
+                    incomeIId = income.data.income[0].id
+                    //const incomeItems = income.data.income[0].categories.shift();  //need to implement the add category button to make this work.
+                    console.log(incomeIId)
+                    uiController.showLoading();
 
-            }  else {
-                uiController.showLoading();
-
-                 setTimeout(() => {
-                    //uiController.showIncomeData(income.data.income[0], income.data.income[0].categories.shift());
-                }, 3000)           
-            }
-
-        })
-        .catch(err => console.log(err));
+                    setTimeout(() => {
+                        uiController.showIncomeData(income.data.income[0], incomeItems, income.data.income[0].categories); //income info, income items, and categories belongs to income
+                    }, 1000)           
+                }
+            })
+            .catch(err => console.log(err));
     }
 
     return {

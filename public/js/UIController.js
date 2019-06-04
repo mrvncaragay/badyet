@@ -7,6 +7,7 @@ export const UIController = (() => {
         rightPanelContainer: '.right-panel-container',
         leftPanelContainer: '.left-panel-container',
         categoryList: '.category-list',
+        btnAddIncome: '.newIncome',
         btnAddCategory: '.add-category-button',
         btnAddIncomeItem: '.add-income-item-button',
         btnAddCategoryItem: '.add-category-item-button',
@@ -33,7 +34,8 @@ export const UIController = (() => {
         categoryModal: '.close-category-modal',
         dateClicker: '#date-picker',
         addCateClass: '.add-group-category',
-        btnDate: `.badyet-date`
+        btnDate: `.badyet-date`,
+        dateSettings: '.date-settings'
     }
 
     const getKeys = {
@@ -65,10 +67,9 @@ export const UIController = (() => {
         }
     }
 
-    const incomeEle = (income) => {
-
-        const itemEle = `<div class="col category-list">
-                <div class="data-item">
+    const incomeEle = (income, incomeItems) => {
+ 
+        const itemEle = `<div class="data-item">
                     <div class="col-12 income-header">
                         <div class="row">
                             <div class="col-6">
@@ -86,49 +87,136 @@ export const UIController = (() => {
                                 </div>
                             </div>
                         </div>                    
-                    </div>`;
-            //         <div class="data-incomes-list">
-            //             <% incomeItems.forEach(( item, index ) => { %>
-                            
-            //                 <div class="collapse show item-data" id="income-<%= income.id %>" data-itemid="<%=item.id %>">
-            //                     <div class="card card-body">
-            //                         <div class="row">
-            //                             <div class="col-6 editableItem">
-            //                                 <span class="income-header-income item-label"><%= item.label %></span>
-            //                             </div>
-            //                             <div class="col-6">
-            //                                 <div class="row text-right income-header-pr-text">
-            //                                     <span class="col-6 editableItem item-planned">$<%= item.planned %></span>
-            //                                     <span class="col-6">$<%= item.spend %></span>
-            //                                 </div>
-            //                             </div>
-            //                         </div>          
-            //                     </div>
-            //                 </div>
-            //             <% }) %>   
-            //         </div>
+                    </div>
+
+                    <div class="data-incomes-list">
+
+                    ${ incomeItems ? incomeItems.items.map(item => {
+                            return  `<div class="collapse show item-data" id="income-${income.id}" data-itemid="${item.id}">
+                                 <div class="card card-body">
+                                     <div class="row">
+                                         <div class="col-6 editableItem">
+                                             <span class="income-header-income item-label">${item.label}</span>
+                                         </div>
+                                         <div class="col-6">
+                                             <div class="row text-right income-header-pr-text">
+                                                 <span class="col-6 editableItem item-planned">$${item.planned}</span>
+                                                 <span class="col-6">$${item.spend}</span>
+                                             </div>
+                                         </div>
+                                     </div>          
+                                 </div>
+                             </div>`
+ 
+                         }).join('') : '' }       
+                    </div>
                         
-            //         <div class="collapse show" id="income-<%= income.id %>">
-            //             <div class="card card-body">
-            //                 <div class="row">
-            //                     <div class="col-6">
-            //                         <input type="hidden" class="income_id" value="<%= income.id %>"> 
-            //                         <input type="hidden" class="income-category-id" value="<%= income.category_id %>"> 
-            //                         <a role="button" data-toggle="" class="btn no-focus btn-add-items add-income-item-button" href="#"><i class="fas fa-plus "></i> Add Paycheck</a>  
-            //                     </div>
-            //                     <div class="col-6">
-            //                         <div class="row text-right income-header-pr-text">
-            //                             <div class="col-6">$0.00</div>
-            //                             <div class="col-6">$0.00</div>
-            //                         </div>
-            //                     </div>
-            //                 </div>        
-            //             </div>
-            //         </div>
-            //     </div>
-            // </div>`;
-            
+                    <div class="collapse show" id="income-${income.id}">
+                        <div class="card card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="hidden" class="income_id" value="${income.id}"> 
+                                    <input type="hidden" class="income-category-id" value="${income.category_id}"> 
+                                    <a role="button" data-toggle="" class="btn no-focus btn-add-items add-income-item-button" href="#"><i class="fas fa-plus "></i> Add Paycheck</a>  
+                                </div>
+                                <div class="col-6">
+                                    <div class="row text-right income-header-pr-text">
+                                        <div class="col-6">$0.00</div>
+                                        <div class="col-6">$0.00</div>
+                                    </div>
+                                </div>
+                            </div>        
+                        </div>
+                    </div>
+                </div>`;
+                  
             return itemEle;
+    }
+
+    const categoriesEle = (categories) => {
+
+        console.log(categories)
+
+        const itemEle = `${ categories.map(category => {
+                
+                return `<div class="data-item">
+                            <div class="col-12 income-header">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="income-header-income editableCategory category-title" data-categoryid="${category.id}">${category.title}</span>
+                                        <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#category-${category.id}" class="fas fa-caret-up clicker"></i></button>
+        
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row text-right income-header-pr-text">
+                                            <div class="col-6">Planned</div>
+                                            <div class="col-6">Remaining</div>
+                                            <!-- Drop down -->
+        
+                                        </div>
+                                    </div>
+                                 </div>
+                            </div>
+        
+                            <div class="category-items-list-${category.id}">
+                              
+                            ${ category.items ? category.items.map((item) => {
+                                    return `<div class="collapse show item-data" id="category-${category.id}" data-itemId="${item.id}">
+                                        <div class="card card-body">
+                                            <div class="row">
+                                                <div class="col-6 editableItem">
+                                                    <span class="income-header-income item-label">${item.label}</span>      
+                                                </div>
+                                                <div class="col-6">
+                                                    <div class="row text-right income-header-pr-text">
+                                                        <div class="col-6 editableItem item-planned">$${item.planned}</div>
+                                                        <div class="col-6">$${item.spend}</div>
+                                                    </div>
+                                                </div>
+                                            </div>          
+                                        </div>
+                                      </div>`
+                                }).join('') : '' }
+
+                            </div>       
+        
+                            <div class="collapse show" id="category-${category.id}">
+                                <div class="card card-body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <input type="hidden" class="category_id" value="${category.id}"> 
+                                            <button role="button" data-toggle="" class="btn no-focus btn-add-items add-category-item-button" href="#"><i class="fas fa-plus"></i> Add Item</button>  
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="row text-right income-header-pr-text">
+                                                <div class="col-6"></div>
+                                                <div class="col-6"></div>
+                                            </div>
+                                        </div>
+                                    </div>        
+                                </div>
+                            </div>
+                    </div>`                                                      
+            }).join('')}`
+
+        return itemEle;
+    };
+
+
+    const updateSelectedMonth = () => {
+    
+        const selectedMonth = document.querySelector(DOM.dateClicker).dataset;
+        const activeMonths = document.querySelectorAll(DOM.dateSettings);
+
+        for(let i = 0; i < activeMonths.length; i++ ) { //cant break with forEach
+            
+            let item = activeMonths[i].children[0].dataset;
+
+            if (item.month === selectedMonth.month && item.year === selectedMonth.year) {
+                activeMonths[i].classList.add('selected-month');
+                break;
+            } 
+        }
     }
 
     return {
@@ -355,11 +443,11 @@ export const UIController = (() => {
             const itemEle = `<div class="col category-list">
                     <div class="data-item text-center no-income-header">
                         <h4 class="font-weight-bold">Hi There, looks like you need a budget for ${month} ${year}</h4>
-                        <button type="submit" class="btn btn-info" role="button" href="/">Start Planning for ${month}</button>
+                        <button type="button" class="btn btn-info newIncome" role="button" href="/">Start Planning for ${month}</button>
                     </div>  
                 </div>`;
             
-            const dateBtnEle = `<button type="button" id="date-picker" class="btn btn-light badyet-date no-focus">${month}
+            const dateBtnEle = `<button type="button" id="date-picker" data-month="${month}" class="btn btn-light badyet-date no-focus">${month}
                 <span class="no-events">${year} <i class="fas fa-caret-up no-focus no-events "></i></span>
             </button>`;
 
@@ -382,33 +470,43 @@ export const UIController = (() => {
             document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
         },
 
-        showIncomeData: (income, categories) => {
-
-            const itemEle = `${incomeEle(income)}`
+        showIncomeData: (income, incomeItems, categories) => {
+            const itemEle = `<div class="col category-list">
+                ${incomeEle(income, incomeItems)}
+                
+                ${categoriesEle(categories)}
+            
+                <div class="data-item add-group-category">
+                    <input type="hidden" class="csrf_token" name="_csrf" value="<%#= csrfToken %>">    
+                    <button role="button" data-toggle="" class="btn no-focus add-category-button" href="#"><i class="fas fa-plus"></i>ADD GROUP</button> 
+                 </div> 
+         </div>`;
 
 
             document.querySelector('.category-list').remove();
             document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
 
-        },
+        },    
 
         showDatePicker: (dates) => {
-    
+
+            let active = '';
+             
             const dateEle = `<div class="row date-picker">
                 <div class="col">
-                <div class="row" style="height: 100%; padding: 10px;">
+                <div class="row text-center" style="height: 100%; padding: 10px;">
             
                         <div class="col date-settings prevDate"><i class="fas fa-arrow-left"></i></div>
 
                         ${ dates.map(element => {
-                            
-                        return `<div class="col date-settings text-center">
-                                <div class="" data-month="${element.month.long}">${element.month.short}</div>
+            
+                            active = element.active ? `<div class="col date-settings active-months">` : `<div class="col date-settings">`;
+
+                            return active  + `<div data-month="${element.month.long}" data-year="${element.year}">${element.month.short}</div>
                                 <small>${element.year}</small>
-                            </div>`;
-                            
-                        }).join('') }
-                    
+                            </div>`}).join('') 
+                        }
+                        
                         <div class="col date-settings nextDate"><i class="fas fa-arrow-right"></i></div>
                 </div>
                 </div>
@@ -421,6 +519,8 @@ export const UIController = (() => {
 
         removeCategoryForm: removeCategoryForm,
 
-        removeDate: removeDate
+        removeDate: removeDate,
+
+        updateSelectedMonth: updateSelectedMonth
     }
 })(); 

@@ -29,10 +29,7 @@ const appController = ((uiController, mainController) => {
 
         const targetClassList = e.target.classList;
 
-   
         if ( targetClassList.contains(DOM.btnDate.slice(1))) {
-
-
 
             uiController.removeDate()
             mainController.showDatePicker();
@@ -101,8 +98,8 @@ const appController = ((uiController, mainController) => {
             mainController.clearUpdate(forms);
 
         } else if ( targetClassList.contains(DOM.btnAddCategory.slice(1) )) {
-            
-            mainController.addGroup(income.id);
+
+            mainController.addGroup();
             mainController.clearUpdate(forms);
             
         } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
@@ -118,6 +115,9 @@ const appController = ((uiController, mainController) => {
             
             mainController.deleteCategory(categorySelected.id , categorySelected.node);
 
+        } else if(e.target.classList.contains(DOM.btnAddIncome.slice(1))) {
+
+            console.log('New Income!!');
         } else {
 
             mainController.clearUpdate(forms, 2);

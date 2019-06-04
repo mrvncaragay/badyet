@@ -486,3 +486,12 @@ button.badyet-date:active {
 .fa-arrow-left, .fa-arrow-right {
     pointer-events: none;
 }
+
+.active-months {
+    border: 1px solid #c20606;
+} 
+
+.selected-month {
+    background-color: #c20606;
+    color: white;
+}
