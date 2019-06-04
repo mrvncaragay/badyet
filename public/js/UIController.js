@@ -35,7 +35,9 @@ export const UIController = (() => {
         dateClicker: '#date-picker',
         addCateClass: '.add-group-category',
         btnDate: `.badyet-date`,
-        dateSettings: '.date-settings'
+        budgetAmount: '.amount-budgeted',
+        dateSettings: '.date-settings',
+        dateCointainer: '.main-data-date'
     }
 
     const getKeys = {
@@ -68,7 +70,7 @@ export const UIController = (() => {
     }
 
     const incomeEle = (income, incomeItems) => {
- 
+
         const itemEle = `<div class="data-item">
                     <div class="col-12 income-header">
                         <div class="row">
@@ -91,7 +93,7 @@ export const UIController = (() => {
 
                     <div class="data-incomes-list">
 
-                    ${ incomeItems ? incomeItems.items.map(item => {
+                    ${ incomeItems ? incomeItems.map(item => {
                             return  `<div class="collapse show item-data" id="income-${income.id}" data-itemid="${item.id}">
                                  <div class="card card-body">
                                      <div class="row">
@@ -134,8 +136,6 @@ export const UIController = (() => {
     }
 
     const categoriesEle = (categories) => {
-
-        console.log(categories)
 
         const itemEle = `${ categories.map(category => {
                 
@@ -217,6 +217,37 @@ export const UIController = (() => {
                 break;
             } 
         }
+    }
+
+    const removeDateHeader = () => {
+
+        const btnDatePicker = document.querySelector(DOM.btnDate);
+        if( btnDatePicker ) btnDatePicker.remove();
+
+        const budgetAmount = document.querySelector(DOM.budgetAmount);
+        if( budgetAmount ) budgetAmount.remove();
+    }
+
+    const dateHeader = (month, year, income) => {
+
+        if( !income ) {    
+            removeDateHeader();
+
+        } else {
+
+            const amountBudgetEle = `<div class="amount-budgeted">
+                <span class="amount-budgeted-amount">$300.00</span>
+                <span class="amount-budgeted-text">left to budget</span>
+            </div>`;
+            
+            document.querySelector('.data-date').insertAdjacentHTML('beforeend', amountBudgetEle); 
+        }
+
+        const dateBtnEle = `<button type="button" id="date-picker" data-month="${month}" class="btn btn-light badyet-date no-focus">${month}
+        <span class="no-events">${year} <i class="fas fa-caret-up no-focus no-events "></i></span>
+        </button>`;
+
+        document.querySelector('.data-date').insertAdjacentHTML('afterbegin', dateBtnEle); 
     }
 
     return {
@@ -447,33 +478,24 @@ export const UIController = (() => {
                     </div>  
                 </div>`;
             
-            const dateBtnEle = `<button type="button" id="date-picker" data-month="${month}" class="btn btn-light badyet-date no-focus">${month}
-                <span class="no-events">${year} <i class="fas fa-caret-up no-focus no-events "></i></span>
-            </button>`;
-
-            const amountBudget = `<div class="amount-budgeted">
-                    <span class="amount-budgeted-amount">$100.00</span>
-                    <span class="amount-budgeted-text">left to budget</span>
-                </div>`;
-            //document.querySelector('.data-date').insertAdjacentHTML('beforeend', amountBudget); 
-
-            const budgetAmount = document.querySelector('.amount-budgeted');
-            if( budgetAmount ) budgetAmount.remove();
-
-            document.querySelector('.badyet-date').remove();
+            dateHeader(month, year);
             document.querySelector('.category-list').remove();
-            document.querySelector('.data-date').insertAdjacentHTML('afterbegin', dateBtnEle); 
             document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
         },
 
-        showLoading: () => {
+        showCreatedIncome: () => {
+
+        },
+
+        showLoading: (text) => {
 
             const itemEle = `<div class="col category-list">
                 <div class="data-item text-center loading-header">
                     <div class="spinner-border" style="width: 4rem; height: 4rem;" role="status"><span class="sr-only">Loading...</span></div>
-                    <h5>Loading...</h5>
+                    <h5>${text}</h5>
                 </div>
             </div>`;
+
 
             document.querySelector('.category-list').remove();
             document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
@@ -483,18 +505,18 @@ export const UIController = (() => {
             const itemEle = `<div class="col category-list">
                 ${incomeEle(income, incomeItems)}
                 
-                ${categoriesEle(categories)}
-            
+                ${ categories ? categoriesEle(categories) : '' }
+
                 <div class="data-item add-group-category">
                     <input type="hidden" class="csrf_token" name="_csrf" value="<%#= csrfToken %>">    
                     <button role="button" data-toggle="" class="btn no-focus add-category-button" href="#"><i class="fas fa-plus"></i>ADD GROUP</button> 
                  </div> 
-         </div>`;
-
+            </div>`;
+        
 
             document.querySelector('.category-list').remove();
+            dateHeader(income.month, income.year, income);
             document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
-
         },    
 
         showDatePicker: (dates) => {
@@ -505,18 +527,17 @@ export const UIController = (() => {
                 <div class="col">
                 <div class="row text-center" style="height: 100%; padding: 10px;">
             
-                        <div class="col date-settings prevDate"><i class="fas fa-arrow-left"></i></div>
+                    <div class="col date-settings prevDate"><i class="fas fa-arrow-left"></i></div>
 
-                        ${ dates.map(element => {
-            
-                            active = element.active ? `<div class="col date-settings active-months">` : `<div class="col date-settings">`;
+                    ${ dates.map(element => {          
+                        active = element.active ? `<div class="col date-settings active-months">` : `<div class="col date-settings">`;
 
-                            return active  + `<div data-month="${element.month.long}" data-year="${element.year}">${element.month.short}</div>
-                                <small>${element.year}</small>
-                            </div>`}).join('') 
-                        }
-                        
-                        <div class="col date-settings nextDate"><i class="fas fa-arrow-right"></i></div>
+                        return active  + `<div data-month="${element.month.long}" data-year="${element.year}">${element.month.short}</div>
+                            <small>${element.year}</small>
+                        </div>`}).join('') 
+                    }
+                    
+                    <div class="col date-settings nextDate"><i class="fas fa-arrow-right"></i></div>
                 </div>
                 </div>
             </div>`;
@@ -530,6 +551,8 @@ export const UIController = (() => {
 
         removeDate: removeDate,
 
-        updateSelectedMonth: updateSelectedMonth
+        updateSelectedMonth: updateSelectedMonth,
+
+        removeDateHeader: removeDateHeader
     }
 })(); 

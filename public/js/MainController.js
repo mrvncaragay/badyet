@@ -12,22 +12,29 @@ export const MainController = ((uiController) => {
     let nowDate = new Date();
     const selectedDate = {};
 
-    const addIncome = () => {
+    const addIncome = async () => {
         const now = new Date();
 
-        axios.post('/app/income/new', {
-            month: selectedDate.month,
-            year: selectedDate.year
-        })
-        .then(item => {
+        try {
 
-            if(!item) console.log('item exists');
+            const { data } = await axios.post('/app/income/new', {
+                month: selectedDate.month,
+                year: selectedDate.year
+            })
 
-            console.log(item)
+            if(!data) console.log('item exists');
 
-        })
-        .catch(err => console.log(err));
+            uiController.removeDateHeader();
+            uiController.showLoading('Creating your budget....');
+             //convert the object to object array
 
+            setTimeout(() => {
+                uiController.showIncomeData(data.newIncome, [data.item]); 
+            }, 2000)     
+
+        } catch (error) {
+            
+        }
     }
 
     const initUserIncomes = async () => {
@@ -231,30 +238,6 @@ export const MainController = ((uiController) => {
         });
     };
 
-
-    const initMonthPicker = () => {
-        
-        return datepicker('#date-picker', {
-            //disableYearOverlay: true,
-            disableMobile: false,
-            disabler: date => date.getMonth(),
-            
-            onMonthChange: instance => {
-
-                checkSelectedMonth(instance.currentMonthName, instance.currentYear);
-            },
-
-            onHide: instance => {
-                //month = instance.currentMonthName
-                // console.log(, instance.currentYear)
-
-            }
-        });       
-        //picker.setMin(new Date(2019, 0, 1))
-        //picker.setMax(new Date(2020, 0, 1))
-        //picker.remove();
-    }
-
     const dateBuilder = (n, date, callback) => {
 
         if ( n > 12 || n < 0 ) throw 'n must be < 11 and >= 0';
@@ -273,6 +256,8 @@ export const MainController = ((uiController) => {
     }
 
     const showPickedDate = (month, year) => {
+
+        //return if month date selected is the same as current selected
         
         axios.get(`/app/income/${month}/${year}`, {})
             .then(income => {
@@ -285,15 +270,15 @@ export const MainController = ((uiController) => {
                     uiController.noIncome(month, year);
 
                 }  else {   
-
-                    incomeId = income.data.income[0].id
-                    //const incomeItems = income.data.income[0].categories.shift();  //need to implement the add category button to make this work.
-                    console.log(incomeId)
-                    uiController.showLoading();
+                    
+                    incomeId = income.data.income[0].id;
+                    const incomeItems = income.data.income[0].categories.shift(); //remove the first element income in the category
+                    uiController.showLoading('Loading...');
+                    uiController.removeDateHeader();
 
                     setTimeout(() => {
-                        //uiController.showIncomeData(income.data.income[0], incomeItems, income.data.income[0].categories); //income info, income items, and categories belongs to income
-                    }, 1000)           
+                        uiController.showIncomeData(income.data.income[0], incomeItems.items, income.data.income[0].categories); //income info, income items, and categories belongs to income
+                    }, 2000)           
                 }
             })
             .catch(err => console.log(err));

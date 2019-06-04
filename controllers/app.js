@@ -148,17 +148,27 @@ exports.getIncomes = (req, res) => {
 }
 
 exports.postNewIncome = ((req, res) => {
-      
+
+    let newIncome;
+    let newCategory;
+
     Income.findOrCreate({ where: {
+        
         month: req.body.month,
         year: req.body.year,
         userId: req.currentUser.id
     }})
-    .then(item => {
+    .then(income => {
         
-        //item.createCategory
-
-        res.status(200).json({ item });
+        newIncome = income[0];
+        return newIncome.createCategory({ title: 'Income' });
+    })
+    .then(category => {
+        newCategory = category;
+        return newCategory.createItem({ label: 'Paycheck 1' });   
+    })
+    .then(item => {
+        res.status(200).json({ newIncome, newCategory, item });
     })
     .catch(err => console.log(err));
 });
