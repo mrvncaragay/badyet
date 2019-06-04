@@ -117,7 +117,7 @@ const appController = ((uiController, mainController) => {
 
         } else if(e.target.classList.contains(DOM.btnAddIncome.slice(1))) {
 
-            console.log('New Income!!');
+            mainController.addIncome();
         } else {
 
             mainController.clearUpdate(forms, 2);

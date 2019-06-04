@@ -11,6 +11,7 @@ route.put('/app/item', isUserAuth, appController.updateItem);
 route.put('/app/category', isUserAuth, appController.updateCategory);
 route.post('/app/category/new', isUserAuth, appController.postNewCategory);
 route.post('/app/item/new', isUserAuth, appController.postNewItem);
+route.post('/app/income/new', isUserAuth, appController.postNewIncome)
 route.delete('/app/item/:id', isUserAuth, appController.deleteItem);
 route.delete('/app/category/:id', isUserAuth, appController.deleteCategory);
 route.get('/app/income/:month/:year', isUserAuth, appController.getIncome);

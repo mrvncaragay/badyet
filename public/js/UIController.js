@@ -451,6 +451,15 @@ export const UIController = (() => {
                 <span class="no-events">${year} <i class="fas fa-caret-up no-focus no-events "></i></span>
             </button>`;
 
+            const amountBudget = `<div class="amount-budgeted">
+                    <span class="amount-budgeted-amount">$100.00</span>
+                    <span class="amount-budgeted-text">left to budget</span>
+                </div>`;
+            //document.querySelector('.data-date').insertAdjacentHTML('beforeend', amountBudget); 
+
+            const budgetAmount = document.querySelector('.amount-budgeted');
+            if( budgetAmount ) budgetAmount.remove();
+
             document.querySelector('.badyet-date').remove();
             document.querySelector('.category-list').remove();
             document.querySelector('.data-date').insertAdjacentHTML('afterbegin', dateBtnEle); 

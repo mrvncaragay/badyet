@@ -1,5 +1,6 @@
 const helper = require('../util/helper');
 const Item = require('../models/item');
+const Income = require('../models/income');
 const Category = require('../models/category');
 
 exports.getBadyetPage = (req, res) => { 
@@ -129,15 +130,6 @@ exports.getIncome = (req, res) => {
     }, include: [ { model: Category, include: [ Item ] } ] })
     .then(income => {
 
-        // let incomeInfo = income[0];
-        // let incomeItems = income[0].categories.shift().items;
-        // let categories = income[0].categories;
-        //let incomeInfo = income[0];
-        //res.render('app/badyet', { income: incomeInfo, incomeItems: incomeItems, categories: categories });
-        // console.log(income.data.income[0].month);    
-        // console.log(income.data.income[0]);
-        // console.log(income.data.income[0].categories); //pop the first item its the month
-
         res.status(200).json({ income });
     })
     .catch(err => console.log(err));
@@ -154,3 +146,19 @@ exports.getIncomes = (req, res) => {
     })
     .catch(err => console.log(err));
 }
+
+exports.postNewIncome = ((req, res) => {
+      
+    Income.findOrCreate({ where: {
+        month: req.body.month,
+        year: req.body.year,
+        userId: req.currentUser.id
+    }})
+    .then(item => {
+        
+        //item.createCategory
+
+        res.status(200).json({ item });
+    })
+    .catch(err => console.log(err));
+});

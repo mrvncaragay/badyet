@@ -2,16 +2,33 @@ import { UIController } from './UIController.js'
 
 export const MainController = ((uiController) => {
     
-    let incomeId = uiController.getIncomeAndUserKeys().incomeId
+    let incomeId = uiController.getIncomeAndUserKeys().incomeId;
     let item;
     let category;
     let targetElement;
-    const DOM = uiController.getDOM();
-    let nowDate = new Date();
     let monthsData;
     let currentUserIncomes;
+    const DOM = uiController.getDOM();
+    let nowDate = new Date();
+    const selectedDate = {};
 
- 
+    const addIncome = () => {
+        const now = new Date();
+
+        axios.post('/app/income/new', {
+            month: selectedDate.month,
+            year: selectedDate.year
+        })
+        .then(item => {
+
+            if(!item) console.log('item exists');
+
+            console.log(item)
+
+        })
+        .catch(err => console.log(err));
+
+    }
 
     const initUserIncomes = async () => {
         try {
@@ -256,28 +273,26 @@ export const MainController = ((uiController) => {
     }
 
     const showPickedDate = (month, year) => {
-              
+        
         axios.get(`/app/income/${month}/${year}`, {})
             .then(income => {
-
-                // console.log(income.data.income[0].month);
-                // console.log(income.data.income[0]);
-                // console.log(income.data.income[0].categories); //pop the first item its the month
-            
         
                 if( !income.data.income.length ) {
+                                        
+                    selectedDate.month = month;
+                    selectedDate.year = year;
                     
                     uiController.noIncome(month, year);
 
                 }  else {   
 
-                    incomeIId = income.data.income[0].id
+                    incomeId = income.data.income[0].id
                     //const incomeItems = income.data.income[0].categories.shift();  //need to implement the add category button to make this work.
-                    console.log(incomeIId)
+                    console.log(incomeId)
                     uiController.showLoading();
 
                     setTimeout(() => {
-                        uiController.showIncomeData(income.data.income[0], incomeItems, income.data.income[0].categories); //income info, income items, and categories belongs to income
+                        //uiController.showIncomeData(income.data.income[0], incomeItems, income.data.income[0].categories); //income info, income items, and categories belongs to income
                     }, 1000)           
                 }
             })
@@ -286,6 +301,7 @@ export const MainController = ((uiController) => {
 
     return {
         
+        addIncome: addIncome,
         addItem: addItem,
         addGroup: addGroup,
         getItem: getItem,
