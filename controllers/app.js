@@ -9,9 +9,6 @@ exports.getBadyetPage = (req, res) => {
     const selectedMonth = req.body.month|| currentMonth[0];
     let incomeInfo;
 
-    //Different month will cause an error since other month is not on DB
-    //choose which attributes: ['id'] will be included to queried data
-
     req.currentUser.getIncomes({ where: { month: selectedMonth }}) //Get Current User current Month budget
         .then(([ income ]) => {
     
@@ -21,9 +18,19 @@ exports.getBadyetPage = (req, res) => {
         .then(categories => {
             const incomeCategory = categories.shift(); //remove Income category
             incomeInfo.category_id = incomeCategory.id;
+            incomeInfo.categories = categories;
+            incomeInfo.items = incomeCategory.items;
 
-            if( Object.entries(categories).length === 0 ) categories = false;
-            res.render('app/badyet', { income: incomeInfo, incomeItems: incomeCategory.items, categories: categories });
+            return Item.sum('planned', { where: { categoryId: incomeInfo.category_id }})
+
+        })
+        .then(sum => {
+
+            incomeInfo.budget = sum.toFixed(2);
+            
+            if( Object.entries(incomeInfo.categories).length === 0 ) categories = false;
+
+            res.render('app/badyet', { income: incomeInfo, incomeItems: incomeInfo.items, categories: incomeInfo.categories });
 
         })
         .catch(err => console.log(err));

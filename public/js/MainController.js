@@ -11,9 +11,9 @@ export const MainController = ((uiController) => {
     const DOM = uiController.getDOM();
     let nowDate = new Date();
     const selectedDate = {};
+    const budget = uiController.getCurrentBudget();
 
     const addIncome = async () => {
-        const now = new Date();
 
         try {
 
@@ -22,11 +22,8 @@ export const MainController = ((uiController) => {
                 year: selectedDate.year
             })
 
-            if(!data) console.log('item exists');
-
             uiController.removeDateHeader();
             uiController.showLoading('Creating your budget....');
-             //convert the object to object array
 
             setTimeout(() => {
                 uiController.showIncomeData(data.newIncome, [data.item]); 
@@ -128,10 +125,12 @@ export const MainController = ((uiController) => {
         const planned = document.querySelector(DOM.itemPlanned).value;
 
         if( item.label === label && item.planned === planned ) return;
-
+        console.log(budget.total)
+        if(item.planned !== planned) budget.update(); //update budget
+  
         updateItem(label, planned, item.id)
         targetElement.querySelector('.item-label').textContent = `${label}`;
-        targetElement.querySelector('.item-planned').textContent = `$${planned}`; 
+        targetElement.querySelector('.income-planned').textContent = `$${planned}`; 
     }
 
     const categoryChange = () => {
@@ -193,7 +192,7 @@ export const MainController = ((uiController) => {
     }
 
     const showDatePicker = async (move) => {
- 
+
         if(move) {
             move === 'next' ?  nowDate.setMonth(nowDate.getMonth() + 6) :  nowDate.setMonth(nowDate.getMonth() - 6);
         }
@@ -257,16 +256,16 @@ export const MainController = ((uiController) => {
 
     const showPickedDate = (month, year) => {
 
-        //return if month date selected is the same as current selected
+        if(selectedDate.month === month && selectedDate.year === year) return;
+
+        selectedDate.month = month;
+        selectedDate.year = year;
         
         axios.get(`/app/income/${month}/${year}`, {})
             .then(income => {
         
                 if( !income.data.income.length ) {
                                         
-                    selectedDate.month = month;
-                    selectedDate.year = year;
-                    
                     uiController.noIncome(month, year);
 
                 }  else {   

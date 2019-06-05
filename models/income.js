@@ -11,6 +11,10 @@ const Income = sequelize.define('income', {
         allowNull: false,
         primaryKey: true
     },
+ 
+    budget:  {
+        type: Sequelize.DECIMAL(65,2)
+    },
 
     month: {
         type: Sequelize.STRING,

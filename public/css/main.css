@@ -10,7 +10,7 @@
     --icon-size: 20px;
 }
 
-.no-events {
+.no-events, .fa-plus, .fa-caret-up {
     pointer-events: none;
 }
 
@@ -19,6 +19,16 @@
     cursor: text;
 }
 
+.editableItem, .center-self {
+    margin: auto;
+}
+
+.editableCategory {
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #696969;
+    font-size: 18px;
+}
 
 .editable-form {
     padding: 10px;
@@ -72,6 +82,14 @@
     width: auto;
     position: absolute;
     box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.26);
+}
+
+.item-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #696969;
+    text-transform: capitalize;
+    
 }
 
 .no-focus {
@@ -276,7 +294,7 @@ html body {
 }
 
 .income-header-income {
-    letter-spacing: -1px;
+    pointer-events: none;
     text-transform: uppercase;
     font-weight: bold;
     color: #696969;
@@ -326,10 +344,6 @@ button.badyet-date:active {
     color: #696969 !important;
 }
 
-.amount-budgeted {
-    padding-left: 12px;
-}
-
 .amount-budgeted-amount {
     font-size: 20px;
     font-weight: bold;
@@ -350,7 +364,7 @@ button.badyet-date:active {
 
 .income-header-pr-text {
     color: #838282;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: lighter;
     padding: 7px 10px;
 }
@@ -378,10 +392,6 @@ button.badyet-date:active {
     font-weight: bold;
     margin-left: 10px;
     color: #696969;
-}
-
-.income-header-income {
-    line-height: 2;
 }
 
 .btn-add-items {

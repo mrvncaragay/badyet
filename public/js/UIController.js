@@ -46,6 +46,35 @@ export const UIController = (() => {
         incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
     }
 
+    //query selector is catch the previous action. not working
+    const budget = {
+        total: Number(document.querySelector('.amount-budgeted-amount').innerHTML),
+        incomePlanned: document.querySelectorAll('.income-planned'),
+        categoryPlanned: document.querySelectorAll('.category-planned'),
+
+        update: function() {
+
+            this.init();
+            let sum = 0;
+    
+            this.incomePlanned.forEach(item => {
+                
+                sum = sum + parseFloat(item.innerHTML.slice(1) * 1.00)
+                
+            });
+            console.log(sum)
+            document.querySelector('.amount-budgeted-amount').innerHTML = sum;
+        },
+
+        init: function() {
+
+            this.total = parseFloat(document.querySelector('.amount-budgeted-amount').innerHTML);
+            this.incomePlanned = document.querySelectorAll('.income-planned');
+            this.categoryPlanned = document.querySelectorAll('.category-planned');
+        }
+    }
+
+
     const removeEditForm = () => {
         const editItemForm = document.querySelector(DOM.editableItemForm);
 
@@ -74,13 +103,14 @@ export const UIController = (() => {
         const itemEle = `<div class="data-item">
                     <div class="col-12 income-header">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-6 center-self">
                                     <span class="">
                                         <span class="income-header-icon"><i class="fas fa-money-bill-alt"></i></span>
                                         <span class="income-header-income">Income</span>
                                         <span class="income-header-month"><small>for</small>${income.month}</span>
                                     </span>
-                                    <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#income-${income.id}" class="fas fa-caret-up fa-lg clicker"></i></button>
+                                    <button type="button" class="btn no-focus clicker" data-toggle="collapse" data-target="#income-${income.id}"><i class="fas fa-caret-up fa-lg"></i></button>
+                          
                             </div>
                             <div class="col-6">
                                 <div class="row text-right income-header-pr-text">
@@ -98,7 +128,7 @@ export const UIController = (() => {
                                  <div class="card card-body">
                                      <div class="row">
                                          <div class="col-6 editableItem">
-                                             <span class="income-header-income item-label">${item.label}</span>
+                                             <span class="item-label">${item.label}</span>
                                          </div>
                                          <div class="col-6">
                                              <div class="row text-right income-header-pr-text">
@@ -142,10 +172,10 @@ export const UIController = (() => {
                 return `<div class="data-item">
                             <div class="col-12 income-header">
                                 <div class="row">
-                                    <div class="col-6">
-                                        <span class="income-header-income editableCategory category-title" data-categoryid="${category.id}">${category.title}</span>
-                                        <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#category-${category.id}" class="fas fa-caret-up clicker"></i></button>
-        
+                                    <div class="col-6 center-self">
+                                        <span class="editableCategory category-title" data-categoryid="${category.id}">${category.title}</span>
+                                        <button type="button" class="btn no-focus clicker" data-toggle="collapse" data-target="#category-<${category.id}"><i class="fas fa-caret-up"></i></button>
+
                                     </div>
                                     <div class="col-6">
                                         <div class="row text-right income-header-pr-text">
@@ -165,7 +195,7 @@ export const UIController = (() => {
                                         <div class="card card-body">
                                             <div class="row">
                                                 <div class="col-6 editableItem">
-                                                    <span class="income-header-income item-label">${item.label}</span>      
+                                                    <span class="item-label">${item.label}</span>      
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="row text-right income-header-pr-text">
@@ -207,11 +237,11 @@ export const UIController = (() => {
     
         const selectedMonth = document.querySelector(DOM.dateClicker).dataset;
         const activeMonths = document.querySelectorAll(DOM.dateSettings);
-
+        
         for(let i = 0; i < activeMonths.length; i++ ) { //cant break with forEach
             
             let item = activeMonths[i].children[0].dataset;
-
+            
             if (item.month === selectedMonth.month && item.year === selectedMonth.year) {
                 activeMonths[i].classList.add('selected-month');
                 break;
@@ -243,7 +273,7 @@ export const UIController = (() => {
             document.querySelector('.data-date').insertAdjacentHTML('beforeend', amountBudgetEle); 
         }
 
-        const dateBtnEle = `<button type="button" id="date-picker" data-month="${month}" class="btn btn-light badyet-date no-focus">${month}
+        const dateBtnEle = `<button type="button" id="date-picker" data-month="${month}" data-year="${year}" class="btn btn-light badyet-date no-focus">${month}
         <span class="no-events">${year} <i class="fas fa-caret-up no-focus no-events "></i></span>
         </button>`;
 
@@ -251,6 +281,11 @@ export const UIController = (() => {
     }
 
     return {
+
+        getCurrentBudget: () => {
+
+            return budget;
+        },
         
         getIncomeAndUserKeys: () => {
             return getKeys;
@@ -294,8 +329,8 @@ export const UIController = (() => {
                 <div class="col-12 income-header">
                     <div class="row">
                         <div class="col-6">
-                            <span class="income-header-income editableCategory category-title" data-categoryid="${category.id}">${category.title}</span>
-                            <button type="button" class="btn no-focus"><i data-toggle="collapse" data-target="#category-${category.id}>" class="fas fa-caret-up clicker"></i></button>
+                            <span class="editableCategory category-title" data-categoryid="${category.id}">${category.title}</span>
+                            <button type="button" class="btn no-focus clicker" data-toggle="collapse" data-target="#category-${category.id}"><i class="fas fa-caret-up"></i></button>
 
                         </div>
                         <div class="col-6">

@@ -31,9 +31,22 @@ const appController = ((uiController, mainController) => {
 
         if ( targetClassList.contains(DOM.btnDate.slice(1))) {
 
-            uiController.removeDate()
-            mainController.showDatePicker();
+            const datebox = document.querySelector('.date-picker');
+            e.target.querySelector('.fa-caret-up').classList.toggle('fa-rotate-180');
 
+            if ( !datebox ) {
+                
+                mainController.showDatePicker();
+            } else {
+
+                if(  datebox.style.visibility === 'hidden')  {
+
+                    datebox.style.visibility = 'visible';
+                    return;       
+                }
+                datebox.style.visibility = 'hidden';       
+            }
+             
         } else if (targetClassList.contains('prevDate')) {
             
             uiController.removeDate()
