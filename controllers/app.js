@@ -20,14 +20,11 @@ exports.getBadyetPage = (req, res) => {
             incomeInfo.category_id = incomeCategory.id;
             incomeInfo.categories = categories;
             incomeInfo.items = incomeCategory.items;
-
-            return Item.sum('planned', { where: { categoryId: incomeInfo.category_id }})
-
-        })
-        .then(sum => {
-
-            incomeInfo.budget = sum.toFixed(2);
             
+           
+            incomeInfo.budget = helper.getTotal(incomeInfo.items).income.toFixed(2);
+            incomeInfo.total = (incomeInfo.budget - helper.getTotal(incomeInfo.categories).category).toFixed(2); 
+
             if( Object.entries(incomeInfo.categories).length === 0 ) categories = false;
 
             res.render('app/badyet', { income: incomeInfo, incomeItems: incomeInfo.items, categories: incomeInfo.categories });

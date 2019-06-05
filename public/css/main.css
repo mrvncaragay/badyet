@@ -89,6 +89,7 @@
     font-weight: 600;
     color: #696969;
     text-transform: capitalize;
+    pointer-events: none;
     
 }
 

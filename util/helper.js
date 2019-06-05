@@ -41,3 +41,26 @@ exports.getUniqueIds = (arrA, arrB) => {
 
     return items_id;
 }
+
+/* Get total Income items */
+exports.getTotal = (obj) => {
+
+    let total = {
+        income: 0,
+        category: 0
+    };
+
+    obj.forEach(element => {
+
+        if ( element.items ) {
+            
+            element.items.forEach(item => {
+                total.category += parseFloat(item.planned);
+            });
+        }
+
+        total.income += parseFloat(element.planned);
+    });
+
+    return total
+}

@@ -1,12 +1,13 @@
 <div class="data-date">
     <button type="button"  id="date-picker" data-month="<%= income.month %>" data-year="<%= income.year %>" class="btn btn-light badyet-date no-focus"><%= income.month %> <span class="no-events"><%= income.year %> <i class="fas fa-caret-up no-focus no-events "></i></span></button>
     <div class="amount-budgeted">
-            $
-        <span class="amount-budgeted-amount">
-            <%= income.budget%>
+       
+        <span class="amount-budgeted-amount <%= income.total < 0 ? 'text-danger' : '' %>">
+            $<%= Math.abs(income.total) %>
         </span>
+
         <span class="amount-budgeted-text">
-            left to budget
+            <%= income.total < 0 ? 'over the budget' : 'left to budget' %>
         </span>
     </div>
 </div>

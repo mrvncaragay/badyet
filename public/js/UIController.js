@@ -48,32 +48,68 @@ export const UIController = (() => {
 
     //query selector is catch the previous action. not working
     const budget = {
-        total: Number(document.querySelector('.amount-budgeted-amount').innerHTML),
+        
+        totalIncomeDOM:  document.querySelector('.total-income'),
+        incomeDOM:  document.querySelector('.amount-budgeted-amount'),
         incomePlanned: document.querySelectorAll('.income-planned'),
         categoryPlanned: document.querySelectorAll('.category-planned'),
+        incomeText: document.querySelector('.amount-budgeted-text'),
 
-        update: function() {
-
-            this.init();
-            let sum = 0;
-    
-            this.incomePlanned.forEach(item => {
-                
-                sum = sum + parseFloat(item.innerHTML.slice(1) * 1.00)
-                
-            });
-            console.log(sum)
-            document.querySelector('.amount-budgeted-amount').innerHTML = sum;
+        getTotal: function() {
+            return parseFloat(document.querySelector('.amount-budgeted-amount').innerText.slice(1));
         },
 
-        init: function() {
+        getIncomeTotal: function() {
+          
+            let sum = 0;
+            this.incomePlanned.forEach(item => {
+                
+                sum += parseFloat(Math.abs(item.innerHTML.slice(1)))
+            });
 
-            this.total = parseFloat(document.querySelector('.amount-budgeted-amount').innerHTML);
+            return sum;
+        },
+
+        getCategoryTotal: function() {
+
+            let sum = 0;
+            this.categoryPlanned.forEach(item => {
+                
+                sum -= parseFloat(Math.abs(item.innerHTML.slice(1)))
+            });
+
+            return sum;
+        },
+
+        updateIncome: function() {
+
+            this.updateDOMEle();
+
+            let total = (this.getIncomeTotal() + this.getCategoryTotal()).toFixed(2) 
+
+            if( total < 0 ) {
+                total = Math.abs(total);
+                this.incomeDOM.classList.add('text-danger');
+                this.incomeText.innerText = 'over the budget';
+                return;
+
+            } else {
+
+                this.incomeDOM.classList.remove('text-danger');
+                this.incomeText.innerText = 'left to budget';
+            }
+            
+            this.incomeDOM.innerHTML = `$${ total }`;
+            this.totalIncomeDOM.innerHTML = `$${ this.getIncomeTotal().toFixed(2) }`;
+        },
+
+        /** Update DOM elements nodes **/
+        updateDOMEle: function() {
+
             this.incomePlanned = document.querySelectorAll('.income-planned');
             this.categoryPlanned = document.querySelectorAll('.category-planned');
         }
     }
-
 
     const removeEditForm = () => {
         const editItemForm = document.querySelector(DOM.editableItemForm);
@@ -305,7 +341,7 @@ export const UIController = (() => {
                         </div>
                         <div class="col-6">
                             <div class="row text-right income-header-pr-text">
-                                <span class="col-6 editableItem item-planned">$${item.planned}</span>
+                                <span class="col-6 editableItem ${type}-planned">$${item.planned}</span>
                                 <span class="col-6">$${item.spend}</span>
                             </div>
                         </div>
@@ -474,11 +510,9 @@ export const UIController = (() => {
                         $('.modal-backdrop').remove();
                         removeEditForm();
                         node.remove();
+                        budget.updateIncome();
                     }, 400)           
-            }, 600);
-
-
-            
+            }, 600);      
         },
 
         deleteCategory: (node) => {
@@ -500,6 +534,7 @@ export const UIController = (() => {
                          $('.modal-backdrop').remove();
                          removeCategoryForm();
                          node.remove();
+                         budget.updateIncome();
                      }, 500)           
              }, 800);
         },

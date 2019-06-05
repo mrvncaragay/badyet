@@ -5,11 +5,11 @@ export const MainController = ((uiController) => {
     let incomeId = uiController.getIncomeAndUserKeys().incomeId;
     let item;
     let category;
-    let targetElement;
     let monthsData;
     let currentUserIncomes;
     const DOM = uiController.getDOM();
     let nowDate = new Date();
+    const selectedItem = {};
     const selectedDate = {};
     const budget = uiController.getCurrentBudget();
 
@@ -62,12 +62,13 @@ export const MainController = ((uiController) => {
         catch { err => console.log(err) }
     }
 
-    const getItem = async (itemId, e) => {
+    const getItem = async (itemId, e, type) => {
         try {
             const { data } = await axios.get(`/app/item/${itemId}`);
 
             item = data.item;
-            targetElement = e.target.parentNode.parentNode.parentNode;
+            selectedItem.node = e.target.parentNode.parentNode.parentNode;
+            selectedItem.type = type;
             uiController.editItem(data.item, e); //create a clicked item edit form
 
         } catch (err) { console.log(err) }
@@ -78,7 +79,7 @@ export const MainController = ((uiController) => {
 
             const { data } = await axios.get(`/app/category/${categoryId}`);
             category = data.category;
-            targetElement = e.target.parentNode;
+            selectedItem.category = e.target.parentNode;
 
             uiController.editCategory(category, e);
             
@@ -119,18 +120,21 @@ export const MainController = ((uiController) => {
     }
 
     const itemChange = () => {
+
         if(!document.querySelector(DOM.editableItemForm)) return;
  
         const label = document.querySelector(DOM.itemLabel).value;
         const planned = document.querySelector(DOM.itemPlanned).value;
 
         if( item.label === label && item.planned === planned ) return;
-        console.log(budget.total)
-        if(item.planned !== planned) budget.update(); //update budget
-  
+   
         updateItem(label, planned, item.id)
-        targetElement.querySelector('.item-label').textContent = `${label}`;
-        targetElement.querySelector('.income-planned').textContent = `$${planned}`; 
+        
+        selectedItem.node.querySelector('.item-label').textContent = `${label}`;
+        selectedItem.node.querySelector(`.${selectedItem.type}-planned`).textContent = `$${Math.abs(planned).toFixed(2)}`; 
+
+        if(item.planned !== planned) budget.updateIncome();
+        
     }
 
     const categoryChange = () => {
@@ -141,7 +145,7 @@ export const MainController = ((uiController) => {
         if( category.title === title ) return;
 
         updateCategory(title, category.id)
-        targetElement.querySelector(DOM.selectedCateTitle).textContent = `${title}`;
+        selectedItem.category.querySelector(DOM.selectedCateTitle).textContent = `${title}`;
     }
 
     const deleteItem = async (node, id) => {
@@ -149,7 +153,7 @@ export const MainController = ((uiController) => {
 
             await axios.delete(`/app/item/${id}`);
             uiController.deleteItem(node);
-            
+                
         } catch (err) { console.log(err) }
     }
 
@@ -158,6 +162,7 @@ export const MainController = ((uiController) => {
 
             await axios.delete(`/app/category/${id}`);
             uiController.deleteCategory(node);
+            budget.updateIncome();
 
         } catch (err) { console.log(err) }
     }

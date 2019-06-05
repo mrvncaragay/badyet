@@ -100,7 +100,11 @@ const appController = ((uiController, mainController) => {
             
             itemSelected.id = e.target.closest(DOM.itemData).dataset.itemid;
             itemSelected.node = e.target.closest(DOM.itemData);
-            mainController.getItem(itemSelected.id, e);
+
+            const type = e.target.closest(DOM.itemData).id 
+            itemSelected.type = type.slice(0, type.length - 2);
+
+            mainController.getItem(itemSelected.id, e, itemSelected.type);
             mainController.clearUpdate(forms);
          
         } else if ( targetClassList.contains(DOM.editableCategory.slice(1) )) {
