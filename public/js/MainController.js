@@ -24,7 +24,8 @@ export const MainController = ((uiController) => {
 
             uiController.removeDateHeader();
             uiController.showLoading('Creating your budget....');
-            
+            currentUserIncomes.push({ month: selectedDate.month, year: parseInt(selectedDate.year) }) //update date picker active
+
             setTimeout(() => {
                 uiController.showIncomeData(data.newIncome, [data.item]); 
             }, 2000)     
