@@ -39,4 +39,5 @@ This app is created using node, express, mysql, and vanila js. This app will be 
     - Budget Items 
 
 -To Fix
-    -Planned(4,2) need to increase               
+    -when clicked on remaining drop down update items with remaining balance
+    -refractor code in UI and MAIN         

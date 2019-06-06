@@ -37,7 +37,10 @@ export const UIController = (() => {
         btnDate: `.badyet-date`,
         budgetAmount: '.amount-budgeted',
         dateSettings: '.date-settings',
-        dateCointainer: '.main-data-date'
+        dateCointainer: '.main-data-date',
+        rsButton: '.rs-btn',
+        rsButtonRemaining: '.category-remaining',
+        rsButtonSpent: '.category-spent',
     }
 
     const getKeys = {
@@ -112,6 +115,13 @@ export const UIController = (() => {
             this.incomePlanned = document.querySelectorAll('.income-planned');
             this.categoryPlanned = document.querySelectorAll('.category-planned');
         }
+    }
+
+    const removeRS = () => {
+        const rs = document.querySelector('.rs-style');
+
+        if ( !rs ) return;
+        rs.remove();
     }
 
     const removeEditForm = () => {
@@ -219,8 +229,9 @@ export const UIController = (() => {
                                     <div class="col-6">
                                         <div class="row text-right income-header-pr-text">
                                             <div class="col-6">Planned</div>
-                                            <div class="col-6">Remaining</div>
-                                            <!-- Drop down -->
+                                            <div class="col-6">
+                                                <button type="button" class="btn no-focus rs-btn">Remaining <i class="fas fa-caret-down"></i></button>
+                                            </div>
         
                                         </div>
                                     </div>
@@ -383,7 +394,9 @@ export const UIController = (() => {
                         <div class="col-6">
                             <div class="row text-right income-header-pr-text">
                                 <div class="col-6">Planned</div>
-                                <div class="col-6">Remaining</div>
+                                <div class="col-6">
+                                    s<button type="button" class="btn no-focus rs-btn">Remaining <i class="fas fa-caret-down"></i></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -626,11 +639,48 @@ export const UIController = (() => {
             document.querySelector('#date-picker').insertAdjacentHTML('afterend', dateEle);
         },
 
+        showRSPicker: (e) => {
+
+            const itemEle = `<div class="row text-center rs-style">           
+                <div class="col-12">
+                    <div class="list-group rs-style-tab" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action category-remaining" data-toggle="list" href="#remaining" role="tab" aria-controls="home">Remaining</a>
+                    <a class="list-group-item list-group-item-action category-spent" data-toggle="list" href="#spent" role="tab" aria-controls="profile">Spent</a>
+                    </div>
+                    </div>                    
+                </div>`;
+
+                const mainApp = document.querySelector(DOM.mainAppContainer);
+                const rect = e.getBoundingClientRect();
+         
+                e.insertAdjacentHTML('afterbegin', itemEle);           
+        },
+
+        renderSpent: () => {
+            const rsBtn = document.querySelectorAll(DOM.rsButton);
+         
+            rsBtn.forEach(rs => {
+
+                rs.textContent = 'Spent';
+            })
+        },
+
+        renderRemaining: () => {
+            const rsBtn = document.querySelectorAll(DOM.rsButton);
+
+            rsBtn.forEach(rs => {
+
+                rs.textContent = 'Remaining';
+            })
+        },
+
         removeEditForm: removeEditForm,
 
         removeCategoryForm: removeCategoryForm,
 
         removeDate: removeDate,
+
+        removeRS: removeRS,
 
         updateSelectedMonth: updateSelectedMonth,
 

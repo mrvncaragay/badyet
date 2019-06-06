@@ -12,7 +12,7 @@ const appController = ((uiController, mainController) => {
     const categorySelected = {}
     const DOM = uiController.getDOM();
 
-    const forms = [  mainController.itemChange, mainController.categoryChange, mainController.removeItemForm, mainController.removeCategoryForm, uiController.removeDate ];
+    const forms = [  mainController.itemChange, mainController.categoryChange, mainController.removeItemForm, mainController.removeCategoryForm, uiController.removeRS, uiController.removeDate ];
 
     const setUpEventListener = () => {
 
@@ -134,9 +134,26 @@ const appController = ((uiController, mainController) => {
 
         } else if(e.target.classList.contains(DOM.btnAddIncome.slice(1))) {
 
+            
             mainController.addIncome();
+
+        } else if(e.target.classList.contains(DOM.rsButton.slice(1))) {
+
+            mainController.clearUpdate(forms);
+            mainController.showRS(e.target);
+        } else if(e.target.classList.contains(DOM.rsButtonRemaining.slice(1))) {
+
+            mainController.clearUpdate(forms)
+            mainController.renderRemaining();
+
+        } else if(e.target.classList.contains(DOM.rsButtonSpent.slice(1))) {
+
+            mainController.clearUpdate(forms);
+            mainController.renderSpent();
+    
         } else {
 
+            uiController.removeRS();
             mainController.clearUpdate(forms, 2);
             mainController.clickSelfItem(e);
             mainController.clickSelfCategory(e);   

@@ -10,7 +10,7 @@
     --icon-size: 20px;
 }
 
-.no-events, .fa-plus, .fa-caret-up {
+.no-events, .fa-plus, .fa-caret-up, .fa-caret-down {
     pointer-events: none;
 }
 
@@ -505,4 +505,76 @@ button.badyet-date:active {
 .selected-month {
     background-color: #c20606;
     color: white;
+}
+
+.rs-btn {
+    color: #838282;
+    font-size: 15px;
+    font-weight: lighter;
+}
+
+.rs-style {
+    left: 40px;
+    top: 15px;
+    width: auto;
+    padding: 10px; 
+    position: absolute; 
+    z-index: 2;
+    line-height: 1;
+}
+
+.rs-style-tab {
+    box-shadow: 0 0.4rem 1.6rem 0 rgba(31,36,38,.26);
+}
+
+
+/****************** RIGHT PANEL ***************/
+
+.top-panel-header {
+    height: 30%;
+}
+
+.top-panel-header-info {
+    line-height: 1;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    margin: 0;
+} 
+
+.middle-panel-data {
+    margin-bottom: 10px;
+}
+
+.bottom-panel-data {
+    height: 50%;
+}
+
+.bottom-panel-data-budget-data {
+    height: 100%;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.budget-data-item {
+    background-color: var(--background-color);
+    padding-right: 0px;
+    padding-left: 0px;
+    border-right-style: none;
+    border-left-style: none;
+    border-bottom-style: 1px solid rgba(0,0,0,.2);
+}
+
+.tab-data-planned {
+    padding-left: 5px;
+}
+
+.tab-data-remaining, .tab-data-planned, .tab-data-spent {
+    color: #838282;
+}
+
+.tab-data-remaining:hover, .tab-data-planned:hover, .tab-data-spent:hover {
+    font-weight: bold;
+    color: #838282;
 }

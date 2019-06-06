@@ -2,7 +2,7 @@
 <div class="container-fluid">
     <div class="row main-app-container">
         <div class="col-2 left-panel-container sticky-top">
-            <%- include('./sidepanel.ejs', {badyet: true}) %>
+            <%- include('./leftpanel.ejs', {badyet: true}) %>
         </div>   
 
         <div class="col-6 main-panel-container">
@@ -26,16 +26,13 @@
                             <input type="hidden" class="csrf_token" name="_csrf" value="<%#= csrfToken %>">    
                             <button role="button" data-toggle="" class="btn no-focus add-category-button" href="#"><i class="fas fa-plus"></i>ADD GROUP</button> 
                         </div> 
-                        
-                        
+                         
                     </div>
                 </div> 
         </div>
 
-
         <div class="col-4 right-panel-container sticky-top">
-            right-panel-container
-
+            <%- include('./rightpanel.ejs') %>
         </div>
     </div>
 </div>

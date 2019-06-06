@@ -293,6 +293,21 @@ export const MainController = ((uiController) => {
             .catch(err => console.log(err));
     }
 
+    const showRS = (e) => {
+        
+        uiController.showRSPicker(e);
+    }
+
+    const renderSpent = () => {
+        
+        uiController.renderSpent();
+    }
+
+    const renderRemaining = () => {
+        
+        uiController.renderRemaining();
+    }
+
     return {
         
         addIncome: addIncome,
@@ -313,7 +328,10 @@ export const MainController = ((uiController) => {
         removeCategoryForm: uiController.removeCategoryForm,
         showDatePicker: showDatePicker,
         showPickedDate: showPickedDate,
-        initUserIncomes: initUserIncomes()
+        initUserIncomes: initUserIncomes(),
+        showRS: showRS,
+        renderSpent: renderSpent,
+        renderRemaining: renderRemaining
 
     }
 })(UIController);
