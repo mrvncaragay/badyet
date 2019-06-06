@@ -24,7 +24,7 @@ export const MainController = ((uiController) => {
 
             uiController.removeDateHeader();
             uiController.showLoading('Creating your budget....');
-
+            
             setTimeout(() => {
                 uiController.showIncomeData(data.newIncome, [data.item]); 
             }, 2000)     
@@ -196,7 +196,7 @@ export const MainController = ((uiController) => {
         }
     }
 
-    const showDatePicker = async (move) => {
+    const showDatePicker = (move) => {
 
         if(move) {
             move === 'next' ?  nowDate.setMonth(nowDate.getMonth() + 6) :  nowDate.setMonth(nowDate.getMonth() - 6);
@@ -226,6 +226,7 @@ export const MainController = ((uiController) => {
         arr.forEach(date => {
             
             if( !monthSelected ) {
+
                 currentUserIncomes.forEach(udate => {
                     if ( date.month.long === udate.month && date.year === udate.year ) {
                         
@@ -236,7 +237,7 @@ export const MainController = ((uiController) => {
             }
                 
             if( monthSelected === date.month.long ) {
-                date.selected = true;
+                date.active = true;
                 return;
             } 
         });
@@ -268,7 +269,7 @@ export const MainController = ((uiController) => {
         
         axios.get(`/app/income/${month}/${year}`, {})
             .then(income => {
-        
+
                 if( !income.data.income.length ) {
                                         
                     uiController.noIncome(month, year);
@@ -277,12 +278,15 @@ export const MainController = ((uiController) => {
                     
                     incomeId = income.data.income[0].id;
                     const incomeItems = income.data.income[0].categories.shift(); //remove the first element income in the category
+
+                    income.data.income[0].budget = income.data.budget;
+
                     uiController.showLoading('Loading...');
                     uiController.removeDateHeader();
-
+                    
                     setTimeout(() => {
-                        uiController.showIncomeData(income.data.income[0], incomeItems.items, income.data.income[0].categories); //income info, income items, and categories belongs to income
-                    }, 2000)           
+                        uiController.showIncomeData(income.data.income[0], incomeItems.items, income.data.income[0].categories, income.data.total); //income info, income items, and categories belongs to income
+                    }, 1000)           
                 }
             })
             .catch(err => console.log(err));

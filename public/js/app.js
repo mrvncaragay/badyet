@@ -102,8 +102,8 @@ const appController = ((uiController, mainController) => {
             itemSelected.node = e.target.closest(DOM.itemData);
 
             const type = e.target.closest(DOM.itemData).id 
-            itemSelected.type = type.slice(0, type.length - 2);
-
+            itemSelected.type = type.replace(/-\d+/, '');
+            
             mainController.getItem(itemSelected.id, e, itemSelected.type);
             mainController.clearUpdate(forms);
          

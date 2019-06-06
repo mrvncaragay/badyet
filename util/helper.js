@@ -42,15 +42,17 @@ exports.getUniqueIds = (arrA, arrB) => {
     return items_id;
 }
 
-/* Get total Income items */
-exports.getTotal = (obj) => {
+/* Get total Income items skip - to skipp the first element in the array*/ 
+exports.getTotal = (obj, skip) => {
 
     let total = {
         income: 0,
         category: 0
     };
 
-    obj.forEach(element => {
+    obj.forEach( (element, i) => {
+
+        if( skip && i === 0 ) return;
 
         if ( element.items ) {
             

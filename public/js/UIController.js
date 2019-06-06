@@ -55,10 +55,6 @@ export const UIController = (() => {
         categoryPlanned: document.querySelectorAll('.category-planned'),
         incomeText: document.querySelector('.amount-budgeted-text'),
 
-        getTotal: function() {
-            return parseFloat(document.querySelector('.amount-budgeted-amount').innerText.slice(1));
-        },
-
         getIncomeTotal: function() {
           
             let sum = 0;
@@ -81,17 +77,21 @@ export const UIController = (() => {
             return sum;
         },
 
-        updateIncome: function() {
+        getBudgetTotal: function() {
 
+            return (this.getIncomeTotal() + this.getCategoryTotal()).toFixed(2); 
+        },
+
+        updateIncome: function() {
+            
             this.updateDOMEle();
 
-            let total = (this.getIncomeTotal() + this.getCategoryTotal()).toFixed(2) 
-
+            let total = this.getBudgetTotal();
+            
             if( total < 0 ) {
-                total = Math.abs(total);
+                total = Math.abs(total).toFixed(2);
                 this.incomeDOM.classList.add('text-danger');
                 this.incomeText.innerText = 'over the budget';
-                return;
 
             } else {
 
@@ -106,6 +106,9 @@ export const UIController = (() => {
         /** Update DOM elements nodes **/
         updateDOMEle: function() {
 
+            this.incomeText = document.querySelector('.amount-budgeted-text');
+            this.totalIncomeDOM = document.querySelector('.total-income');
+            this.incomeDOM = document.querySelector('.amount-budgeted-amount');
             this.incomePlanned = document.querySelectorAll('.income-planned');
             this.categoryPlanned = document.querySelectorAll('.category-planned');
         }
@@ -168,7 +171,7 @@ export const UIController = (() => {
                                          </div>
                                          <div class="col-6">
                                              <div class="row text-right income-header-pr-text">
-                                                 <span class="col-6 editableItem item-planned">$${item.planned}</span>
+                                                 <span class="col-6 editableItem income-planned">$${item.planned}</span>
                                                  <span class="col-6">$${item.spend}</span>
                                              </div>
                                          </div>
@@ -187,9 +190,9 @@ export const UIController = (() => {
                                     <input type="hidden" class="income-category-id" value="${income.category_id}"> 
                                     <a role="button" data-toggle="" class="btn no-focus btn-add-items add-income-item-button" href="#"><i class="fas fa-plus "></i> Add Paycheck</a>  
                                 </div>
-                                <div class="col-6">
+                                <div class="col-6 center-self">
                                     <div class="row text-right income-header-pr-text">
-                                        <div class="col-6">$0.00</div>
+                                        <div class="col-6 total-income">$${income.budget}</div>
                                         <div class="col-6">$0.00</div>
                                     </div>
                                 </div>
@@ -235,7 +238,7 @@ export const UIController = (() => {
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="row text-right income-header-pr-text">
-                                                        <div class="col-6 editableItem item-planned">$${item.planned}</div>
+                                                        <div class="col-6 editableItem category-planned">$${item.planned}</div>
                                                         <div class="col-6">$${item.spend}</div>
                                                     </div>
                                                 </div>
@@ -294,19 +297,27 @@ export const UIController = (() => {
         if( budgetAmount ) budgetAmount.remove();
     }
 
-    const dateHeader = (month, year, income) => {
-
+    const dateHeader = (month, year, income, monthBudget) => {
+        
         if( !income ) {    
             removeDateHeader();
 
         } else {
 
             const amountBudgetEle = `<div class="amount-budgeted">
-                <span class="amount-budgeted-amount">$300.00</span>
-                <span class="amount-budgeted-text">left to budget</span>
+
+                <span class="amount-budgeted-amount ${ monthBudget < 0 ? 'text-danger' : '' }">
+                    ${ monthBudget ? '$' + Math.abs(monthBudget).toFixed(2) : '' }
+                </span>
+
+                <span class="amount-budgeted-text">
+                    ${ monthBudget ?  monthBudget < 0 ? 'over the budget' : 'left to budget' : ''  }       
+                </span>
+
             </div>`;
             
             document.querySelector('.data-date').insertAdjacentHTML('beforeend', amountBudgetEle); 
+         
         }
 
         const dateBtnEle = `<button type="button" id="date-picker" data-month="${month}" data-year="${year}" class="btn btn-light badyet-date no-focus">${month}
@@ -571,7 +582,7 @@ export const UIController = (() => {
             document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
         },
 
-        showIncomeData: (income, incomeItems, categories) => {
+        showIncomeData: (income, incomeItems, categories, budget) => {
             const itemEle = `<div class="col category-list">
                 ${incomeEle(income, incomeItems)}
                 
@@ -585,7 +596,7 @@ export const UIController = (() => {
         
 
             document.querySelector('.category-list').remove();
-            dateHeader(income.month, income.year, income);
+            dateHeader(income.month, income.year, income, budget);
             document.querySelector('.main-data').insertAdjacentHTML('afterbegin', itemEle); 
         },    
 

@@ -20,7 +20,7 @@ const app = express();
 const mysequelizestore = new MySequelizeStore({
     db: sequelize,
     checkExpirationInterval: 15 * 60 * 1000, // The interval at which to cleanup expired sessions in milliseconds.
-    expiration: 30 * 60 * 1000 //1 * 60 * 60 * 1000  // The maximum age (in milliseconds) of a valid session.
+    expiration: 60 * 60 * 1000 //1 * 60 * 60 * 1000  // The maximum age (in milliseconds) of a valid session.
 });
 // const csrfProtection = csrf();
 

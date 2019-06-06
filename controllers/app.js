@@ -133,8 +133,14 @@ exports.getIncome = (req, res) => {
 
     }, include: [ { model: Category, include: [ Item ] } ] })
     .then(income => {
+        
+        if ( income.length > 0 ) {
 
-        res.status(200).json({ income });
+            income.budget = (helper.getTotal(income[0].categories[0].items).income).toFixed(2);
+            income.total = (income.budget  - helper.getTotal(income[0].categories, true).category).toFixed(2);
+        }
+
+        res.status(200).json({ income, total: income.total, budget: income.budget });
     })
     .catch(err => console.log(err));
 }
