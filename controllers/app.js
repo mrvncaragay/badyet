@@ -6,28 +6,23 @@ const Category = require('../models/category');
 exports.getBadyetPage = (req, res) => { 
 
     const currentMonth = helper.getmonthYear();
-    const selectedMonth = req.body.month|| currentMonth[0];
+    const selectedMonth = req.body.month || currentMonth[0];
     let incomeInfo;
 
-    req.currentUser.getIncomes({ where: { month: selectedMonth }}) //Get Current User current Month budget
+    req.currentUser.getIncomes({ where: { month: selectedMonth }, include: [ { model: Category, include: [ Item ] }] }) //Get Current User current Month budget
         .then(([ income ]) => {
-    
-            incomeInfo = income;
-            return incomeInfo.getCategories({ include: [ Item ] }); //Get income Category
-        })
-        .then(categories => {
-            const incomeCategory = categories.shift(); //remove Income category
-            incomeInfo.category_id = incomeCategory.id;
-            incomeInfo.categories = categories;
-            incomeInfo.items = incomeCategory.items;
-            
            
+            incomeInfo = income;
+            const incomeCategory = income.categories.shift(); //remove Income categor
+            incomeInfo.category_id = incomeCategory.id;
+            incomeInfo.items = incomeCategory.items;
+                       
             incomeInfo.budget = helper.getTotal(incomeInfo.items).income.toFixed(2);
             incomeInfo.total = (incomeInfo.budget - helper.getTotal(incomeInfo.categories).category).toFixed(2); 
-
+            
             if( Object.entries(incomeInfo.categories).length === 0 ) categories = false;
 
-            res.render('app/badyet', { income: incomeInfo, incomeItems: incomeInfo.items, categories: incomeInfo.categories });
+            res.render('app/badyet', { income: incomeInfo, categories: incomeInfo.categories });
 
         })
         .catch(err => console.log(err));

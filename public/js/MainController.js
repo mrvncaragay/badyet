@@ -2,7 +2,6 @@ import { UIController } from './UIController.js'
 
 export const MainController = ((uiController) => {
     
-    let incomeId = uiController.getIncomeAndUserKeys().incomeId;
     let item;
     let category;
     let monthsData;
@@ -10,25 +9,29 @@ export const MainController = ((uiController) => {
     const DOM = uiController.getDOM();
     let nowDate = new Date();
     const selectedItem = {};
-    const selectedDate = {};
     const budget = uiController.getCurrentBudget();
 
-    const addIncome = async () => {
+    const addIncome = async (month, year) => {
 
         try {
 
             const { data } = await axios.post('/app/income/new', {
-                month: selectedDate.month,
-                year: selectedDate.year
+                month: month,
+                year: year
             })
 
             uiController.removeDateHeader();
             uiController.showLoading('Creating your budget....');
-            currentUserIncomes.push({ month: selectedDate.month, year: parseInt(selectedDate.year) }) //update date picker active
-
+            currentUserIncomes.push({ month: month, year: parseInt(year) }) //update date picker active
+                
             setTimeout(() => {
-                uiController.showIncomeData(data.newIncome, [data.item]); 
-            }, 2000)     
+
+                uiController.showIncomeData(data.newIncome, [data.item]);
+                return data.newIncome.id;
+               
+            }, 2000)
+            
+            return data.newIncome.id;
 
         } catch (error) {
             
@@ -57,41 +60,42 @@ export const MainController = ((uiController) => {
 
     const addItem = async (categoryId, type) => {
         try {    
+
             const { data }  = await axios.post('/app/item/new', { categoryId: categoryId });
             uiController.addItem(data.item, type);
         } 
         catch { err => console.log(err) }
     }
 
-    const getItem = async (itemId, e, type) => {
+    const getItem = async (itemId) => {
         try {
             const { data } = await axios.get(`/app/item/${itemId}`);
 
-            item = data.item;
-            selectedItem.node = e.target.parentNode.parentNode.parentNode;
-            selectedItem.type = type;
-            uiController.editItem(data.item, e); //create a clicked item edit form
+            //selectedItem.node = e.target.parentNode.parentNode.parentNode; //this is for update
+            //selectedItem.type = type;
+   
+            return data.item;
 
         } catch (err) { console.log(err) }
     }
 
-    const getCategory = async (categoryId, e) => {
+    const getCategory = async (categoryId) => {
         try {
-
+      
             const { data } = await axios.get(`/app/category/${categoryId}`);
-            category = data.category;
-            selectedItem.category = e.target.parentNode;
+            //category = data.category;
+            //selectedItem.category = e.target.parentNode;
 
-            uiController.editCategory(category, e);
+            return data.category;      
             
         } catch (err) { console.log(err) }
     }
 
-    const addGroup = async () => {
-
+    const addGroup = async (id) => {
+       
         try {
 
-            const { data } = await axios.post('/app/category/new', { incomeId: incomeId });
+            const { data } = await axios.post('/app/category/new', { incomeId: id });
             uiController.addCategory(data.category);
 
         } catch (err) { console.log(err) }
@@ -124,29 +128,29 @@ export const MainController = ((uiController) => {
 
         if(!document.querySelector(DOM.editableItemForm)) return;
  
-        const label = document.querySelector(DOM.itemLabel).value;
-        const planned = document.querySelector(DOM.itemPlanned).value;
+        // const label = document.querySelector(DOM.itemLabel).value;
+        // const planned = document.querySelector(DOM.itemPlanned).value;
 
-        if( item.label === label && item.planned === planned ) return;
+        // if( item.label === label && item.planned === planned ) return;
    
-        updateItem(label, planned, item.id)
+        // updateItem(label, planned, item.id)
         
-        selectedItem.node.querySelector('.item-label').textContent = `${label}`;
-        selectedItem.node.querySelector(`.${selectedItem.type}-planned`).textContent = `$${Math.abs(planned).toFixed(2)}`; 
+        // //selectedItem.node.querySelector('.item-label').textContent = `${label}`; for update
+        // //selectedItem.node.querySelector(`.${selectedItem.type}-planned`).textContent = `$${Math.abs(planned).toFixed(2)}`; 
 
-        if(item.planned !== planned) budget.updateIncome();
+        // if(item.planned !== planned) budget.updateIncome();
         
     }
 
     const categoryChange = () => {
-        if(!document.querySelector(DOM.editableCategoryForm)) return;
+        //if(!document.querySelector(DOM.editableCategoryForm)) return;
  
-        const title = document.querySelector(DOM.categoryTitle).value;
+        //const title = document.querySelector(DOM.categoryTitle).value;
         
-        if( category.title === title ) return;
+        //if( category.title === title ) return;
 
-        updateCategory(title, category.id)
-        selectedItem.category.querySelector(DOM.selectedCateTitle).textContent = `${title}`;
+        //updateCategory(title, category.id)
+        //selectedItem.category.querySelector(DOM.selectedCateTitle).textContent = `${title}`;
     }
 
     const deleteItem = async (node, id) => {
@@ -263,11 +267,8 @@ export const MainController = ((uiController) => {
 
     const showPickedDate = (month, year) => {
 
-        if(selectedDate.month === month && selectedDate.year === year) return;
+        //if(selectedDate.month === month && selectedDate.year === year) return;
 
-        selectedDate.month = month;
-        selectedDate.year = year;
-        
         axios.get(`/app/income/${month}/${year}`, {})
             .then(income => {
 
@@ -277,7 +278,6 @@ export const MainController = ((uiController) => {
 
                 }  else {   
                     
-                    incomeId = income.data.income[0].id;
                     const incomeItems = income.data.income[0].categories.shift(); //remove the first element income in the category
 
                     income.data.income[0].budget = income.data.budget;

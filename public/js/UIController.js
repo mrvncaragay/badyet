@@ -43,7 +43,7 @@ export const UIController = (() => {
         rsButtonSpent: '.category-spent',
     }
 
-    const getKeys = {
+    const income = {
         incomeId: document.querySelector(DOM.incomeId).value,
         csrfToken: document.querySelector(DOM.csrfToken).value,
         incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
@@ -135,6 +135,7 @@ export const UIController = (() => {
 
         const editCategoryForm = document.querySelector(DOM.editableCategoryForm);
         
+      
         if ( !editCategoryForm ) return;
         editCategoryForm.childNodes[0].parentNode.remove();
     }
@@ -346,7 +347,7 @@ export const UIController = (() => {
         },
         
         getIncomeAndUserKeys: () => {
-            return getKeys;
+            return income;
         },
         
         getDOM: () => { 
@@ -355,7 +356,7 @@ export const UIController = (() => {
 
         addItem: (item, type) => { 
              
-            const itemEle = `<div class="collapse show item-data" id="${type}-${type === 'income' ? getKeys.incomeId : item.categoryId}" data-itemid="${item.id}">
+            const itemEle = `<div class="collapse show item-data" id="${type}-${type === 'income' ? income.incomeId : item.categoryId}" data-itemid="${item.id}">
                 <div class="card card-body">
                     <div class="row">
                         <div class="col-6 editableItem">

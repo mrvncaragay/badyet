@@ -66,3 +66,10 @@ exports.getTotal = (obj, skip) => {
 
     return total
 }
+
+exports.dataPicker = (fields, object = {}) => {
+
+    const [first, ...remaining] = fields.split(".")
+
+    return (remaining.length) ? deepPick(remaining.join("."), object[first]) : object[first]  
+}

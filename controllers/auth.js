@@ -39,7 +39,7 @@ exports.postNewUser = (req, res) => {
                         })
                         .then(category => {
 
-                            category.createItem({ label: 'Paycheck 1', categoryId: category.id });
+                            category.createItem({ label: 'PAYCHECK 1', categoryId: category.id });
                         })
                         .then(() => {
                             res.redirect('/app/sign-in');
