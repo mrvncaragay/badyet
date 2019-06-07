@@ -8,11 +8,10 @@ const appController = ((uiController, mainController) => {
         categoryId: mainController.selectedMonthIncome.incomeCategoryId
     }
 
-    const itemSelected = {}
-    const categorySelected = {}
     const DOM = uiController.getDOM();
 
-    const forms = [  mainController.itemChange, mainController.categoryChange, mainController.removeItemForm, mainController.removeCategoryForm, uiController.removeRS, uiController.removeDate ];
+    const forms = [ mainController.removeItemForm, mainController.removeCategoryForm, uiController.removeRS, uiController.removeDate ];
+    const fncToRender = [];
 
     const setUpEventListener = () => {
 
@@ -21,7 +20,7 @@ const appController = ((uiController, mainController) => {
         document.querySelector(DOM.rightPanelContainer).addEventListener('click', clickOnMainRightPanel, false); //category list container
         document.querySelector(DOM.leftPanelContainer).addEventListener('click', clickOnMainLeftPanel, false); //category list container
         document.addEventListener('keypress', (e) => {
-            if ( e.key === 13 || e.which === 13 ) mainController.clearUpdate(forms);
+            if ( e.key === 13 || e.which === 13 ) mainController.eachFnc(forms);
         }); //keypress enter
     };
 
@@ -49,7 +48,7 @@ const appController = ((uiController, mainController) => {
              
         } else if (targetClassList.contains('prevDate')) {
             
-            uiController.removeDate()
+            uiController.removeDate();
             mainController.showDatePicker('prev');
 
 
@@ -73,78 +72,91 @@ const appController = ((uiController, mainController) => {
 
     const clickOnMainLeftPanel = e => {
 
-        mainController.clearUpdate(forms);
+        
     }
 
     const clickOnMainRightPanel = e => {
 
-        mainController.clearUpdate(forms);
+        
     }
 
     const clickOnMainPanel = e => {
-        
+
+        if( fncToRender.length > 0 ) {
+
+            mainController.eachFnc(fncToRender);  
+        }
+
         const targetClassList = e.target.classList;
       
         if( targetClassList.contains(DOM.btnAddIncomeItem.slice(1))) {
-
-            mainController.clearUpdate(forms);
+         
+            mainController.eachFnc(forms);  
             mainController.addItem(income.categoryId, 'income');
         
         } else if ( targetClassList.contains(DOM.btnAddCategoryItem.slice(1) )) {
             
-            const catId = e.target.previousElementSibling.value;
-            mainController.clearUpdate(forms);
+            mainController.eachFnc(forms);  
+            const catId = e.target.previousElementSibling.value;    
             mainController.addItem(catId, 'category');
 
         } else if ( targetClassList.contains(DOM.editableItem.slice(1) )) {
-            
-            itemSelected.id = e.target.closest(DOM.itemData).dataset.itemid;
-            //itemSelected.node = e.target.closest(DOM.itemData);
 
-            const type = e.target.closest(DOM.itemData).id 
-            itemSelected.type = type.replace(/-\d+/, '');
-            
-            mainController.getItem(itemSelected.id, itemSelected.type)
+            const node = e.target.closest(DOM.itemData);     
+
+            mainController.getItem(node.dataset.itemid)
                 .then(data => { 
 
-                    uiController.editItem(data, e); 
+                    uiController.editItem(data, e.target);
+                    fncToRender.pop();
+                    fncToRender.push(mainController.itemChange(data, node)); 
                 })
                 .catch(err => console.log(err))
 
-            mainController.clearUpdate(forms);
-         
+            mainController.eachFnc(forms);  
+            
         } else if ( targetClassList.contains(DOM.editableCategory.slice(1) )) {
-
-            categorySelected.id = e.target.dataset.categoryid;
-            categorySelected.node = e.target.closest(DOM.dataItem);
-
-            mainController.getCategory(categorySelected.id)
+         
+            const node = e.target;
+        
+            mainController.getCategory(node.dataset.categoryid)
                 .then(data => {
-                    uiController.editCategory(data, e);
 
-                })
+                    uiController.editCategory(data, e);  
+                    fncToRender.pop();
+                    fncToRender.push(mainController.categoryChange(data, node)); //add function to   
+                })  
                 .catch(err => console.log(err));
 
-            //use currying or higher order function to create a new update function for updating editable items.
-            mainController.clearUpdate(forms);
+            mainController.eachFnc(forms);     
 
         } else if ( targetClassList.contains(DOM.btnAddCategory.slice(1) )) {
-
-            mainController.addGroup(income.id);
-            mainController.clearUpdate(forms);
+    
+            mainController.addGroup(income.id); 
+            mainController.eachFnc(forms);    
             
         } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
-
-            targetClassList.toggle('fa-rotate-180');
-            mainController.clearUpdate(forms);
+ 
+            targetClassList.toggle('fa-rotate-180');   
+            mainController.eachFnc(forms);  
            
         } else if ( targetClassList.contains(DOM.itemModal.slice(1))) {
 
-            mainController.deleteItem(itemSelected.node, itemSelected.id);
+            mainController.deleteItem(e.target.dataset.itemid)
+                .then(() => {
+
+                    uiController.deleteItem(e.target.dataset.itemid);
+                })
+                .catch(err => console.log(err))
 
         } else if ( targetClassList.contains(DOM.categoryModal.slice(1))) {
-            
-            mainController.deleteCategory(categorySelected.id , categorySelected.node);
+
+        
+           mainController.deleteCategory(e.target.dataset.categoryid)
+            .then(() => {
+                uiController.deleteCategory(e.target.dataset.categoryid);
+            })
+            .catch(err => console.log(err))
 
         } else if ( targetClassList.contains(DOM.btnAddIncome.slice(1))) {
 
@@ -155,26 +167,26 @@ const appController = ((uiController, mainController) => {
                 })
                 .catch(err => console.log(err))
        
-        } else if ( targetClassList.contains(DOM.rsButton.slice(1))) {
+        } else if ( targetClassList.contains(DOM.rsButton.slice(1))) {  
 
-            mainController.clearUpdate(forms);
+            mainController.eachFnc(forms);  
             mainController.showRS(e.target);
+
         } else if ( targetClassList.contains(DOM.rsButtonRemaining.slice(1))) {
 
-            mainController.clearUpdate(forms)
+            mainController.eachFnc(forms)
             mainController.renderRemaining();
 
         } else if ( targetClassList.contains(DOM.rsButtonSpent.slice(1))) {
 
-            mainController.clearUpdate(forms);
+            mainController.eachFnc(forms);  
             mainController.renderSpent();
     
         } else {
-           
+
             uiController.removeRS();
-            mainController.clearUpdate(forms, 2);
             mainController.clickSelfItem(e);
-            mainController.clickSelfCategory(e);   
+            mainController.clickSelfCategory(e)
          }
     }
 

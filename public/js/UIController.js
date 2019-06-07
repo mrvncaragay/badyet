@@ -135,7 +135,6 @@ export const UIController = (() => {
 
         const editCategoryForm = document.querySelector(DOM.editableCategoryForm);
         
-      
         if ( !editCategoryForm ) return;
         editCategoryForm.childNodes[0].parentNode.remove();
     }
@@ -203,7 +202,7 @@ export const UIController = (() => {
                                 </div>
                                 <div class="col-6 center-self">
                                     <div class="row text-right income-header-pr-text">
-                                        <div class="col-6 total-income">$${income.budget}</div>
+                                        <div class="col-6 total-income">$${ income.budget ? income.budget : '0.00' }</div>
                                         <div class="col-6">$0.00</div>
                                     </div>
                                 </div>
@@ -424,7 +423,7 @@ export const UIController = (() => {
         },
 
         editItem: (item, e) => {
-           
+
             const itemEle = `<div class="card editable-item-form">
                 <div class="row editable-form form-inline"> 
                     
@@ -458,7 +457,7 @@ export const UIController = (() => {
                                 <p>Are you sure you want to delete <strong>${item.label}</strong>?</p>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger close-item-modal">Yes, Delete</button>
+                                <button type="button" class="btn btn-danger close-item-modal" data-itemid="${item.id}">Yes, Delete</button>
                                 <button type="button" class="btn btn-white" data-dismiss="modal">No, Cancel</button>
                             </div>
                         </div>
@@ -467,7 +466,7 @@ export const UIController = (() => {
             </div>`;
 
             const mainApp = document.querySelector(DOM.mainAppContainer);
-            const rect = e.target.getBoundingClientRect();
+            const rect = e.getBoundingClientRect();
             const posY = rect.top + mainApp.scrollTop - 15;
      
             document.querySelector(DOM.mainPanelContainer).insertAdjacentHTML('beforeend', itemEle);
@@ -496,7 +495,7 @@ export const UIController = (() => {
                                     <p>Are you sure you want to delete <strong>${category.title}</strong> and its budget items?</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger close-category-modal">Yes, Delete</button>
+                                    <button type="button" class="btn btn-danger close-category-modal" data-categoryid="${category.id}" >Yes, Delete</button>
                                     <button type="button" class="btn btn-white" data-dismiss="modal">No, Cancel</button>
                                 </div>
                             </div>
@@ -516,7 +515,7 @@ export const UIController = (() => {
             categoryForm.style.left = `${posX}px`;           
         },
 
-        deleteItem: (node) => {
+        deleteItem: (id) => {
 
             //remov the button
             document.querySelector('.close-item-modal').remove();
@@ -526,6 +525,8 @@ export const UIController = (() => {
             
                 //replace new button with itemEle
             document.querySelector('.modal-footer').insertAdjacentHTML('afterbegin', itemEle);
+
+            const node = document.querySelector(`[data-itemid="${id}"]`);
 
             //delay removing modal and opened edit form
             setTimeout(() => {
@@ -540,7 +541,7 @@ export const UIController = (() => {
             }, 600);      
         },
 
-        deleteCategory: (node) => {
+        deleteCategory: (id) => {
 
              //remov the button
              document.querySelector('.close-category-modal').remove();
@@ -548,9 +549,12 @@ export const UIController = (() => {
                      <span class="sr-only">Loading..</span>
                  </div> Deleting...</button>`;
              
-                 //replace new button with itemEle
+             //replace new button with itemEle
              document.querySelector('.modal-footer').insertAdjacentHTML('afterbegin', itemEle);
- 
+
+
+            const node = document.querySelector(`.category-items-list-${id}`).closest('.data-item');
+
              //delay removing modal and opened edit form
              setTimeout(() => {
                  $(".modal").modal('hide')

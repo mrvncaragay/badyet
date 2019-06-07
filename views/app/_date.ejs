@@ -3,7 +3,7 @@
     <div class="amount-budgeted">
        
         <span class="amount-budgeted-amount <%= income.total < 0 ? 'text-danger' : '' %>">
-            $<%= Math.abs(income.total) %>
+            $<%= Math.abs(income.total).toFixed(2) %>
         </span>
 
         <span class="amount-budgeted-text">

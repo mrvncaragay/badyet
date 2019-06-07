@@ -8,7 +8,6 @@ export const MainController = ((uiController) => {
     let currentUserIncomes;
     const DOM = uiController.getDOM();
     let nowDate = new Date();
-    const selectedItem = {};
     const budget = uiController.getCurrentBudget();
 
     const addIncome = async (month, year) => {
@@ -25,7 +24,8 @@ export const MainController = ((uiController) => {
             currentUserIncomes.push({ month: month, year: parseInt(year) }) //update date picker active
                 
             setTimeout(() => {
-
+                console.log(data.item)
+                console.log(data)
                 uiController.showIncomeData(data.newIncome, [data.item]);
                 return data.newIncome.id;
                
@@ -69,11 +69,8 @@ export const MainController = ((uiController) => {
 
     const getItem = async (itemId) => {
         try {
-            const { data } = await axios.get(`/app/item/${itemId}`);
 
-            //selectedItem.node = e.target.parentNode.parentNode.parentNode; //this is for update
-            //selectedItem.type = type;
-   
+            const { data } = await axios.get(`/app/item/${itemId}`);
             return data.item;
 
         } catch (err) { console.log(err) }
@@ -83,9 +80,6 @@ export const MainController = ((uiController) => {
         try {
       
             const { data } = await axios.get(`/app/category/${categoryId}`);
-            //category = data.category;
-            //selectedItem.category = e.target.parentNode;
-
             return data.category;      
             
         } catch (err) { console.log(err) }
@@ -111,6 +105,8 @@ export const MainController = ((uiController) => {
                 planned: planned
             });
 
+            return true;
+
         } catch (err) {console.log(err)}              
     }
 
@@ -121,43 +117,56 @@ export const MainController = ((uiController) => {
                 title: title
             });
 
-        } catch (err) {console.log(err)} 
+        } catch (err) {console.log(err)}
+        
+        return true;
     }
 
-    const itemChange = () => {
+    const itemChange = (oldData, node) => {
+    
+        return () => {
+           
+            if(!document.querySelector(DOM.editableItemForm)) return false;
+    
+            const label = document.querySelector(DOM.itemLabel).value;
+            const planned = document.querySelector(DOM.itemPlanned).value;
+  
+            if( oldData.label === label && oldData.planned === planned ) return false;
+                
+            updateItem(label, planned, oldData.id)
 
-        if(!document.querySelector(DOM.editableItemForm)) return;
- 
-        // const label = document.querySelector(DOM.itemLabel).value;
-        // const planned = document.querySelector(DOM.itemPlanned).value;
+            const type = node.id.replace(/-\d+/, ''); 
+            node.querySelector('.item-label').textContent = `${label}`;
+            node.querySelector(`.${type}-planned`).textContent = `$${Math.abs(planned).toFixed(2)}`; 
 
-        // if( item.label === label && item.planned === planned ) return;
-   
-        // updateItem(label, planned, item.id)
-        
-        // //selectedItem.node.querySelector('.item-label').textContent = `${label}`; for update
-        // //selectedItem.node.querySelector(`.${selectedItem.type}-planned`).textContent = `$${Math.abs(planned).toFixed(2)}`; 
+            if(oldData.planned !== planned) budget.updateIncome();
 
-        // if(item.planned !== planned) budget.updateIncome();
+            return true;
+        }
         
     }
 
-    const categoryChange = () => {
-        //if(!document.querySelector(DOM.editableCategoryForm)) return;
- 
-        //const title = document.querySelector(DOM.categoryTitle).value;
-        
-        //if( category.title === title ) return;
+    const categoryChange = (oldData, node) => {
 
-        //updateCategory(title, category.id)
-        //selectedItem.category.querySelector(DOM.selectedCateTitle).textContent = `${title}`;
+        return () => {
+
+            if(!document.querySelector(DOM.editableCategoryForm)) return false;
+
+            const title = document.querySelector(DOM.categoryTitle).value;
+           
+            if( oldData.title === title ) return false;
+
+            updateCategory(title, oldData.id);
+            node.textContent = `${title}`;
+
+            return true;
+        }
     }
 
-    const deleteItem = async (node, id) => {
+    const deleteItem = async (id) => {
         try {
 
             await axios.delete(`/app/item/${id}`);
-            uiController.deleteItem(node);
                 
         } catch (err) { console.log(err) }
     }
@@ -166,17 +175,20 @@ export const MainController = ((uiController) => {
         try {
 
             await axios.delete(`/app/category/${id}`);
-            uiController.deleteCategory(node);
-            budget.updateIncome();
+
+            return true;
 
         } catch (err) { console.log(err) }
     }
 
     const clickSelfItem  = (e) => {
+       
         const editForm = document.querySelector('.editable-item-form');
 
-        if(!editForm) return; //return if there is no edit form
+        if(!editForm) return false; //return false if there is no edit form
         if(!editForm.contains(e.target)) uiController.removeEditForm(); //did user clicked inside item edit form? if not remove form 
+        
+        return true;
     }
 
     const clickSelfCategory  = (e) => {
@@ -193,9 +205,10 @@ export const MainController = ((uiController) => {
         if(!date.contains(e.target)) uiController.removeDate(); //did user clicked inside item edit form? if not remove form 
     }
 
-    const clearUpdateForm = (arr, upTo) => {
+    const eachFnc = (arr, upTo) => {
         
         const end = upTo || arr.length;
+        
         for(let i = 0; i < end; i++) {
             arr[i]();
         }
@@ -322,7 +335,7 @@ export const MainController = ((uiController) => {
         clickSelfItem: clickSelfItem,
         clickSelfCategory: clickSelfCategory,
         clickSelfDate: clickSelfDate,
-        clearUpdate: clearUpdateForm,
+        eachFnc: eachFnc,
         selectedMonthIncome: uiController.getIncomeAndUserKeys(),
         removeItemForm: uiController.removeEditForm,
         removeCategoryForm: uiController.removeCategoryForm,
