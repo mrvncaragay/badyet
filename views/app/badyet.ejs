@@ -32,7 +32,9 @@
         </div>
 
         <div class="col-4 right-panel-container sticky-top">
-            <%- include('./rightpanel.ejs') %>
+
+            <%- include('./rightpanel.ejs', {income: income, summary: summary }) %>
+
         </div>
     </div>
 </div>

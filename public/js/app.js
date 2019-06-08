@@ -10,8 +10,8 @@ const appController = ((uiController, mainController) => {
 
     const DOM = uiController.getDOM();
 
-    const forms = [ mainController.removeItemForm, mainController.removeCategoryForm, uiController.removeRS, uiController.removeDate ];
-    const fncToRender = [];
+    const formRemover = [ mainController.removeItemForm, mainController.removeCategoryForm, uiController.removeRS, uiController.removeDate ];
+    const updateListener = [];
 
     const setUpEventListener = () => {
 
@@ -19,9 +19,6 @@ const appController = ((uiController, mainController) => {
         document.querySelector(DOM.mainPanelContainer).addEventListener('click', clickOnMainPanel, false); //category list container
         document.querySelector(DOM.rightPanelContainer).addEventListener('click', clickOnMainRightPanel, false); //category list container
         document.querySelector(DOM.leftPanelContainer).addEventListener('click', clickOnMainLeftPanel, false); //category list container
-        document.addEventListener('keypress', (e) => {
-            if ( e.key === 13 || e.which === 13 ) mainController.eachFnc(forms);
-        }); //keypress enter
     };
 
     const clickOnDatePanel = e => {
@@ -72,48 +69,81 @@ const appController = ((uiController, mainController) => {
 
     const clickOnMainLeftPanel = e => {
 
+        if( updateListener.length > 0 ) {
+
+            mainController.eachFnc(updateListener);  
+        }
+
+        mainController.eachFnc(formRemover);
         
     }
 
     const clickOnMainRightPanel = e => {
 
+        if( updateListener.length > 0 ) {
+
+            mainController.eachFnc(updateListener);  
+        }
+
+        mainController.eachFnc(formRemover);
+
+        const targetClassList = e.target.classList;
+
+        if( targetClassList.contains(DOM.tabDataPlanned.slice(1))) {
+            
+            mainController.renderPlannedTab();
+            console.log('planned')
+        } else if( targetClassList.contains(DOM.tabDataSpent.slice(1))) {
+            
+            mainController.renderSpentTab();
+            console.log('spent')
+
+        } else if( targetClassList.contains(DOM.tabDataRemaining.slice(1))) {
+            
+            mainController.renderRemainingTab();
+            console.log('remaining')
+            
+        }
         
     }
 
+    //uiController.updateBudgetSummary(data);
+
     const clickOnMainPanel = e => {
 
-        if( fncToRender.length > 0 ) {
+        if( updateListener.length > 0 ) {
 
-            mainController.eachFnc(fncToRender);  
+            mainController.eachFnc(updateListener);  
         }
-
+        
         const targetClassList = e.target.classList;
       
         if( targetClassList.contains(DOM.btnAddIncomeItem.slice(1))) {
          
-            mainController.eachFnc(forms);  
+            mainController.eachFnc(formRemover);  
             mainController.addItem(income.categoryId, 'income');
         
         } else if ( targetClassList.contains(DOM.btnAddCategoryItem.slice(1) )) {
             
-            mainController.eachFnc(forms);  
+            mainController.eachFnc(formRemover);  
             const catId = e.target.previousElementSibling.value;    
             mainController.addItem(catId, 'category');
 
         } else if ( targetClassList.contains(DOM.editableItem.slice(1) )) {
 
             const node = e.target.closest(DOM.itemData);     
-
+       
             mainController.getItem(node.dataset.itemid)
                 .then(data => { 
 
                     uiController.editItem(data, e.target);
-                    fncToRender.pop();
-                    fncToRender.push(mainController.itemChange(data, node)); 
+
+                    updateListener.pop();
+                    updateListener.push(mainController.itemChange(data, node)); 
                 })
                 .catch(err => console.log(err))
 
-            mainController.eachFnc(forms);  
+            mainController.eachFnc(formRemover);  
             
         } else if ( targetClassList.contains(DOM.editableCategory.slice(1) )) {
          
@@ -123,22 +153,30 @@ const appController = ((uiController, mainController) => {
                 .then(data => {
 
                     uiController.editCategory(data, e);  
-                    fncToRender.pop();
-                    fncToRender.push(mainController.categoryChange(data, node)); //add function to   
+                    updateListener.pop();
+                    updateListener.push(mainController.categoryChange(data, node)); //add function to   
                 })  
                 .catch(err => console.log(err));
 
-            mainController.eachFnc(forms);     
+            mainController.eachFnc(formRemover);     
 
         } else if ( targetClassList.contains(DOM.btnAddCategory.slice(1) )) {
     
-            mainController.addGroup(income.id); 
-            mainController.eachFnc(forms);    
+            mainController.addGroup(income.id)
+                .then(data => {
+
+                    uiController.addCategory(data);
+
+                }) 
+                .catch(err => console.log(err))
+            mainController.eachFnc(formRemover);
+            
+
             
         } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
  
             targetClassList.toggle('fa-rotate-180');   
-            mainController.eachFnc(forms);  
+            mainController.eachFnc(formRemover);  
            
         } else if ( targetClassList.contains(DOM.itemModal.slice(1))) {
 
@@ -169,18 +207,18 @@ const appController = ((uiController, mainController) => {
        
         } else if ( targetClassList.contains(DOM.rsButton.slice(1))) {  
 
-            mainController.eachFnc(forms);  
+            mainController.eachFnc(formRemover);  
             mainController.showRS(e.target);
 
         } else if ( targetClassList.contains(DOM.rsButtonRemaining.slice(1))) {
 
-            mainController.eachFnc(forms)
-            mainController.renderRemaining();
+            mainController.eachFnc(formRemover)
+            mainController.renderRemainingRs();
 
         } else if ( targetClassList.contains(DOM.rsButtonSpent.slice(1))) {
 
-            mainController.eachFnc(forms);  
-            mainController.renderSpent();
+            mainController.eachFnc(formRemover);  
+            mainController.renderSpentRs();
     
         } else {
 

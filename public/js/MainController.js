@@ -24,8 +24,7 @@ export const MainController = ((uiController) => {
             currentUserIncomes.push({ month: month, year: parseInt(year) }) //update date picker active
                 
             setTimeout(() => {
-                console.log(data.item)
-                console.log(data)
+                
                 uiController.showIncomeData(data.newIncome, [data.item]);
                 return data.newIncome.id;
                
@@ -90,7 +89,7 @@ export const MainController = ((uiController) => {
         try {
 
             const { data } = await axios.post('/app/category/new', { incomeId: id });
-            uiController.addCategory(data.category);
+            return data.category;
 
         } catch (err) { console.log(err) }
     }
@@ -134,7 +133,7 @@ export const MainController = ((uiController) => {
             if( oldData.label === label && oldData.planned === planned ) return false;
                 
             updateItem(label, planned, oldData.id)
-
+   
             const type = node.id.replace(/-\d+/, ''); 
             node.querySelector('.item-label').textContent = `${label}`;
             node.querySelector(`.${type}-planned`).textContent = `$${Math.abs(planned).toFixed(2)}`; 
@@ -311,14 +310,29 @@ export const MainController = ((uiController) => {
         uiController.showRSPicker(e);
     }
 
-    const renderSpent = () => {
+    const renderRemainingRs= () => {
+
+        uiController.renderRemaining();
+    }
+
+    const renderSpentRs = () => {
         
         uiController.renderSpent();
     }
 
-    const renderRemaining = () => {
+    const renderPlannedTab = () => {
+
+        //uiController.renderRemainingTab();
+    }
+
+    const renderSpentTab = () => {
         
-        uiController.renderRemaining();
+        //uiController.renderSpentTab();
+    }
+
+    const renderRemainingTab = () => {
+        
+        //uiController.renderRemainingTab();
     }
 
     return {
@@ -343,8 +357,11 @@ export const MainController = ((uiController) => {
         showPickedDate: showPickedDate,
         initUserIncomes: initUserIncomes(),
         showRS: showRS,
-        renderSpent: renderSpent,
-        renderRemaining: renderRemaining
+        renderSpentRs: renderSpentRs,
+        renderRemainingRs: renderRemainingRs,
+        renderPlannedTab: renderPlannedTab,
+        renderSpentTab: renderSpentTab,
+        renderRemainingTab: renderRemainingTab
 
     }
 })(UIController);

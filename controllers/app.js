@@ -16,13 +16,15 @@ exports.getBadyetPage = (req, res) => {
             const incomeCategory = income.categories.shift(); //remove Income categor
             incomeInfo.category_id = incomeCategory.id;
             incomeInfo.items = incomeCategory.items;
-                       
+            
+            incomeInfo.rightPanelData = helper.getItemsTotal(incomeInfo.categories)
+
             incomeInfo.budget = helper.getTotal(incomeInfo.items).income.toFixed(2);
             incomeInfo.total = (incomeInfo.budget - helper.getTotal(incomeInfo.categories).category).toFixed(2); 
             
             if( Object.entries(incomeInfo.categories).length === 0 ) categories = false;
 
-            res.render('app/badyet', { income: incomeInfo, categories: incomeInfo.categories });
+            res.render('app/badyet', { income: incomeInfo, categories: incomeInfo.categories, summary: incomeInfo.rightPanelData });
 
         })
         .catch(err => console.log(err));

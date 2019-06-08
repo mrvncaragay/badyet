@@ -6,6 +6,7 @@ export const UIController = (() => {
         mainPanelContainer: '.main-panel-container',
         rightPanelContainer: '.right-panel-container',
         leftPanelContainer: '.left-panel-container',
+        rightPanelContainer: '.right-panel-container',
         categoryList: '.category-list',
         btnAddIncome: '.newIncome',
         btnAddCategory: '.add-category-button',
@@ -41,6 +42,9 @@ export const UIController = (() => {
         rsButton: '.rs-btn',
         rsButtonRemaining: '.category-remaining',
         rsButtonSpent: '.category-spent',
+        tabDataPlanned: '.tab-data-planned',
+        tabDataSpent: '.tab-data-spent',
+        tabDataRemaining: '.tab-data-remaining'
     }
 
     const income = {
@@ -395,7 +399,7 @@ export const UIController = (() => {
                             <div class="row text-right income-header-pr-text">
                                 <div class="col-6">Planned</div>
                                 <div class="col-6">
-                                    s<button type="button" class="btn no-focus rs-btn">Remaining <i class="fas fa-caret-down"></i></button>
+                                    <button type="button" class="btn no-focus rs-btn">Remaining <i class="fas fa-caret-down"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -609,7 +613,7 @@ export const UIController = (() => {
                 <div class="data-item add-group-category">
                     <input type="hidden" class="csrf_token" name="_csrf" value="<%#= csrfToken %>">    
                     <button role="button" data-toggle="" class="btn no-focus add-category-button" href="#"><i class="fas fa-plus"></i>ADD GROUP</button> 
-                 </div> 
+                </div> 
             </div>`;
         
 
@@ -654,9 +658,6 @@ export const UIController = (() => {
                     </div>
                     </div>                    
                 </div>`;
-
-                const mainApp = document.querySelector(DOM.mainAppContainer);
-                const rect = e.getBoundingClientRect();
          
                 e.insertAdjacentHTML('afterbegin', itemEle);           
         },
@@ -679,16 +680,52 @@ export const UIController = (() => {
             })
         },
 
+        renderPlannedTab: () => {
+
+            const itemEle = `<div class="list-group budget-data-list">
+                    <% summary.forEach( cate => { %>
+                        <a href="#" class="list-group-item list-group-item-action budget-data-item">
+                            <%= cate.title %>
+                            <span class="float-right">$<%= cate.total %> </span>
+                        </a>
+
+                    <% })  %>  
+                </div>`;
+        },
+
+        renderSpentTab: () => {
+
+            `<div class="list-group budget-data-list">
+                    <% summary.forEach( cate => { %>
+                        <a href="#" class="list-group-item list-group-item-action budget-data-item">
+                            <%= cate.title %>
+                            <span class="float-right">$<%= cate.total %> </span>
+                        </a>
+
+                    <% })  %>  
+                </div>`;
+            
+
+        },
+
+        renderRemainingTab: () => {
+
+            `<div class="list-group budget-data-list">
+                    <% summary.forEach( cate => { %>
+                        <a href="#" class="list-group-item list-group-item-action budget-data-item">
+                            <%= cate.title %>
+                            <span class="float-right">$<%= cate.total %> </span>
+                        </a>
+
+                    <% })  %>  
+                </div>`;
+        },
+
         removeEditForm: removeEditForm,
-
         removeCategoryForm: removeCategoryForm,
-
         removeDate: removeDate,
-
         removeRS: removeRS,
-
         updateSelectedMonth: updateSelectedMonth,
-
         removeDateHeader: removeDateHeader
     }
 })(); 
