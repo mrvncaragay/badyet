@@ -2,13 +2,14 @@ import { UIController } from './UIController.js'
 
 export const MainController = ((uiController) => {
     
-    let item;
-    let category;
+    //let item;
+    //let category;
     let monthsData;
     let currentUserIncomes;
     const DOM = uiController.getDOM();
     let nowDate = new Date();
     const budget = uiController.getCurrentBudget();
+    //const summary = uiController.getCurrentSummary();
 
     const addIncome = async (month, year) => {
 
@@ -121,7 +122,7 @@ export const MainController = ((uiController) => {
         return true;
     }
 
-    const itemChange = (oldData, node) => {
+    const itemChange = (oldData, node, fn) => {
     
         return () => {
            
@@ -133,19 +134,21 @@ export const MainController = ((uiController) => {
             if( oldData.label === label && oldData.planned === planned ) return false;
                 
             updateItem(label, planned, oldData.id)
-   
+
             const type = node.id.replace(/-\d+/, ''); 
             node.querySelector('.item-label').textContent = `${label}`;
             node.querySelector(`.${type}-planned`).textContent = `$${Math.abs(planned).toFixed(2)}`; 
 
             if(oldData.planned !== planned) budget.updateIncome();
+            fn.updateTotal(oldData.categoryId);
+            uiController.renderPlannedTab();
 
             return true;
         }
         
     }
 
-    const categoryChange = (oldData, node) => {
+    const categoryChange = (oldData, node, fn) => {
 
         return () => {
 
@@ -154,9 +157,11 @@ export const MainController = ((uiController) => {
             const title = document.querySelector(DOM.categoryTitle).value;
            
             if( oldData.title === title ) return false;
-
+           
             updateCategory(title, oldData.id);
             node.textContent = `${title}`;
+            fn(title);
+            uiController.renderPlannedTab();
 
             return true;
         }

@@ -69,10 +69,11 @@ exports.getTotal = (obj, skip) => {
 
 exports.getItemsTotal = (obj) => {
         
-    const category = obj.filter(cat => cat.items.length ).map(category => ({
+    const category = obj.map(category => ({
 
+        id: category.id,
         title: category.title,
-        total: category.items.map(item => parseFloat(item.planned)).reduce((total, current) => total += current).toFixed(2)
+        total: category.items.length ? category.items.map(item => parseFloat(item.planned)).reduce((total, current) => total += current).toFixed(2) : 0
     }))
 
     return category;

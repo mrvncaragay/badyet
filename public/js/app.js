@@ -9,6 +9,7 @@ const appController = ((uiController, mainController) => {
     }
 
     const DOM = uiController.getDOM();
+    const summary = uiController.getCurrentSummary();
 
     const formRemover = [ mainController.removeItemForm, mainController.removeCategoryForm, uiController.removeRS, uiController.removeDate ];
     const updateListener = [];
@@ -92,7 +93,9 @@ const appController = ((uiController, mainController) => {
         if( targetClassList.contains(DOM.tabDataPlanned.slice(1))) {
             
             mainController.renderPlannedTab();
+           
             console.log('planned')
+
         } else if( targetClassList.contains(DOM.tabDataSpent.slice(1))) {
             
             mainController.renderSpentTab();
@@ -137,9 +140,8 @@ const appController = ((uiController, mainController) => {
                 .then(data => { 
 
                     uiController.editItem(data, e.target);
-
                     updateListener.pop();
-                    updateListener.push(mainController.itemChange(data, node)); 
+                    updateListener.push(mainController.itemChange(data, node, summary)); 
                 })
                 .catch(err => console.log(err))
 
@@ -152,9 +154,10 @@ const appController = ((uiController, mainController) => {
             mainController.getCategory(node.dataset.categoryid)
                 .then(data => {
 
+                    const fn = summary.setTitle(data.id);
                     uiController.editCategory(data, e);  
                     updateListener.pop();
-                    updateListener.push(mainController.categoryChange(data, node)); //add function to   
+                    updateListener.push(mainController.categoryChange(data, node, fn )); //add function to   
                 })  
                 .catch(err => console.log(err));
 
@@ -166,12 +169,13 @@ const appController = ((uiController, mainController) => {
                 .then(data => {
 
                     uiController.addCategory(data);
-
+                    summary.insert(data);
+                    uiController.renderPlannedTab();
                 }) 
                 .catch(err => console.log(err))
-            mainController.eachFnc(formRemover);
-            
 
+            mainController.eachFnc(formRemover);
+        
             
         } else if ( targetClassList.contains(DOM.clickerIcon.slice(1) )) {
  
@@ -184,6 +188,7 @@ const appController = ((uiController, mainController) => {
                 .then(() => {
 
                     uiController.deleteItem(e.target.dataset.itemid);
+
                 })
                 .catch(err => console.log(err))
 
@@ -192,7 +197,10 @@ const appController = ((uiController, mainController) => {
         
            mainController.deleteCategory(e.target.dataset.categoryid)
             .then(() => {
+     
+                summary.remove(e.target.dataset.categoryid);
                 uiController.deleteCategory(e.target.dataset.categoryid);
+
             })
             .catch(err => console.log(err))
 
@@ -231,6 +239,7 @@ const appController = ((uiController, mainController) => {
     return {
         init: () => {
             setUpEventListener();
+            uiController.getCurrentSummary().init();
         }
     };
 

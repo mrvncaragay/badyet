@@ -40,4 +40,5 @@ This app is created using node, express, mysql, and vanila js. This app will be 
 
 -To Fix
     -when clicked on remaining drop down update items with remaining balance
-    -refractor code in UI and MAIN         
+    -refractor code in UI and MAIN
+    -summary total not changing when check is added         

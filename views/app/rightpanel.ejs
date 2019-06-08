@@ -29,11 +29,12 @@
 <div class="row bottom-panel-data justify-content-md-center">
     <div class="col col-lg-8 bottom-panel-data-budget-data">
         <div class="list-group budget-data-list">
-            
+
             <% summary.forEach( cate => { %>
-                <a href="#" class="list-group-item list-group-item-action budget-data-item">
+            
+                <a href="#" class="list-group-item list-group-item-action planned-item" data-id="<%= cate.id %>">
                     <%= cate.title %>
-                    <span class="float-right">$<%= cate.total %> </span>
+                    <span class="float-right total-planned-item">$<%= cate.total ? cate.total : 0 %> </span>
                 </a>
 
             <% })  %>  

@@ -53,7 +53,6 @@ export const UIController = (() => {
         incomeCategoryId: document.querySelector(DOM.incomeCategoryId).value
     }
 
-    //query selector is catch the previous action. not working
     const budget = {
         
         totalIncomeDOM:  document.querySelector('.total-income'),
@@ -118,6 +117,105 @@ export const UIController = (() => {
             this.incomeDOM = document.querySelector('.amount-budgeted-amount');
             this.incomePlanned = document.querySelectorAll('.income-planned');
             this.categoryPlanned = document.querySelectorAll('.category-planned');
+        }
+    }
+
+
+    const summary = {
+
+        plannedSummary: document.querySelectorAll('.planned-item'),
+        spentSummary: document.querySelectorAll('.spent-item'),
+        remainingSummary: document.querySelectorAll('.remaining-item'),
+
+        setTitle: function(id) {
+            
+            return function(title) {
+
+                this.planned[this.findById(id)].title = title;
+            }.bind(this)
+        },
+
+        insert: function(data) {
+
+            return this.planned.push({ 
+
+                id: data.id, 
+                title: data.title, 
+                total: 0 
+            });
+        },
+
+        updateTotal: function(id) {
+
+            const items = document.querySelector(`.category-items-list-${id}`)
+
+            if( !items ) return false;
+            
+            const data = items.querySelectorAll('.category-planned');
+
+            let total = 0;
+
+            data.forEach(item => {
+                
+                    total += parseFloat(item.textContent.replace(/[$]/g, ''));
+            })
+
+            this.planned[this.findById(id)].total = total.toFixed(2);
+
+            return true;
+        },
+
+        findById: function(id) {
+
+            let foundId;
+
+            this.planned.forEach((item, i) => {
+
+                if( parseInt(item.id) === parseInt(id) ) {
+                    
+                    foundId = i;
+                    return;
+                }
+            })
+
+            return foundId;
+        },
+
+        remove: function(id) {
+            
+            return this.planned.splice(this.findById(id), 1).length;
+        },
+
+        initPlanned: function(arr) {
+
+            let tempArr = [];
+
+            arr.forEach(item => tempArr.push(({
+                
+                id: item.dataset.id,
+                title: item.textContent.replace(/[\d\s$.]/g, '' ),
+                total: item.getElementsByTagName('span')[0].textContent.replace(/[$]/g, '')
+            })))
+
+            return tempArr;
+            
+        },
+
+        getAllPlanned: function() {
+
+            return this.planned;
+        },
+
+        init() {
+
+            try {
+
+                this.planned = this.initPlanned(this.plannedSummary);
+                return true;
+                
+            } catch (error) {
+                return false;
+            }
         }
     }
 
@@ -342,7 +440,31 @@ export const UIController = (() => {
         document.querySelector('.data-date').insertAdjacentHTML('afterbegin', dateBtnEle); 
     }
 
+    const renderPlannedTab = () => {
+
+        document.querySelector('.budget-data-list').remove();
+
+        const itemEle = `<div class="list-group budget-data-list">
+            <div class="list-group budget-data-list"> 
+
+                ${ summary.planned.map(item => {
+
+                    return `<a href="#" class="list-group-item list-group-item-action planned-item" data-id="${ item.id }">
+                        ${ item.title }
+                        <span class="float-right total-planned-item">$${ item.total }</span>
+                    </a>` }).join('')  }
+
+                </div>
+            </div>`;
+
+        document.querySelector('.bottom-panel-data-budget-data').insertAdjacentHTML('beforeend', itemEle);
+    }
+
     return {
+
+        getCurrentSummary: () => {
+            return summary;
+        },
 
         getCurrentBudget: () => {
 
@@ -399,7 +521,7 @@ export const UIController = (() => {
                             <div class="row text-right income-header-pr-text">
                                 <div class="col-6">Planned</div>
                                 <div class="col-6">
-                                    <button type="button" class="btn no-focus rs-btn">Remaining <i class="fas fa-caret-down"></i></button>
+                                    <button type="button" class="btn no-focus rs-btn">Remaining</i></button> <i class="fas fa-caret-down"></i>
                                 </div>
                             </div>
                         </div>
@@ -568,6 +690,7 @@ export const UIController = (() => {
                          removeCategoryForm();
                          node.remove();
                          budget.updateIncome();
+                         renderPlannedTab();
                      }, 500)           
              }, 800);
         },
@@ -680,19 +803,6 @@ export const UIController = (() => {
             })
         },
 
-        renderPlannedTab: () => {
-
-            const itemEle = `<div class="list-group budget-data-list">
-                    <% summary.forEach( cate => { %>
-                        <a href="#" class="list-group-item list-group-item-action budget-data-item">
-                            <%= cate.title %>
-                            <span class="float-right">$<%= cate.total %> </span>
-                        </a>
-
-                    <% })  %>  
-                </div>`;
-        },
-
         renderSpentTab: () => {
 
             `<div class="list-group budget-data-list">
@@ -704,8 +814,6 @@ export const UIController = (() => {
 
                     <% })  %>  
                 </div>`;
-            
-
         },
 
         renderRemainingTab: () => {
@@ -726,6 +834,7 @@ export const UIController = (() => {
         removeDate: removeDate,
         removeRS: removeRS,
         updateSelectedMonth: updateSelectedMonth,
-        removeDateHeader: removeDateHeader
+        removeDateHeader: removeDateHeader,
+        renderPlannedTab: renderPlannedTab
     }
 })(); 

@@ -557,7 +557,7 @@ button.badyet-date:active {
     padding: 0;
 }
 
-.budget-data-item {
+.planned-item {
     background-color: var(--background-color);
     padding-right: 0px;
     padding-left: 0px;
