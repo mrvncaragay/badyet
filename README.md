@@ -1,44 +1,17 @@
 # badyet
-badyet is also know as budget. badyet is an app that tracks expenses and income.
-This app is created using node, express, mysql, and vanila js. This app will be written
-90% pure vanila js.
+badyet is also known as budget. An app that tracks expenses and income.
+This app is created using node, express, mysql, and vanila js. 90% of the front-end codes are written in Vanilla JS.
 
--Multiple Page Application
+- SPA aplication powered by ajax call using axios.js
 
--Model View Controller (MVC) architecture
+- Model View Controller (MVC) architecture
 
--front-end: ejs/bootstrap
-
--user
-    -authentication
-    -authoration
--budget class
-    -delete
-    -save
-    -update
-    -add
--user class
-
-- User 
-    - username, email, password(salt, hash)
-    - Has prefilled group items
-- Budget Item
-    -Adding Item
-        - Expense or Income (Transaction) 
-        - Amount
-        - Date
-        - Where did money come from? (text: optional)
-        - Choose which Budget item(s) 
-            -Drop Down Options (from budget items) to add the expense or income
-- Budget Container Group 
-    - Title <Food>
-    - planned (to budyet or save) editable
-    - received (for Paycheck)
-    - Remaining (Spent - planned)
-    - Spent (total: expense)
-    - Budget Items 
-
--To Fix
-    -when clicked on remaining drop down update items with remaining balance
-    -refractor code in UI and MAIN
-    -summary total not changing when check is added         
+- Back-End:
+    - Node.js
+    - Sql
+    - Express.js
+      
+- Front-end: 
+    - Used Reavealing Patterns to encapsulates its related sub-system. e.g classes are group into a single object.
+    - ejs/bootstrap
+        
