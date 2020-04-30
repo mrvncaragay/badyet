@@ -28,7 +28,7 @@
     "express": "^4.16.4",
     "express-mysql-session": "^2.1.0",
     "express-session": "^1.16.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery-datepicker": "^1.12.3",
     "js-datepicker": "^4.0.10",
     "mysql2": "^1.6.5",
